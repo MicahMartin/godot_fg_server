@@ -1,0 +1,13 @@
+[configuration]
+
+entry_symbol = "FightingGameServerInit"
+
+[libraries]
+
+linux.release.x86_64 = "lib/Linux-x86_64/libFightingGameServer.so"
+macos.release.x86_64 = "lib/Darwin-universal/libFightingGameServer.dylib"
+windows.release.x86_64 = "lib/Windows-AMD64/FightingGameServer.dll"
+
+linux.x86_64 = "lib/Linux-x86_64/libFightingGameServer.so"
+macos.x86_64 = "lib/Darwin-universal/libFightingGameServer.dylib"
+windows.x86_64 = "lib/Windows-AMD64/FightingGameServer.dll"

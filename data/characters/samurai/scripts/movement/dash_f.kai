@@ -1,0 +1,16 @@
+{ 
+  var downforward = $get_input 3; 
+  var forward = $get_input 6; 
+  var anyForward = (forward);
+  var stateTime = $get_state_time;
+  var quotient = stateTime / 15;
+  var product = quotient * 15;
+  var remainder = stateTime - product;
+  if(!anyForward){ 
+    $cancel_state 35; 
+  } 
+  if (remainder == 0) {
+    $reset_anim;
+  }
+  $add_meter 5;
+} 

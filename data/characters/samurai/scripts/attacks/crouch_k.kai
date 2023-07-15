@@ -1,0 +1,29 @@
+{
+  if($get_state_time == 0){ 
+    $set_control 0; 
+  }
+  var back = $get_input 4; 
+  var upback = $get_input 7; 
+  var downback = $get_input 1; 
+  var anyBack = (back or upback or downback);
+  var lp_and_lk = $was_pressed 10;
+  if($get_state_time < 2){
+    if (lp_and_lk) {
+      if(anyBack){
+        $cancel_state 5036;
+      } else { 
+        $cancel_state 5032;
+      }
+    }
+  }
+  if ($get_state_time == 3) {
+    $velset_x 10000; 
+    $velset_y 10000; 
+    $set_nograv_count 15;
+  }
+  
+
+  if($get_state_time > 4 and $get_y_pos <= 0){ 
+    $set_control 1;
+  } 
+}

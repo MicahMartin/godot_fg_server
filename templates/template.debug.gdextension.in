@@ -1,0 +1,13 @@
+[configuration]
+
+entry_symbol = "FightingGameServerInit"
+
+[libraries]
+
+linux.debug.x86_64 = "lib/Linux-x86_64/lib${PROJECT_NAME}-d.so"
+macos.debug.x86_64 = "lib/Darwin-Universal/lib${PROJECT_NAME}-d.dylib"
+windows.debug.x86_64 = "lib/Windows-AMD64/${LIB_PREFIX}${PROJECT_NAME}-d.dll"
+
+linux.x86_64 = "lib/Linux-x86_64/lib${PROJECT_NAME}-d.so"
+macos.x86_64 = "lib/Darwin-Universal/lib${PROJECT_NAME}-d.dylib"
+windows.x86_64 = "lib/Windows-AMD64/${LIB_PREFIX}${PROJECT_NAME}-d.dll"

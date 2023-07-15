@@ -1,0 +1,5 @@
+CMakeLists.txt.user
+.vscode
+.ccls-cache
+.cache
+.build

@@ -1,0 +1,1873 @@
+{
+  "states": [
+    {
+      "state_num": 1,
+      "state_name": "IDLE",
+      "flags": [ ],
+      "update_script": "../data/characters/samurai/scripts/movement/idle.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/idle/00.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/01.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/02.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/03.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/04.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/05.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/06.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/07.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/08.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/09.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/10.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/11.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/12.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/13.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/14.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/15.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/16.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/17.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/18.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/19.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/20.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/21.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/22.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/23.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/24.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/25.png", "time": 1, "offsetX": -1, "offsetY": 25}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 2,
+      "state_name": "PRE_MATCH",
+      "flags": [ ],
+      "update_script": "../data/characters/samurai/scripts/prematch.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/idle/00.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/01.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/02.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/03.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/04.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/05.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/06.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/07.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/08.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/09.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/10.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/11.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/12.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/13.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/14.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/15.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/16.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/17.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/18.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/19.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/20.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/21.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/22.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/23.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/24.png", "time": 1, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/25.png", "time": 1, "offsetX": -1, "offsetY": 25}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 3,
+      "state_name": "WALK_F",
+      "flags": [ ],
+      "update_script": "../data/characters/samurai/scripts/movement/walk_f.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/idle/00.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/01.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/02.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/03.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/04.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/05.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/06.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/07.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/08.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/01.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/10.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/11.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/12.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/13.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/14.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/15.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/16.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/17.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/18.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/19.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/20.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/21.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/22.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/23.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/24.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/25.png", "time": 2, "offsetX": -1, "offsetY": 25}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 4,
+      "state_name": "WALK_B",
+      "flags": [ ],
+      "update_script": "../data/characters/samurai/scripts/movement/walk_b.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/idle/00.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/01.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/02.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/03.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/04.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/05.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/06.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/07.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/08.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/01.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/10.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/11.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/12.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/13.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/14.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/15.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/16.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/17.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/18.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/19.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/20.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/21.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/22.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/23.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/24.png", "time": 2, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/idle/25.png", "time": 2, "offsetX": -1, "offsetY": 25}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 5,
+      "state_name": "CROUCH",
+      "flags": [ ],
+      "update_script": "../data/characters/samurai/scripts/movement/crouch.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0001.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0002.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0003.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0004.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0005.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0006.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0007.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0008.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0009.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0010.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0011.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0012.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0013.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0014.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0015.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0016.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0017.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0018.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0019.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0020.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0021.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0022.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0023.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/idle_crouch/0024.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 6,
+      "state_name": "JUMP_N",
+      "flags": ["NO_TURN"],
+      "update_script": "../data/characters/samurai/scripts/movement/jump_n.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/jump/0001.png", "time": 3, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0002.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0003.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/jump/0004.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/jump/0005.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0006.png", "time": -1, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 7,
+      "state_name": "JUMP_F",
+      "flags": [ "NO_TURN" ],
+      "update_script": "../data/characters/samurai/scripts/movement/jump_f.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/jump/0001.png", "time": 3, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0002.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0003.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/jump/0004.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/jump/0005.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0006.png", "time": -1, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 8,
+      "state_name": "JUMP_B",
+      "flags": ["NO_TURN"],
+      "update_script": "../data/characters/samurai/scripts/movement/jump_b.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/jump/0001.png", "time": 3, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0002.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0003.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/jump/0004.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/jump/0005.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/jump/0006.png", "time": -1, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 9,
+      "state_name": "HURT",
+      "flags": [ "NO_TURN" ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/hurt.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20003.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20004.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20005.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20006.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20007.png", "time": -1, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290}
+      ]
+    },
+    {
+      "state_num": 10,
+      "state_name": "HURT_RECOVERY",
+      "flags": [ ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/hurt_recovery.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20008.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20009.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20010.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20011.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20012.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20013.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/upper_hit/Senjin_UpperHit20014.png", "time": -1, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290}
+      ]
+    },
+    {
+      "state_num": 11,
+      "state_name": "AIR_HURT",
+      "flags": [ "NO_TURN" ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/air_hurt.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5030-0.png", "time": 1, "offsetX": 114},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-10.png", "time": -1, "offsetX": 108}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290}
+      ]
+    },
+    {
+      "state_num": 12,
+      "state_name": "KNOCK_DOWN",
+      "flags": [ "NO_TURN" ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/knockdown.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5040-0.png", "time": 3, "offsetX": 90, "offsetY": 75},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-20.png", "time": 3, "offsetX": 80, "offsetY": 75},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-21.png", "time": 3, "offsetX": 97, "offsetY": 75},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-22.png", "time": 3, "offsetX": 97, "offsetY": 75},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-10.png", "time": -1, "offsetX": 92, "offsetY": 75}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ],
+      "visual_effects": [
+        {"visualID": 2, "start": 1},
+        {"visualID": 3, "start": 18}
+      ]
+    },
+    {
+      "state_num": 13,
+      "state_name": "WAKE_UP",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/wakeup.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5040-30.png", "time": 2, "offsetX": 90},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-31.png", "time": 1, "offsetX": 84},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-32.png", "time": 1, "offsetX": 60},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-33.png", "time": 1, "offsetX": 98},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-34.png", "time": 1, "offsetX": 99},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-35.png", "time": 1, "offsetX": 98},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-36.png", "time": 1, "offsetX": 105},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-37.png", "time": 2, "offsetX": 112}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 14,
+      "state_name": "BLOCK_STAND",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/block_stand_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/block_stand.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_120-0.png", "time": 1, "offsetX": 90},
+        { "file": "../data/characters/samurai/sprites/samurai_120-1.png", "time": -1, "offsetX": 91}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 15,
+      "state_name": "BLOCK_CROUCH",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/block_stand_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/block_crouch.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_121-1.png", "time": -1, "offsetX": 72}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 16,
+      "state_name": "BLOWBACK_FALLING",
+      "flags": [ "NO_TURN" ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/blowback_trip.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5030-0.png", "time": 6, "offsetX": 114},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-10.png", "time": 6, "offsetX": 106},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-20.png", "time": 6, "offsetX": 146},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-30.png", "time": 6, "offsetX": 123},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-40.png", "time": 6, "offsetX": 112},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-50.png", "time": -1, "offsetX": 112}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290}
+      ]
+    },
+    {
+      "state_num": 17,
+      "state_name": "AIR_BLOCK",
+      "flags": [ "NO_TURN" ],
+      "update_script": "../data/characters/samurai/scripts/block_air.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_122-0.png", "time": 1, "offsetX": 100},
+        { "file": "../data/characters/samurai/sprites/samurai_122-1.png", "time": -1, "offsetX": 100}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 18,
+      "state_name": "DEAD_STANDING",
+      "flags": [ ],
+      "update_script": "../data/characters/samurai/scripts/dead_standing.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5070-34.png", "time": 3, "offsetX": 103},
+        { "file": "../data/characters/samurai/sprites/samurai_5070-33.png", "time": 3, "offsetX": 91},
+        { "file": "../data/characters/samurai/sprites/samurai_5070-32.png", "time": 3, "offsetX": 87},
+        { "file": "../data/characters/samurai/sprites/samurai_5070-31.png", "time": 3, "offsetX": 90},
+        { "file": "../data/characters/samurai/sprites/samurai_5070-30.png", "time": 3, "offsetX": 90},
+        { "file": "../data/characters/samurai/sprites/samurai_5070-29.png", "time": 3, "offsetX": 76},
+        { "file": "../data/characters/samurai/sprites/samurai_5070-28.png", "time": 3, "offsetX": 70},
+        { "file": "../data/characters/samurai/sprites/samurai_5070-27.png", "time": 3, "offsetX": 82}
+      ],
+      "collision_boxes": [
+      ]
+    },
+    {
+      "state_num": 19,
+      "state_name": "DEAD_FALLING",
+      "flags": [
+        "NO_TURN",
+        "NO_TURN_ON_ENTER"
+      ],
+      "update_script": "../data/characters/samurai/scripts/dead_falling.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5030-50.png", "time": -1, "offsetX": 112}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":275, "height":325, "offsetX":-150, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 20,
+      "state_name": "THROW_TECH",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/throw_tech.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5910-0.png", "time": 3, "offsetX": 111},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-1.png", "time": 3, "offsetX": 90},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-2.png", "time": -1, "offsetX": 99}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 21,
+      "state_name": "AIR_THROW_TECH",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/air_throw_tech.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_191-3.png", "time": 2, "offsetX": 126},
+        { "file": "../data/characters/samurai/sprites/samurai_191-4.png", "time": 2, "offsetX": 81},
+        { "file": "../data/characters/samurai/sprites/samurai_191-5.png", "time": 2, "offsetX": 129},
+        { "file": "../data/characters/samurai/sprites/samurai_191-6.png", "time": 2, "offsetX": 126}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 22,
+      "state_name": "PUSH_BLOCK",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/push_block_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/push_block_stand.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_120-0.png", "time": 1, "offsetX": 90},
+        { "file": "../data/characters/samurai/sprites/samurai_120-1.png", "time": -1, "offsetX": 91}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 23,
+      "state_name": "PUSH_BLOCK_CROUCH",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/push_block_crouch_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/push_block_crouch.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_121-0.png", "time": 1, "offsetX": 86},
+        { "file": "../data/characters/samurai/sprites/samurai_121-1.png", "time": -1, "offsetX": 72}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 24,
+      "state_name": "GROUNDBOUNCE_FLING",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/groundbounce_fling.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5040-2.png", "time": -1, "offsetX": 94, "offsetY": -25}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":225, "height":325, "offsetX":-150, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 25,
+      "state_name": "GROUNDBOUNCE_BOUNCE",
+      "flags": [
+        "NO_TURN",
+        "NO_TURN_ON_ENTER"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/groundbounce_bounce.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5030-20.png", "time": 2, "offsetX": 146},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-30.png", "time": 2, "offsetX": 123},
+        { "file": "../data/characters/samurai/sprites/samurai_5040-20.png", "time": -1, "offsetX": 80, "offsetY": -25}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":225, "height":325, "offsetX":-150, "offsetY": 0}
+      ],
+      "visual_effects": [
+        {"visualID": 2, "start": 1}
+      ]
+    },
+    {
+      "state_num": 26,
+      "state_name": "AIR_PUSH_BLOCK",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/air_pushblock.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_122-0.png", "time": 1, "offsetX": 100},
+        { "file": "../data/characters/samurai/sprites/samurai_122-1.png", "time": -1, "offsetX": 100}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "visual_effects": [
+        {"visualID": 7, "start": 0}
+      ]
+    },
+    {
+      "state_num": 27,
+      "state_name": "JUMP_R",
+      "flags": [
+        "NO_TURN",
+        "NO_TURN_ON_ENTER"
+      ],
+      "update_script": "../data/characters/samurai/scripts/jump_recovery.kai",
+      "animation": [
+          { "file": "../data/characters/senjin/sprites/jump/0005.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+          { "file": "../data/characters/senjin/sprites/jump/0004.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+          { "file": "../data/characters/senjin/sprites/jump/0006.png", "time": -1, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 28,
+      "state_name": "DBL_JUMP_N",
+      "flags": [ "NO_TURN" ],
+      "update_script": "../data/characters/samurai/scripts/movement/dbl_jump_n.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_41-0.png", "time": 11, "offsetX": 120},
+        { "file": "../data/characters/samurai/sprites/samurai_41-1.png", "time": 4, "offsetX": 122},
+        { "file": "../data/characters/samurai/sprites/samurai_41-2.png", "time": 6, "offsetX": 115},
+        { "file": "../data/characters/samurai/sprites/samurai_41-3.png", "time": -1, "offsetX": 105}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 3, "start": 1}
+      ]
+
+    },
+    {
+      "state_num": 29,
+      "state_name": "DBL_JUMP_F",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/movement/dbl_jump_f.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_41-0.png", "time": 11, "offsetX": 120},
+        { "file": "../data/characters/samurai/sprites/samurai_41-1.png", "time": 4, "offsetX": 122},
+        { "file": "../data/characters/samurai/sprites/samurai_41-2.png", "time": 6, "offsetX": 115},
+        { "file": "../data/characters/samurai/sprites/samurai_41-3.png", "time": -1, "offsetX": 105}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 3, "start": 1}
+      ]
+
+    },
+    {
+      "state_num": 30,
+      "state_name": "DBL_JUMP_B",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/movement/dbl_jump_b.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_41-0.png", "time": 11, "offsetX": 120},
+        { "file": "../data/characters/samurai/sprites/samurai_41-1.png", "time": 4, "offsetX": 122},
+        { "file": "../data/characters/samurai/sprites/samurai_41-2.png", "time": 6, "offsetX": 115},
+        { "file": "../data/characters/samurai/sprites/samurai_41-3.png", "time": -1, "offsetX": 105}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 3, "start": 1}
+      ]
+    },
+    {
+      "state_num": 31,
+      "state_name": "AIR_DASH_F",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/movement/airdash_f.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/airdash_forward/0004.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_forward/0005.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_forward/0006.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_forward/0007.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_forward/0008.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_forward/0009.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_forward/0010.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
+    },
+    {
+      "state_num": 32,
+      "state_name": "AIR_DASH_B",
+      "flags": [
+        "NO_TURN"
+
+      ],
+      "update_script": "../data/characters/samurai/scripts/movement/airdash_b.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/airdash_back/0001.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0002.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0003.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0004.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0005.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0006.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0007.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
+    },
+    {
+      "state_num": 33,
+      "state_name": "DASH_F",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/movement/dash_f_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/movement/dash_f.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/run/00.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/01.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/02.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/03.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/04.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/05.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/06.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/07.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/08.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/09.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/10.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/11.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/12.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/13.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run/14.png", "time": 1, "offsetX": -1, "offsetY": 50}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 34,
+      "state_name": "DASH_B",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/movement/dash_b.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_105-0.png", "time": 4, "offsetX": 141},
+        { "file": "../data/characters/samurai/sprites/samurai_105-1.png", "time": 2, "offsetX": 125},
+        { "file": "../data/characters/samurai/sprites/samurai_105-2.png", "time": 2, "offsetX": 131},
+        { "file": "../data/characters/samurai/sprites/samurai_105-1.png", "time": 2, "offsetX": 125},
+        { "file": "../data/characters/samurai/sprites/samurai_105-2.png", "time": 2, "offsetX": 131},
+        { "file": "../data/characters/samurai/sprites/samurai_105-1.png", "time": 2, "offsetX": 125},
+        { "file": "../data/characters/samurai/sprites/samurai_105-3.png", "time": 2, "offsetX": 101},
+        { "file": "../data/characters/samurai/sprites/samurai_105-4.png", "time": 4, "offsetX": 115}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 11, "end": 23, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 11, "end": 23, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 11, "end": 23, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 7, "start": 1}
+      ]
+    },
+    {
+      "state_num": 35,
+      "state_name": "DASH_RECOVERY",
+      "flags": [ "NO_TURN" ],
+      "cancel_script": "../data/characters/samurai/scripts/movement/dash_f_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/movement/dash_recovery.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/run_startup/05.png", "time": 3, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/run_startup/04.png", "time": 3, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/run_startup/03.png", "time": 3, "offsetX": -1, "offsetY": 25},
+        { "file": "../data/characters/senjin/sprites/run_startup/02.png", "time": 3, "offsetX": -1, "offsetY": 25}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 36,
+      "state_name": "STAND_P",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/stand_p_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/stand_p.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/5L/0002.png", "time": 3, "offsetX": -1, "offsetY": 25, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5L/0007.png", "time": 2, "offsetX": -1, "offsetY": 25, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5L/0011.png", "time": 2, "offsetX": -1, "offsetY": 25, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5L/0012.png", "time": 2, "offsetX": -1, "offsetY": 25, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5L/0013.png", "time": 2, "offsetX": -1, "offsetY": 25, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":10, "block_stun":4, "hitstop": 10, "damage":3, "push": 11000, "push_time": 8, "start": 4, "end": 6, "width":125, "height":100, "offsetX":75, "offsetY": 235, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 10000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 7, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 5, "end": 12, "width":125, "height":50, "offsetX":75, "offsetY": 215}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 37,
+      "state_name": "STAND_K",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/stand_k_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/stand_k.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/5H/0002.png", "time": 3, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5H/0003.png", "time": 3, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5H/0005.png", "time": 3, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/5H/0010.png", "time": 3, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/5H/0012.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5H/0014.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5H/0015.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5H/0017.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5H/0018.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5H/0019.png", "time": 4, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":14, "block_stun":12, "hitstop": 16, "damage":3, "push": 8000, "push_time": 8, "start": 10, "end": 13, "width":350, "height":300, "offsetX":25, "offsetY": 0, "group": 1, "hitsound": 21, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 14, "width":400, "height":300, "offsetX":75, "offsetY": 0, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 8, "end": -1, "width":150, "height":300, "offsetX":75, "offsetY": 0},
+        {"type": "HURT", "start": 20, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 38,
+      "state_name": "FORWARD_K",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/forward_k_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/forward_k.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/6M/0004.png", "time": 1, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0008.png", "time": 7, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0011.png", "time": 1, "offsetX": 600, "offsetY": 200, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/6M/0017.png", "time": 4, "offsetX": 750, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0017.png", "time": 4, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0010.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0006.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0005.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0004.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6M/0003.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":16, "block_stun":12, "hitstop": 12, "damage":3, "push": 8000, "push_time": 8, "start": 11, "end": 15, "width":350, "height":300, "offsetX":25, "offsetY": 0, "group": 1, "hitsound": 21, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 14, "width":625, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "HURT", "start": 8, "end": -1, "width":150, "height":300, "offsetX":75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 39,
+      "state_name": "STAND_S",
+      "flags": [ "NO_TURN" ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/stand_s_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/stand_s.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/6H/0004.png", "time": 4, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0005.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0006.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0008.png", "time": 10, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0010.png", "time": 2, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0014.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0020.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/6H/0022.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0023.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0024.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0025.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0026.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0027.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0028.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0029.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0030.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0031.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0032.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0033.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/6H/0034.png", "time": 1, "offsetX": -1, "offsetY": 205, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":24, "block_stun":20, "hitstop": 20, "damage":3, "push": 8000, "push_time": 8, "start": 22, "end": 23, "width":200, "height":200, "offsetX":25, "offsetY": 0, "group": 1, "hitsound": 21, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 14, "width":58, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": 4, "width":150, "height":290, "offsetX":-105, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": 4, "width":100, "height":100, "offsetX":-80, "offsetY": 290},
+        {"type": "HURT", "start": 5, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 8, "end": -1, "width":150, "height":300, "offsetX":25, "offsetY": 0},
+        {"type": "HURT", "start": 30, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 40,
+      "state_name": "AIR_HURT_RECOVERY",
+      "flags": [ "NO_TURN" ],
+      "cancel_script": "../data/characters/samurai/scripts/hurt_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/air_hurt_recovery.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5030-20.png", "time": 2, "offsetX": 146},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-30.png", "time": 2, "offsetX": 123},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-40.png", "time": 2, "offsetX": 112},
+        { "file": "../data/characters/samurai/sprites/samurai_5030-50.png", "time": -1, "offsetX": 112}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290}
+      ]
+    },
+    {
+      "state_num": 41,
+      "state_name": "CROUCH_P",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/crouch_p_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/crouch_p.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_400-0.png", "time": 3, "offsetX": 105},
+        { "file": "../data/characters/samurai/sprites/samurai_400-1.png", "time": 4, "offsetX": 99},
+        { "file": "../data/characters/samurai/sprites/samurai_400-2.png", "time": 3, "offsetX": 76},
+        { "file": "../data/characters/samurai/sprites/samurai_400-3.png", "time": 4, "offsetX": 70},
+        { "file": "../data/characters/samurai/sprites/samurai_400-4.png", "time": 3, "offsetX": 97}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":9, "block_stun":7, "hitstop": 12, "damage":3, "push": 8000, "push_time": 8, "start": 8, "end": 12, "width":300, "height":200, "offsetX":0, "offsetY": 0, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 10, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 4, "end": -1, "width":125, "height":200, "offsetX":75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 42,
+      "state_name": "CROUCH_K",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/crouch_k_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/crouch_k.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/5M/0002.png", "time": 3, "offsetX": -1, "offsetY": 250, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5M/0003.png", "time": 16, "offsetX": -1, "offsetY": 250, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/5M/0005.png", "time": 2, "offsetX": -1, "offsetY": 300, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/5M/0013.png", "time": 3, "offsetX": -1, "offsetY": 300, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/5M/0014.png", "time": 10, "offsetX": -1, "offsetY": 250, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":18, "block_stun":16, "hitstop": 20, "damage":3, "push": 8000, "push_time": 8, "start": 22, "end": 24, "width":300, "height":200, "offsetX":0, "offsetY": 0, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 10, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 4, "end": -1, "width":125, "height":200, "offsetX":75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 43,
+      "state_name": "FORWARD_P",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/forward_p_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/forward_p.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_490-0.png", "time": 1, "offsetX": 138},
+        { "file": "../data/characters/samurai/sprites/samurai_490-1.png", "time": 2, "offsetX": 110},
+        { "file": "../data/characters/samurai/sprites/samurai_490-2.png", "time": 2, "offsetX": 113},
+        { "file": "../data/characters/samurai/sprites/samurai_490-3.png", "time": 1, "offsetX": 121},
+        { "file": "../data/characters/samurai/sprites/samurai_490-4.png", "time": 1, "offsetX": 80},
+
+        { "file": "../data/characters/samurai/sprites/samurai_490-5.png", "time": 2, "offsetX": 78},
+
+        { "file": "../data/characters/samurai/sprites/samurai_490-6.png", "time": 2, "offsetX": 76},
+        { "file": "../data/characters/samurai/sprites/samurai_490-7.png", "time": 3, "offsetX": 110},
+        { "file": "../data/characters/samurai/sprites/samurai_490-8.png", "time": 3, "offsetX": 142},
+        { "file": "../data/characters/samurai/sprites/samurai_490-9.png", "time": 2, "offsetX": 130}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":14, "block_stun":12, "hitstop": 16, "damage":3, "push": 8000, "push_time": 8, "start": 8, "end": 11, "width":400, "height":200, "offsetX":0, "offsetY": 150, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 10, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 11, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 44,
+      "state_name": "CROUCH_S",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/crouch_s_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/crouch_s.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/2M/0003.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0004.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0006.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0007.png", "time": 6, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0009.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/2M/0011.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/2M/0012.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0013.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0014.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0015.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0016.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0017.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0018.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0019.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0020.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/2M/0021.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":18, "block_stun":16, "hitstop": 14, "damage":3, "push": 8000, "push_time": 8, "start": 15, "end": 16, "width":150, "height":200, "offsetX":150, "offsetY": 300, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 2, "hit_velX": 2000, "hit_velY": 35000, "hit_push_time": 8, "meter": 10, "air_hitpushtime": 40, "air_hitvelX": 2000, "air_hitstun": 28},
+        {"type": "PROXIMITY", "start": 1, "end": 10, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 4, "end": -1, "width":125, "height":300, "offsetX":75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 45,
+      "state_name": "CROUCH_FORWARD_S",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/sweep_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/sweep.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_420-0.png", "time": 2, "offsetX": 88},
+        { "file": "../data/characters/samurai/sprites/samurai_420-1.png", "time": 2, "offsetX": 95},
+        { "file": "../data/characters/samurai/sprites/samurai_420-2.png", "time": 2, "offsetX": 116},
+        { "file": "../data/characters/samurai/sprites/samurai_420-3.png", "time": 1, "offsetX": 110},
+        { "file": "../data/characters/samurai/sprites/samurai_420-4.png", "time": 1, "offsetX": 88},
+        { "file": "../data/characters/samurai/sprites/samurai_420-5.png", "time": 1, "offsetX": 82},
+        { "file": "../data/characters/samurai/sprites/samurai_420-6.png", "time": 1, "offsetX": 76},
+
+        { "file": "../data/characters/samurai/sprites/samurai_420-7.png", "time": 3, "offsetX": 77},
+
+        { "file": "../data/characters/samurai/sprites/samurai_420-8.png", "time": 3, "offsetX": 77},
+        { "file": "../data/characters/samurai/sprites/samurai_420-9.png", "time": 3, "offsetX": 77},
+        { "file": "../data/characters/samurai/sprites/samurai_420-11.png", "time": 3, "offsetX": 77},
+        { "file": "../data/characters/samurai/sprites/samurai_420-12.png", "time": 3, "offsetX": 77},
+        { "file": "../data/characters/samurai/sprites/samurai_420-13.png", "time": 3, "offsetX": 89},
+        { "file": "../data/characters/samurai/sprites/samurai_420-14.png", "time": 3, "offsetX": 86},
+        { "file": "../data/characters/samurai/sprites/samurai_420-15.png", "time": 3, "offsetX": 85},
+        { "file": "../data/characters/samurai/sprites/samurai_420-16.png", "time": 3, "offsetX": 88}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":18, "block_stun":16, "hitstop": 20, "damage":3, "push": 8000, "push_time": 8, "start": 10, "end": 14, "width":375, "height":200, "offsetX":0, "offsetY": 0, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 2, "hit_velX": 8000, "hit_velY": 12000, "hit_push_time": 30, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 14, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 4, "end": -1, "width":125, "height":200, "offsetX":75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 46,
+      "state_name": "FORWARD_S",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/forward_s_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/forward_s.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_850-0.png", "time": 2, "offsetX": 105},
+        { "file": "../data/characters/samurai/sprites/samurai_850-1.png", "time": 2, "offsetX": 99},
+        { "file": "../data/characters/samurai/sprites/samurai_850-2.png", "time": 2, "offsetX": 76},
+        { "file": "../data/characters/samurai/sprites/samurai_850-3.png", "time": 2, "offsetX": 70},
+        { "file": "../data/characters/samurai/sprites/samurai_850-4.png", "time": 3, "offsetX": 97},
+        { "file": "../data/characters/samurai/sprites/samurai_850-5.png", "time": 2, "offsetX": 99},
+        { "file": "../data/characters/samurai/sprites/samurai_850-6.png", "time": 2, "offsetX": 76},
+
+        { "file": "../data/characters/samurai/sprites/samurai_850-7.png", "time": 3, "offsetX": 70},
+
+        { "file": "../data/characters/samurai/sprites/samurai_850-8.png", "time": 3, "offsetX": 97},
+        { "file": "../data/characters/samurai/sprites/samurai_850-9.png", "time": 2, "offsetX": 70},
+        { "file": "../data/characters/samurai/sprites/samurai_850-10.png", "time": 2, "offsetX": 97},
+        { "file": "../data/characters/samurai/sprites/samurai_650-7.png", "time": 2, "offsetX": 70},
+        { "file": "../data/characters/samurai/sprites/samurai_1020-9.png", "time": 1, "offsetX": 97}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":8, "block_stun":4, "hitstop": 11, "damage":3, "push": 8000, "push_time": 8, "start": 16, "end": 19, "width":300, "height":200, "offsetX":0, "offsetY": 0, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 10, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 4, "end": -1, "width":125, "height":200, "offsetX":75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 47,
+      "state_name": "JUMP_P",
+      "flags": [
+        "NO_TURN_ON_ENTER",
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/jump_p_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/jump_p.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_600-0.png", "time": 1, "offsetX": 84},
+        { "file": "../data/characters/samurai/sprites/samurai_600-1.png", "time": 2, "offsetX": 74},
+        { "file": "../data/characters/samurai/sprites/samurai_600-2.png", "time": 2, "offsetX": 78},
+
+        { "file": "../data/characters/samurai/sprites/samurai_600-3.png", "time": 2, "offsetX": 101},
+
+        { "file": "../data/characters/samurai/sprites/samurai_600-2.png", "time": 3, "offsetX": 78},
+        { "file": "../data/characters/samurai/sprites/samurai_600-1.png", "time": 2, "offsetX": 74},
+        { "file": "../data/characters/samurai/sprites/samurai_600-0.png", "time": 2, "offsetX": 84}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":10, "block_stun":8, "hitstop": 12, "damage":3, "push": 8000, "push_time": 8, "start": 6, "end": 8, "width":250, "height":100, "offsetX":75, "offsetY": 175, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 10, "hit_velY": 10, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 10, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 48,
+      "state_name": "JUMP_K",
+      "flags": [
+        "NO_TURN_ON_ENTER",
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/jump_k_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/jump_k.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/airdash_back/0001.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0002.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0003.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0004.png", "time": 2, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0005.png", "time": 1, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/airdash_back/0006.png", "time": 6, "offsetX": -1, "offsetY": 175, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/airdash_back/0007.png", "time": -1, "offsetX": -1, "offsetY": 175, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":18, "block_stun":16, "hitstop": 16, "damage":3, "push": 8000, "push_time": 8, "start": 10, "end": 17, "width":200, "height":200, "offsetX":0, "offsetY": 0, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 17, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 49,
+      "state_name": "JUMP_S",
+      "flags": [
+        "NO_TURN_ON_ENTER",
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/jump_s_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/jump_s.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_620-0.png", "time": 10, "offsetX": 105},
+
+        { "file": "../data/characters/samurai/sprites/samurai_620-1.png", "time": 6, "offsetX": 99},
+        { "file": "../data/characters/samurai/sprites/samurai_620-2.png", "time": 3, "offsetX": 76},
+
+        { "file": "../data/characters/samurai/sprites/samurai_620-3.png", "time": 2, "offsetX": 70},
+        { "file": "../data/characters/samurai/sprites/samurai_620-4.png", "time": 3, "offsetX": 97},
+        { "file": "../data/characters/samurai/sprites/samurai_620-5.png", "time": 2, "offsetX": 99},
+        { "file": "../data/characters/samurai/sprites/samurai_620-6.png", "time": 2, "offsetX": 76},
+        { "file": "../data/characters/samurai/sprites/samurai_620-7.png", "time": 3, "offsetX": 70}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":22, "block_stun":18, "hitstop": 20, "damage":3, "push": 8000, "push_time": 8, "start": 11, "end": 20, "width":125, "height":200, "offsetX":75, "offsetY": 0, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 8000, "hit_velY": -8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 10, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 50,
+      "state_name": "FORWARD_THROW",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/throws/fwd_throw_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/throws/throw.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5910-3.png", "time": 4, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-4.png", "time": 4, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-5.png", "time": 16, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-6.png", "time": -1, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW", "throw_type": 2, "block_type": 1, "hitstun":60, "block_stun":60, "hitstop": 12, "damage":1, "push": 8, "push_time": 8, "start": 1, "end": 2, "width":125, "height":275, "offsetX":0, "offsetY": 0, "throwAttempt": 51, "throwSuccess": 52, "opponentThrowSuccess": 6001, "techAttempt": 6002}
+      ]
+    },
+    {
+      "state_num": 51,
+      "state_name": "FORWARD_THROW_ATTEMPT",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/throws/fwd_throw_attempt.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5910-4.png", "time": -1, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 52,
+      "state_name": "FORWARD_THROW_SUCCESS",
+      "flags": [ ],
+      "update_script": "../data/characters/samurai/scripts/throws/fwd_throw_success.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_181-0.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-1.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-2.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-3.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-4.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-5.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-6.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-7.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-8.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-9.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-10.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-11.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-12.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-13.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-14.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-15.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-16.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-17.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_181-18.png", "time": 2, "offsetX": -1},
+
+        { "file": "../data/characters/samurai/sprites/samurai_290-0.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-1.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-2.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-3.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-4.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-3.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-4.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-3.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-4.png", "time": 2, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-5.png", "time": 2, "offsetX": 50},
+
+        { "file": "../data/characters/samurai/sprites/samurai_290-6.png", "time": 6, "offsetX": 75},
+
+        { "file": "../data/characters/samurai/sprites/samurai_290-7.png", "time": 3, "offsetX": 100},
+        { "file": "../data/characters/samurai/sprites/samurai_290-8.png", "time": 3, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_290-9.png", "time": 3, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "HIT", "block_type": 1, "hitstun":8, "block_stun":4, "hitstop": 24, "damage":3, "push": 11000, "push_time": 8, "start": 59, "end": 60, "width":125, "height":100, "offsetX":75, "offsetY": 235, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 2, "hit_velX": 15000, "hit_velY": 15000, "hit_push_time": 8, "meter": 10},
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 14, "start": 1}
+      ]
+    },
+    {
+      "state_num": 53,
+      "state_name": "GROUND_THROW_TECH",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/throws/throw_tech.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5910-1.png", "time": 5, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-2.png", "time": -1, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 54,
+      "state_name": "BACK_THROW",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/throws/fwd_throw_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/throws/throw.kai",
+      "animation": [
+        { "file": "../data/characters/samurai/sprites/samurai_5910-3.png", "time": 4, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-4.png", "time": 4, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-5.png", "time": 16, "offsetX": -1},
+        { "file": "../data/characters/samurai/sprites/samurai_5910-6.png", "time": -1, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW", "throw_type": 2, "block_type": 1, "hitstun":60, "block_stun":60, "hitstop": 12, "damage":1, "push": 8, "push_time": 8, "start": 1, "end": 2, "width":125, "height":275, "offsetX":0, "offsetY": 0, "throwAttempt": 51, "throwSuccess": 52, "opponentThrowSuccess": 6003, "techAttempt": 6004}
+      ]
+    },
+    {
+      "state_num": 55,
+      "state_name": "DASH_F_STARTUP",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/movement/dash_f_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/movement/dash_startup.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/run_startup/00.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/01.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/02.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/03.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/04.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/05.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/06.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/07.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/08.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/09.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/10.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/11.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/12.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/13.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/14.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/15.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/16.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/17.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/18.png", "time": 1, "offsetX": -1, "offsetY": 50},
+        { "file": "../data/characters/senjin/sprites/run_startup/19.png", "time": 1, "offsetX": -1, "offsetY": 50}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 6, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 5, "start": 1}
+      ]
+
+    },
+    {
+      "state_num": 56,
+      "state_name": "GROUND_POUND",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../data/characters/samurai/scripts/attacks/ground_pound_cancels.kai",
+      "update_script": "../data/characters/samurai/scripts/attacks/ground_pound.kai",
+      "animation": [
+        { "file": "../data/characters/senjin/sprites/214P/0001.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0002.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0003.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0004.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0005.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0006.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0007.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0008.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0009.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0010.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0011.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0012.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/214P/0013.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+
+        { "file": "../data/characters/senjin/sprites/214P/0014.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0015.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0016.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0017.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0018.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0019.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0020.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0021.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0022.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0023.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0024.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0025.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0026.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0027.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0028.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0030.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"},
+        { "file": "../data/characters/senjin/sprites/214P/0031.png", "time": 2, "offsetX": -1, "offsetY": 200, "scale": ".4"}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":10, "block_stun":4, "hitstop": 14, "damage":3, "push": 11000, "push_time": 8, "start": 25, "end": 27, "width":300, "height":300, "offsetX":75, "offsetY": 235, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 10000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 7, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "visual_effects": [
+        {"visualID": 2, "start": 26}
+      ]
+
+    }
+  ],
+  "custom_states": [
+    {
+      "state_num": 6001,
+      "state_name": "BEING_THROWN_FWD",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/throws/being_thrown_fwd.kai",
+      "animation": [
+        { "file": "../data/characters/%CHARNAME%/sprites/hurt0_0.png", "time": -1, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "HURT", "start": 59, "end": 60, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 6002,
+      "state_name": "FWD_THROW_TECH_ATTEMPT",
+      "flags": [
+        "NO_TURN",
+        "TECHABLE"
+      ],
+      "techState": 5035,
+      "update_script": "../data/characters/samurai/scripts/throws/fwd_throw_tech_attempt.kai",
+      "animation": [
+        { "file": "../data/characters/%CHARNAME%/sprites/tech_attempt.png", "time": 10, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 6003,
+      "state_name": "BEING_THROWN_BCK",
+      "flags": [
+      ],
+      "update_script": "../data/characters/samurai/scripts/throws/being_thrown_bck.kai",
+      "animation": [
+        { "file": "../data/characters/%CHARNAME%/sprites/hurt0_0.png", "time": -1, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "HURT", "start": 59, "end": 60, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 6004,
+      "state_name": "BCK_THROW_TECH_ATTEMPT",
+      "flags": [
+        "NO_TURN",
+        "TECHABLE"
+      ],
+      "techState": 5035,
+      "update_script": "../data/characters/samurai/scripts/throws/bck_throw_tech_attempt.kai",
+      "animation": [
+        { "file": "../data/characters/%CHARNAME%/sprites/tech_attempt.png", "time": 10, "offsetX": -1}
+      ],
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0}
+      ]
+    },
+    {
+      "state_num": 6005,
+      "state_name": "BEING_AIR_THROWN_FWD",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/being_air_thrown.kai",
+      "animation": [
+        { "file": "../data/characters/%CHARNAME%/sprites/throw1.png", "time": -1, "offsetX": -1, "offsetY": 100}
+      ],
+      "collision_boxes": [ ]
+    },
+    {
+      "state_num": 6004,
+      "state_name": "BEING_AIR_THROW_BACK",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../data/characters/samurai/scripts/being_air_thrown_back.kai",
+      "animation": [
+        { "file": "../data/characters/%CHARNAME%/sprites/throw1.png", "time": -1, "offsetX": -1, "offsetY": 100}
+      ],
+      "collision_boxes": [ ]
+    }
+  ],
+  "hit_sparks": [
+    {
+      "assetID": 1,
+      "animation": [
+        { "file": "../data/images/hitspark/light/0.png", "time": 2, "offsetX": 75, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light/1.png", "time": 2, "offsetX": 75, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light/2.png", "time": 2, "offsetX": 75, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light/3.png", "time": 2, "offsetX": 75, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light/4.png", "time": 2, "offsetX": 75, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light/5.png", "time": 2, "offsetX": 75, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light/6.png", "time": 2, "offsetX": 75, "offsetY": -1, "scale": "1"}
+      ]
+    },
+    {
+      "assetID": 2,
+      "animation": [
+        { "file": "../data/images/hitspark/light/0.png", "time": 2, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/light/1.png", "time": 2, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/light/2.png", "time": 2, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/light/3.png", "time": 2, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/light/4.png", "time": 2, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/light/5.png", "time": 2, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/light/6.png", "time": 2, "offsetX": -1, "offsetY": -1, "scale": "2"}
+      ]
+    },
+    {
+      "assetID": 3,
+      "animation": [
+        { "file": "../data/images/hitspark/light_slash/0.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/1.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/2.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/3.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/4.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/5.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/6.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/7.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/8.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/9.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/10.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/11.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/12.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/13.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/14.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/15.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/16.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"},
+        { "file": "../data/images/hitspark/light_slash/17.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "1"}
+      ]
+    },
+    {
+      "assetID": 4,
+      "animation": [
+        { "file": "../data/images/hitspark/medium_slash/0.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/1.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/2.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/3.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/4.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/5.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/6.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/7.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/8.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/9.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/10.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/11.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/12.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/13.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/14.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/15.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/16.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/hitspark/medium_slash/17.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"}
+      ]
+    }
+  ],
+  "guard_sparks": [
+    {
+      "assetID": 1,
+      "animation": [
+        { "file": "../data/images/VFX/light_block/01.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/02.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/03.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/04.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/05.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/06.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/07.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/08.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/09.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/10.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/11.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/12.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/13.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/14.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/15.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/16.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/17.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/18.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/19.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/20.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/21.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/22.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/23.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/24.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/25.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/26.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"},
+        { "file": "../data/images/VFX/light_block/27.png", "time": 1, "offsetX": -1, "offsetY": -1, "scale": "2"}
+      ]
+    },
+    {
+      "assetID": 2,
+      "animation": [
+        { "file": "../data/images/guardspark/1.png", "time": 2, "offsetX": 75, "offsetY": 75, "scale": "1"},
+        { "file": "../data/images/guardspark/2.png", "time": 3, "offsetX": 75, "offsetY": 75, "scale": "1"},
+        { "file": "../data/images/guardspark/3.png", "time": 1, "offsetX": 75, "offsetY": 75, "scale": "1"}
+      ]
+    }
+  ],
+  "animation_assets": [
+    {
+      "assetID": 1,
+      "animation": [
+        { "file": "../data/images/visual_effects/flash/flare_01.png", "time": 2, "offsetX":-1, "offsetY":50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/light_01.png", "time": 2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/light_02.png", "time": 2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/light_03.png", "time": 2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_01.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_02.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_03.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_04.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_05.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_06.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_07.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"}
+      ]
+    },
+    {
+      "assetID": 2,
+      "animation": [
+        { "file": "../data/images/visual_effects/floor_impact/0.png", "time": 3, "offsetX":-1 , "offsetY":0, "scale": "2"},
+        { "file": "../data/images/visual_effects/floor_impact/1.png", "time": 3, "offsetX":-1 , "offsetY":0, "scale": "2"},
+        { "file": "../data/images/visual_effects/floor_impact/2.png", "time": 3, "offsetX":-1, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/floor_impact/3.png", "time": 3, "offsetX":-1, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/floor_impact/4.png", "time": 3, "offsetX":-1, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/floor_impact/5.png", "time":3, "offsetX":-1, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/floor_impact/6.png", "time":3, "offsetX":-1, "offsetY": 0, "scale": "2"}
+      ]
+    },
+    {
+      "assetID": 3,
+      "animation": [
+        { "file": "../data/images/visual_effects/floor_impact/0.png", "time":2, "offsetX":-1 , "offsetY":0, "scale": "1"},
+        { "file": "../data/images/visual_effects/floor_impact/1.png", "time":2, "offsetX":-1 , "offsetY":0, "scale": "1"},
+        { "file": "../data/images/visual_effects/floor_impact/2.png", "time":2, "offsetX":-1, "offsetY": 0, "scale": "1"},
+        { "file": "../data/images/visual_effects/floor_impact/3.png", "time":2, "offsetX":-1, "offsetY": 0, "scale": "1"},
+        { "file": "../data/images/visual_effects/floor_impact/4.png", "time":2, "offsetX":-1, "offsetY": 0, "scale": "1"},
+        { "file": "../data/images/visual_effects/floor_impact/5.png", "time":2, "offsetX":-1, "offsetY": 0, "scale": "1"},
+        { "file": "../data/images/visual_effects/floor_impact/6.png", "time":2, "offsetX":-1, "offsetY": 0, "scale": "1"}
+      ]
+    },
+    {
+      "assetID": 4,
+      "animation": [
+        { "file": "../data/images/visual_effects/dust/0.png", "time":2, "offsetX":0 , "offsetY":0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/1.png", "time":2, "offsetX":0 , "offsetY":0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/2.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/3.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/4.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/5.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/6.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/7.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/8.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/9.png", "time":2, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/10.png", "time":3, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/11.png", "time":3, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/12.png", "time":3, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/13.png", "time":3, "offsetX":0, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust/14.png", "time":3, "offsetX":0, "offsetY": 0, "scale": "2"}
+      ]
+    },
+    {
+      "assetID": 5,
+      "animation": [
+        { "file": "../data/images/visual_effects/dust_straight/0.png", "time":2, "offsetX":-2 , "offsetY":0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/1.png", "time":2, "offsetX":-2 , "offsetY":0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/2.png", "time":2, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/3.png", "time":2, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/4.png", "time":2, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/5.png", "time":2, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/6.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/7.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/8.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/9.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/10.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/11.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/12.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"},
+        { "file": "../data/images/visual_effects/dust_straight/13.png", "time":3, "offsetX":-2, "offsetY": 0, "scale": "2"}
+      ]
+    },
+    {
+      "assetID": 6,
+      "animation": [
+        { "file": "../data/images/visual_effects/pooty_tang_01/0.png", "time":2, "offsetX":100, "offsetY":0, "scale": "3"},
+        { "file": "../data/images/visual_effects/pooty_tang_01/1.png", "time":2, "offsetX":100, "offsetY":0, "scale": "3"},
+        { "file": "../data/images/visual_effects/pooty_tang_01/2.png", "time":2, "offsetX":100, "offsetY": 0, "scale": "3"}
+      ]
+    },
+    {
+      "assetID": 7,
+      "aura": true,
+      "animation": [
+        { "file": "../data/images/visual_effects/flash/flare_01.png", "time": 2, "offsetX":-1, "offsetY":50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/light_01.png", "time": 2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/light_02.png", "time": 2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/light_03.png", "time": 2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_01.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_02.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_03.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_04.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_05.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_06.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"},
+        { "file": "../data/images/visual_effects/flash/circle_07.png", "time":2, "offsetX":-1, "offsetY": 50, "scale": "1"}
+      ]
+    }
+  ],
+  "audio_assets": [
+    {"assetID": 1, "file": "../data/audio/char_audio/punch.wav"},
+    {"assetID": 2, "file": "../data/audio/char_audio/slice.wav"},
+    {"assetID": 3, "file": "../data/audio/char_audio/jump.wav"},
+    {"assetID": 4, "file": "../data/audio/char_audio/punch_impact.wav"},
+    {"assetID": 5, "file": "../data/audio/char_audio/slice_impact.wav"},
+    {"assetID": 6, "file": "../data/audio/char_audio/dash.wav"},
+    {"assetID": 7, "file": "../data/audio/char_audio/backdash.wav"},
+    {"assetID": 8, "file": "../data/audio/char_audio/airdash.wav"},
+    {"assetID": 9, "file": "../data/audio/char_audio/kick.wav"},
+    {"assetID": 10, "file": "../data/audio/char_audio/kick_impact.wav"},
+    {"assetID": 11, "file": "../data/audio/char_audio/heavyslice.wav"},
+    {"assetID": 12, "file": "../data/audio/char_audio/heavyslice_impact.wav"},
+    {"assetID": 13, "file": "../data/audio/char_audio/grip.wav"},
+    {"assetID": 14, "file": "../data/audio/char_audio/grip_quick.wav"},
+    {"assetID": 15, "file": "../data/audio/char_audio/airtech.wav"},
+    {"assetID": 16, "file": "../data/audio/char_audio/punch_guard.wav"},
+    {"assetID": 17, "file": "../data/audio/char_audio/kick_guard.wav"},
+    {"assetID": 18, "file": "../data/audio/char_audio/slice_guard.wav"},
+    {"assetID": 19, "file": "../data/audio/char_audio/heavyslice_guard.wav"},
+    {"assetID": 20, "file": "../data/audio/char_audio/heavyslice_guard2.wav"},
+    {"assetID": 21, "file": "../data/audio/char_audio/slice_impact2.wav"},
+    {"assetID": 22, "file": "../data/audio/char_audio/kick_impact2.wav"},
+    {"assetID": 23, "file": "../data/audio/char_audio/super_sound.wav"},
+    {"assetID": 24, "file": "../data/audio/char_audio/lightHit.wav"}
+  ],
+  "hurt_sounds": [
+    {"assetID": 1, "file": "../data/characters/samurai/audio/hurt1.wav"},
+    {"assetID": 2, "file": "../data/characters/samurai/audio/hurt2.wav"},
+    {"assetID": 3, "file": "../data/characters/samurai/audio/hurt3.wav"}
+  ],
+  "entities": [
+  ],
+  "special_state_nums": {
+    "SS_IDLE":1,
+    "SS_PRE_MATCH":2,
+    "SS_WALK_F":3,
+    "SS_WALK_B":4,
+    "SS_CROUCH":5,
+    "SS_JUMP_N":6,
+    "SS_JUMP_F":7,
+    "SS_JUMP_B":8,
+    "SS_HURT":9,
+    "SS_AIR_HURT":11,
+    "SS_KNOCKDOWN":12,
+    "SS_BLOCK_STAND":14,
+    "SS_BLOCK_CROUCH":15,
+    "SS_BLOWBACK_FALLING":16,
+    "SS_AIR_BLOCK":17,
+    "SS_DEAD_STANDING":18,
+    "SS_DEAD_KNOCKDOWN":19,
+    "SS_THROW_TECH":20,
+    "SS_AIR_THROW_TECH":21,
+    "SS_PUSH_BLOCK":22,
+    "SS_CROUCH_PUSH_BLOCK":23,
+    "SS_GROUNDBOUNCE_FLING":24,
+    "SS_GROUNDBOUNCE_IMPACT":25,
+    "SS_AIR_PUSH_BLOCK":26,
+    "SS_AIR_HURT_RECOVERY": 40,
+    "SS_HURT_RECOVERY": 10,
+    "SS_JUMP_R": 27,
+    "SS_FORWARD_THROW": 50,
+    "SS_FORWARD_THROW_ATTEMPT": 51,
+    "SS_FORWARD_THROW_SUCCESS": 52,
+    "SS_BACK_THROW": 54,
+    "SS_BACK_THROW_ATTEMPT": 51,
+    "SS_BACK_THROW_SUCCESS": 52,
+    "SS_GROUND_THROW_TECH": 53,
+    "SS_AIR_TECH": 60,
+    "SS_DEAD_FALLING": 60,
+    "SS_FLOAT_HURT": 60,
+    "SS_FLOAT_HURT_RECOVERY": 60
+  },
+  "anim_scale": ".75",
+  "gravity": "3000",
+  "velocityMinimumY": -27000,
+  "command_script": "../data/characters/samurai/scripts/input.kai"
+}

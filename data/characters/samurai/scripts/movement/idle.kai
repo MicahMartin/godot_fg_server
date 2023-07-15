@@ -1,0 +1,9 @@
+{
+  if($get_state_time == 0){
+    $velset_x 0000;
+  } 
+
+  if($get_state_time == 26) {
+    $cancel_state 1;
+  }
+}

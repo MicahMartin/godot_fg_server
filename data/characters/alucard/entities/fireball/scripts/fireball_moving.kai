@@ -1,0 +1,14 @@
+{
+  var stateTime = $get_state_time;
+  var quotient = stateTime / 12;
+  var product = quotient * 12;
+  var remainder = stateTime - product;
+
+  if(stateTime == 0){
+    $velset_x 10;
+  } 
+
+  if(remainder == 0) {
+    $reset_anim;
+  }
+}

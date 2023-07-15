@@ -1,0 +1,14 @@
+{
+  if($get_state_time == 0){
+    var install = $get_install == 1;
+    if (install) {
+      $neg_velset_x 6000;
+    } else {
+      $neg_velset_x 6000;
+    }
+  } 
+
+  if($get_state_time == 42) {
+    $cancel_state 5003;
+  }
+}
