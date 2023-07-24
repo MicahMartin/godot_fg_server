@@ -281,10 +281,13 @@ void Character::loadStates(const char* path){
   std::ifstream configFile(path);
   configFile >> stateJson;
   // compile inputs
-  if (stateJson.count("anim_scale")) {
-    std::string animScaleStr = stateJson.at("anim_scale");
-    // printf("the animScale %s\n", animScaleStr.c_str());
-    animScale = std::stod(animScaleStr);
+  if (stateJson.count("model_name")) {
+    modelName = stateJson.at("model_name");
+  }
+  if (stateJson.count("model_scale")) {
+    std::string animScaleStr = stateJson.at("model_scale");
+    modelScale = std::stod(animScaleStr);
+    godot::UtilityFunctions::print("The model scale is", modelScale);
   }
   if (stateJson.count("gravity")) {
     std::string grav = stateJson.at("gravity");

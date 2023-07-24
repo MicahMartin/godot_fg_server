@@ -111,6 +111,7 @@ public:
   bool counterHitFlag = false;
   std::unordered_map<int, bool> hitboxGroupDisabled;
   std::string charName = "";
+  std::string animationPath = "";
 
 private:
   static std::map<std::string, FlagBit> flagMap;

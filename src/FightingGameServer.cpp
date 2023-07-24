@@ -67,8 +67,6 @@ void FightingGameServer::enter(){
   player1.otherChar = &player2;
   player2.otherChar = &player1;
 
-  // gameState.player1.control = 0;
-  // gameState.player2.control = 0;
   player1.control = 0;
   player2.control = 0;
 
@@ -90,6 +88,7 @@ void FightingGameServer::enter(){
   // stateObj.roundStart = true;
   roundStartCounter = 210;
   roundStart = true;
+  slowMode = false;
 }
 void FightingGameServer::_ready() { 
   if(godot::Engine::get_singleton()->is_editor_hint()){
@@ -203,19 +202,17 @@ void FightingGameServer::_process(double delta) {
 }
 
 void FightingGameServer::_bind_methods() { 
-  godot::ClassDB::bind_method(godot::D_METHOD("getState"), &FightingGameServer::getState);
+  godot::ClassDB::bind_method(godot::D_METHOD("getModelName", "p_charNum"), &FightingGameServer::getModelName);
+  godot::ClassDB::bind_method(godot::D_METHOD("getModelScale", "p_charNum"), &FightingGameServer::getModelScale);
   godot::ClassDB::bind_method(godot::D_METHOD("getGameState"), &FightingGameServer::getGameState);
 }
 
 void FightingGameServer::step(int inputs[]){
-  // update Input
-  // TODO: Virtual Controller State Object
   p1Vc.update(inputs[0]);
   p2Vc.update(inputs[1]);
   if (!shouldUpdate || (netPlayState && !doneSync)) {
     return;
   }
-  // stateObj.frameCount++;
   frameCount++;
 
 
@@ -320,6 +317,7 @@ void FightingGameServer::step(int inputs[]){
 
 
   if (slowMode) {
+    godot::UtilityFunctions::print("Why the fuck are we in slowmode??:", slowDownCounter);
     printf("in slowMode! slowDownCounter:%d\n", slowDownCounter);
     if (slowDownCounter++ == 70) {
       slowDownCounter = 0;
@@ -352,13 +350,12 @@ void FightingGameServer::step(int inputs[]){
     }
   }
   updateVisuals();
-  currentState = player1.currentState->stateNum;
 }
 
 
 void FightingGameServer::handleRoundStart(){
   if (roundStartCounter > 0) {
-    // godot::UtilityFunctions::print("ROUND START: ", roundStartCounter);
+    godot::UtilityFunctions::print("ROUND START: ", roundStartCounter);
     // printf("roundStarTCounter!:%d\n", roundStartCounter);
     if (--roundStartCounter == 0) {
       // stateObj.player1.control = 1;
@@ -1535,6 +1532,7 @@ void FightingGameServer::checkHealth() {
       roundWinner = 1;
     }
     currentRound++;
+    godot::UtilityFunctions::print("Is this ever happening?!?!");
     slowMode = true;
   }
 
@@ -1637,25 +1635,25 @@ bool on_event_callback(GGPOEvent* info){
 
 
 //** GODOT FUNCTIONS **//
-int FightingGameServer::getState() { 
-  return currentState;
+godot::String FightingGameServer::getModelName(int p_charNum) { 
+  return characters[p_charNum]->modelName.c_str();
+}
+
+double FightingGameServer::getModelScale(int p_charNum) { 
+  return characters[p_charNum]->modelScale;
 }
 
 godot::Dictionary FightingGameServer::getGameState() { 
   godot::Dictionary state;
-  godot::Array p1Boxes;
-  godot::Array p2Boxes;
+
   state["char1FaceRight"] = player1.faceRight;
   state["char1StateNum"] = player1.currentState->stateNum;
   state["char1StateTime"] = player1.currentState->stateTime;
   state["char1PosX"] = player1.position.first;
   state["char1PosY"] = player1.position.second;
+  state["char1CurrentAnim"] = player1.currentState->animationPath.c_str();
 
-  state["char2FaceRight"] = player2.faceRight;
-  state["char2StateNum"] = player2.currentState->stateNum;
-  state["char2StateTime"] = player2.currentState->stateTime;
-  state["char2PosX"] = player2.position.first;
-  state["char2PosY"] = player2.position.second;
+  godot::Array p1Boxes;
   for(auto collisionBox : player1.currentState->collisionBoxes) {
     godot::Dictionary cbDict;
     cbDict["width"] = collisionBox->width;
@@ -1666,6 +1664,15 @@ godot::Dictionary FightingGameServer::getGameState() {
     cbDict["disabled"] = collisionBox->disabled;
     p1Boxes.append(cbDict);
   }
+  state["p1CollisionBoxes"] = p1Boxes;
+
+  state["char2FaceRight"] = player2.faceRight;
+  state["char2StateNum"] = player2.currentState->stateNum;
+  state["char2StateTime"] = player2.currentState->stateTime;
+  state["char2CurrentAnim"] = player1.currentState->animationPath.c_str();
+  state["char2PosX"] = player2.position.first;
+  state["char2PosY"] = player2.position.second;
+  godot::Array p2Boxes;
   for(auto collisionBox : player2.currentState->collisionBoxes) {
     godot::Dictionary cbDict;
     cbDict["width"] = collisionBox->width;
@@ -1676,7 +1683,6 @@ godot::Dictionary FightingGameServer::getGameState() {
     cbDict["disabled"] = collisionBox->disabled;
     p2Boxes.append(cbDict);
   }
-  state["p1CollisionBoxes"] = p1Boxes;
   state["p2CollisionBoxes"] = p2Boxes;
   return state;
 }

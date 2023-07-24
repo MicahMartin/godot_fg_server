@@ -5,11 +5,7 @@
       "state_name": "IDLE",
       "flags": [ ],
       "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/movement/idle.kai",
-      "animation": [
-        { "file": "../GDExtensionTemplate/data/characters/alucard/sprites/98.png", "time": 10, "offsetX": -1},
-        { "file": "../GDExtensionTemplate/data/characters/alucard/sprites/99.png", "time": 10, "offsetX": -1},
-        { "file": "../GDExtensionTemplate/data/characters/alucard/sprites/100.png", "time": 10, "offsetX": -1}
-      ],
+      "animation_path": "idle",
       "collision_boxes": [
         {"type": "POSITION", "width":150, "height":150, "offsetX":0, "offsetY": 0, "start": 1, "end": -1},
         {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
@@ -1898,5 +1894,7 @@
       "SS_AIR_TECH": 22
   },
   "gravity": "1500",
-  "command_script": "../GDExtensionTemplate/data/characters/alucard/scripts/input.kai"
+  "command_script": "../GDExtensionTemplate/data/characters/alucard/scripts/input.kai",
+  "model_name": "bot.tscn",
+  "model_scale": "2.5"
 }

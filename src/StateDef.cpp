@@ -4,6 +4,7 @@
 #include "CollisionBox.h"
 #include "Util.h"
 #include "Character.h"
+#include <godot_cpp/variant/utility_functions.hpp>
 
  std::map<std::string, FlagBit> StateDef::flagMap = {
   {"NO_TURN", NO_TURN},
@@ -60,6 +61,10 @@ void StateDef::init(nlohmann::json::value_type json, VirtualMachine* _charVm, fl
   stateNum = json.at("state_num");
   loadFlags(json.at("flags"));
 
+  if(json.count("animation_path")){
+    animationPath = json.at("animation_path");
+  }
+
   std::string updateScriptTag = "updateScript:" + std::to_string(stateNum);
   std::string updateScriptError = "updateScript:" + std::to_string(stateNum) + "failed to compile";
   std::string updateScriptStr = json.at("update_script").get<std::string>();
@@ -100,10 +105,6 @@ void StateDef::init(nlohmann::json::value_type json, VirtualMachine* _charVm, fl
     }
   }
 
-  // printf("done compiling\n");
-  printf("loading anim\n");
-  // anim.charName = charName;
-  loadAnimation(json.at("animation"));
   printf("loading collisions\n");
   loadCollisionBoxes(json.at("collision_boxes"));
   printf("loading visual effects\n");
@@ -178,7 +179,7 @@ void StateDef::enter(){
 void StateDef::update(){
   charVm->execute(&updateScript);
   stateTime++;
-  animTime++;
+  // animTime++;
 }
 
 void StateDef::handleCancels(){

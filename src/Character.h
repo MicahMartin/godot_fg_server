@@ -212,6 +212,7 @@ public:
   int soundChannel = 0;
   int flashCounter = 0;
   float animScale = 4;
+  double modelScale = 1.0;
   bool isRed = false;
   bool isGreen = false;
   bool isLight = false;
@@ -222,6 +223,7 @@ public:
   int hurtGravity = 1;
   int timeInHitstun = 1;
   std::string charName = "";
+  std::string modelName = "";
   std::string commandPath = "";
   std::pair<int, int> position;
 

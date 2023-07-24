@@ -64,7 +64,8 @@ class FightingGameServer : public godot::Node{
     void step(int inputs[]);
 
     godot::Dictionary getGameState();
-    int getState();
+    godot::String getModelName(int p_charNum);
+    double getModelScale(int p_charNum);
 
     void _physics_process(double_t delta) override;
     void _process(double_t delta) override;
