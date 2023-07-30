@@ -160,20 +160,20 @@ void Entity::handleInput() {
 
 void Entity::update(){
   if (active) {
-    if (currentState->visualEffectMap.count(currentState->stateTime)) {
-      int visualID = currentState->visualEffectMap.at(currentState->stateTime);
-      // VisualEffect& visFX = visualEffects.at(visualID);
-      // printf("found visFX for entities frame %d, the playLEngth %d\n", currentState->stateTime, visFX.getPlayLength());
-      // visFX.reset(position.first, position.second);
-      // visFX.setActive(true);
-    }
+    // if (currentState->visualEffectMap.count(currentState->stateTime)) {
+    //   int visualID = currentState->visualEffectMap.at(currentState->stateTime);
+    //   VisualEffect& visFX = visualEffects.at(visualID);
+    //   printf("found visFX for entities frame %d, the playLEngth %d\n", currentState->stateTime, visFX.getPlayLength());
+    //   visFX.reset(position.first, position.second);
+    //   visFX.setActive(true);
+    // }
     // TODO: Sound method
-    if (currentState->soundIndexMap[currentState->stateTime].size() > 0) {
-      for (int soundID : currentState->soundIndexMap[currentState->stateTime]) {
-        // printf("trying to play soundID %d\n", soundID);
-        soundsEffects.at(soundID).active = true;
-      }
-    }
+    // if (currentState->soundIndexMap[currentState->stateTime].size() > 0) {
+    //   for (int soundID : currentState->soundIndexMap[currentState->stateTime]) {
+    //     printf("trying to play soundID %d\n", soundID);
+    //     soundsEffects.at(soundID).active = true;
+    //   }
+    // }
 
     currentState->update();
     updatePosition();
@@ -207,39 +207,39 @@ void Entity::updatePosition(){
 void Entity::updateCollisionBoxPositions(){
   for (auto cb : currentState->pushBoxes) {
     cb->positionX = position.first - (cb->width / 2);
-    cb->positionY = position.second;
+    cb->positionY = position.second + cb->offsetY;
   }
 
   for (auto cb : currentState->hurtBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
   }
 
   for (auto cb : currentState->hitBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
   }
   for (auto cb : currentState->throwHitBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
   }
   for (auto cb : currentState->throwHurtBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
   }
   for (auto cb : currentState->proximityBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
   }
   for (auto cb : currentState->projectileBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
   }
 }
 
 void Entity::updateCollisionBoxes(){
   // TODO: abstract into updateCollisionBoxPos function
-  int stateTime = currentState->stateTime;
+  int stateTime = currentState->stateTime + 1;
   for (auto cb : currentState->pushBoxes) {
     cb->positionX = position.first - (cb->width / 2);
     cb->positionY = position.second;
@@ -256,7 +256,7 @@ void Entity::updateCollisionBoxes(){
 
   for (auto cb : currentState->hurtBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
     if (stateTime < cb->start) {
       cb->disabled = true;
     }
@@ -270,7 +270,7 @@ void Entity::updateCollisionBoxes(){
 
   for (auto cb : currentState->throwHurtBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
     if (stateTime < cb->start) {
       cb->disabled = true;
     }
@@ -284,7 +284,7 @@ void Entity::updateCollisionBoxes(){
 
   for (auto cb : currentState->hitBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
     if (stateTime < cb->start) {
       cb->disabled = true;
     }
@@ -298,7 +298,7 @@ void Entity::updateCollisionBoxes(){
 
   for (auto cb : currentState->throwHitBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
     if (stateTime < cb->start) {
       cb->disabled = true;
     }
@@ -312,7 +312,7 @@ void Entity::updateCollisionBoxes(){
 
   for (auto cb : currentState->proximityBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
     if (stateTime < cb->start) {
       cb->disabled = true;
     }
@@ -325,7 +325,7 @@ void Entity::updateCollisionBoxes(){
   }
   for (auto cb : currentState->projectileBoxes) {
     cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second - cb->offsetY;
+    cb->positionY = position.second + cb->offsetY;
     if (stateTime < cb->start) {
       cb->disabled = true;
     }
@@ -344,7 +344,7 @@ void Entity::draw(){
   // printf("trying to draw an entity..\n");
   if (active) {
     // printf("im active so ima draw!, am I in hitstop tho? %d\n", inHitStop);
-    currentState->draw(position, faceRight, inHitStop);
+    // currentState->draw(position, faceRight, inHitStop);
   }
 };
 
@@ -375,7 +375,7 @@ EntityStateObj Entity::saveState(){
   stateObj.isDead = isDead;
   stateObj.updateFacing = updateFacing;
   stateObj.currentStateNum = currentState->stateNum;
-  stateObj.currentStateObj = *currentState->saveState();
+  stateObj.currentStateObj = currentState->saveState();
   stateObj.positionX = position.first;
   stateObj.positionY = position.second;
 

@@ -41,18 +41,6 @@
       $cancel_state 30;
     }
 
-    if(slash){
-      if(anyDown){
-        if (downforward) {
-          $cancel_state 23; 
-        } else {
-          $cancel_state 40; 
-        }
-      } else {
-        $cancel_state 20;
-      }
-    }
-
     if(kick){
       if (anyDown) {
         $cancel_state 22;

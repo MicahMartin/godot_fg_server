@@ -4,7 +4,7 @@
     $velset_x 0; 
   }
 
-  if($get_state_time == 17){ 
+  if($get_state_time == 27){ 
     $set_control 1; 
   }
 }

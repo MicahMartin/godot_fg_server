@@ -11,7 +11,7 @@
 #include "Util.h"
 #include "Camera.h"
 
-struct GameState { 
+struct GameState {
   int roundStartCounter;
   int roundStart;
   int currentRound;
@@ -26,6 +26,10 @@ struct GameState {
   int slowDownCounter;
   int slowMode;
   int frameCount;
+
+  bool shouldUpdate;
+  bool netPlayState;
+  bool doneSync;
 
   CharStateObj player1;
   CharStateObj player2;
@@ -127,6 +131,8 @@ class FightingGameServer : public godot::Node{
         p2RoundsWon,
         time_passed = 0;
 
+    void saveState(GameState* stateObj);
+    void loadState(GameState* stateObj);
     unsigned char* mostRecentState;
     unsigned char* localSaveBuffer;
     int localSaveBufferLen;
@@ -142,7 +148,6 @@ class FightingGameServer : public godot::Node{
     Character player1 = Character(std::make_pair(p1StartPos, 0), 1);
     Character player2 = Character(std::make_pair(p2StartPos, 0), 2);
 
-    GameState stateObj;
     VirtualController p1Vc;
     VirtualController p2Vc;
     Camera camera;

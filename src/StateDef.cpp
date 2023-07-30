@@ -65,6 +65,10 @@ void StateDef::init(nlohmann::json::value_type json, VirtualMachine* _charVm, fl
     animationPath = json.at("animation_path");
   }
 
+  if(json.count("loop_animation")){
+    loopAnimation = json.at("loop_animation");
+  }
+
   std::string updateScriptTag = "updateScript:" + std::to_string(stateNum);
   std::string updateScriptError = "updateScript:" + std::to_string(stateNum) + "failed to compile";
   std::string updateScriptStr = json.at("update_script").get<std::string>();
@@ -116,11 +120,13 @@ void StateDef::init(nlohmann::json::value_type json, VirtualMachine* _charVm, fl
 
 
 
-StateDefObj* StateDef::saveState(){
+StateDefObj StateDef::saveState(){
   // std::unordered_map<CollisionBox*, CollisionBoxState> cbStates;
   // for (auto i : collisionBoxes) {
   //   cbStates[i] = i->saveState();
   // }
+  //
+  StateDefObj stateObj;
 
   stateObj.stateTime = stateTime;
   stateObj.animTime = animTime;
@@ -141,7 +147,7 @@ StateDefObj* StateDef::saveState(){
   }
   // stateObj.collisionBoxStates = cbStates;
  
-  return &stateObj;
+  return stateObj;
 }
 
 void StateDef::loadState(StateDefObj stateObj){
@@ -179,7 +185,6 @@ void StateDef::enter(){
 void StateDef::update(){
   charVm->execute(&updateScript);
   stateTime++;
-  // animTime++;
 }
 
 void StateDef::handleCancels(){

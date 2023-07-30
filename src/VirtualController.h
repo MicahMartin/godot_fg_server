@@ -48,7 +48,7 @@ struct InputEvent {
 struct VirtualControllerObj {
   int currentInputState;
   int prevInputState;
-  CircularBuffer<std::list<InputEvent>> inputHistory{60};
+  CircularBuffer<std::list<InputEvent>> inputHistory{120};
 };
 
 class CommandCompiler;
@@ -82,7 +82,8 @@ class VirtualController {
       return isPressed(relativeInput, strict);
     };
 
-    VirtualControllerObj* saveState();
+    VirtualControllerObj saveState();
+    void loadState(VirtualControllerObj stateObj);
 
     uint16_t currentInputState;
     uint16_t prevInputState;
@@ -90,10 +91,9 @@ class VirtualController {
     static std::map<Input, Input(*)(bool)> inputEnumMap;
     static std::map<int, Input(*)(bool)> inputMap;
     static std::map<Input, const char*> inputToString;
-    VirtualControllerObj stateObj;
   private:
     CommandCompiler commandCompiler;
-    CircularBuffer<std::list<InputEvent>> inputHistory{60};
+    CircularBuffer<std::list<InputEvent>> inputHistory{120};
 };
 
 #endif

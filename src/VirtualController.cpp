@@ -139,7 +139,7 @@ bool VirtualController::wasPressed(Input input, bool strict, int index, bool pre
     // godot::UtilityFunctions::print("not enough history");
     return false;
   }
-  std::list<InputEvent> eventList = inputHistory[59 - index];
+  std::list<InputEvent> eventList = inputHistory[119 - index];
   if (eventList.empty()) {
     return false;
   }
@@ -166,7 +166,7 @@ bool VirtualController::wasPressedBuffer(Input input, bool strict, bool pressed)
   int historySize = inputHistory.size();
 
   for (int i = 0; i < buffLen && !found; i++) {
-    std::list<InputEvent> eventList = inputHistory[59 - i];
+    std::list<InputEvent> eventList = inputHistory[119 - i];
 
     if (eventList.size() > 0) {
       for (auto const& event : eventList) {
@@ -224,7 +224,7 @@ bool VirtualController::checkCommand(int commandIndex, bool faceRight) {
     for (int x = 0; ((!foundPart) && (x < funcNode.bufferLength)); x++) {
       foundPart = (funcNode.function)(x + searchOffset, faceRight);
       if (foundPart) {
-        godot::UtilityFunctions::print("Found part: ", x);
+        // godot::UtilityFunctions::print("Found part: ", x);
         if (firstFind) {
           firstFindOffet = x;
           firstFind = false;
@@ -241,7 +241,7 @@ bool VirtualController::checkCommand(int commandIndex, bool faceRight) {
         printf("found command:%d\n", commandIndex);
         if (clears) {
           for(int y = firstFindOffet; y < inputHistory.size(); y++) {
-            std::list<InputEvent>* eventList = &inputHistory[59 - y];
+            std::list<InputEvent>* eventList = &inputHistory[119 - y];
 
             if (eventList->size() > 0) {
               for (auto& event : *eventList) {
@@ -259,4 +259,20 @@ bool VirtualController::checkCommand(int commandIndex, bool faceRight) {
   }
 
   return foundCommand;
+}
+
+VirtualControllerObj VirtualController::saveState(){
+  VirtualControllerObj stateObj;
+
+  stateObj.inputHistory = inputHistory;
+  stateObj.prevInputState = prevInputState;
+  stateObj.currentInputState = currentInputState;
+
+  return stateObj;
+}
+
+void VirtualController::loadState(VirtualControllerObj stateObj){
+  inputHistory = stateObj.inputHistory;
+  prevInputState = stateObj.prevInputState;
+  currentInputState = stateObj.currentInputState;
 }

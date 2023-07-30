@@ -1,7 +1,7 @@
 {
   var canHitCancel = $get_hit_cancel;
   var stateTime = $get_state_time;
-  var inCancelWindow = (stateTime >= 23) and (stateTime <= 30);
+  var inCancelWindow = (stateTime >= 20) and (stateTime <= 22);
 
   if(canHitCancel and (stateTime > 30)) {
     $set_hit_cancel 0;

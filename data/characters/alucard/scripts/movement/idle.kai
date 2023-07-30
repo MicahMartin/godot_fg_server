@@ -3,7 +3,7 @@
     $velset_x 0;
   } 
 
-  if($get_state_time == 180) {
+  if($get_state_time == 89) {
     $cancel_state 1;
   }
 }

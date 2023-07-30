@@ -69,7 +69,7 @@ public:
   void draw(std::pair<int,int> position, bool faceRight, bool inHitStop);
   void drawCollisionBoxes();
 
-  StateDefObj* saveState();
+  StateDefObj saveState();
   void loadState(StateDefObj stateObj);
 
   void resetAnim();
@@ -79,8 +79,6 @@ public:
   VirtualMachine* charVm;
   Script updateScript;
   Script cancelScript;
-  // Animation anim;
-  StateDefObj stateObj;
 
   // TODO: Polymorph or atleast use a union
   CollisionBoxList pushBoxes;
@@ -109,6 +107,7 @@ public:
   bool canWhiffCancel = false;
   bool canHitCancel = false;
   bool counterHitFlag = false;
+  bool loopAnimation = false;
   std::unordered_map<int, bool> hitboxGroupDisabled;
   std::string charName = "";
   std::string animationPath = "";

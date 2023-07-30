@@ -14,8 +14,7 @@
 GGPOSession* ggpo = nullptr;
 GGPOErrorCode result;
 GGPOSessionCallbacks cb;
-
-GameState stateObj = { 0 };
+GameState stateObj;
 
 Character* characters[2];
 
@@ -74,6 +73,8 @@ void FightingGameServer::enter(){
   std::string p2DefPath = "/Users/martin/dev/godot_projects/template_test/GDExtensionTemplate/data/characters/alucard/def.json";
   player1.init(p1DefPath.c_str());
   player2.init(p2DefPath.c_str());
+  player1.loadCustomStates(p2DefPath.c_str());
+  player2.loadCustomStates(p1DefPath.c_str());
 
   player1.virtualController = &p1Vc;
   player1.virtualController->initCommandCompiler(player1.commandPath.c_str());
@@ -86,7 +87,7 @@ void FightingGameServer::enter(){
 
   // stateObj.roundStartCounter = 210;
   // stateObj.roundStart = true;
-  roundStartCounter = 210;
+  roundStartCounter = 60;
   roundStart = true;
   slowMode = false;
 }
@@ -192,6 +193,12 @@ void FightingGameServer::_physics_process(double delta) {
   auto stop = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
   // godot::UtilityFunctions::print("time spent in server:", (uint64_t)duration.count());
+  if(InputServer->is_action_just_released("v_save_state")){
+    saveState(&stateObj);
+  }
+  if(InputServer->is_action_just_released("v_load_state")){
+    loadState(&stateObj);
+  }
 }
 
 void FightingGameServer::_process(double delta) { 
@@ -313,7 +320,7 @@ void FightingGameServer::step(int inputs[]){
   checkBounds();
 
   updateCamera();
-  checkHealth();
+  // checkHealth();
 
 
   if (slowMode) {
@@ -349,13 +356,13 @@ void FightingGameServer::step(int inputs[]){
       screenFreeze = false;
     }
   }
-  updateVisuals();
+  // updateVisuals();
 }
 
 
 void FightingGameServer::handleRoundStart(){
   if (roundStartCounter > 0) {
-    godot::UtilityFunctions::print("ROUND START: ", roundStartCounter);
+    // godot::UtilityFunctions::print("ROUND START: ", roundStartCounter);
     // printf("roundStarTCounter!:%d\n", roundStartCounter);
     if (--roundStartCounter == 0) {
       // stateObj.player1.control = 1;
@@ -505,48 +512,46 @@ void FightingGameServer::checkThrowCollisions() {
     player2.velocityX = 0;
     player2.velocityY = 0;
 
-    if (player1.control) {
-      player1.control = 0;
-      // you were thrown
-      // TODO: opponentThrowSuccess is a confusing name
-      // FIXME: CUSTOMSTATE
-      int customState = p1ThrownState.throwCb->opponentTechAttempt;
-      player1.changeState(customState);
+    player1.changeState(p1ThrownState.throwCb->opponentThrowSuccess);
+    player2.changeState(p1ThrownState.throwCb->throwSuccess);
 
-      player2.changeState(p1ThrownState.throwCb->throwAttempt);
-    }
-    else {
-      // you were thrown
-      // TODO: opponentThrowSuccess is a confusing name
-      // FIXME: CUSTOMSTATE
-      int customState = p1ThrownState.throwCb->opponentThrowSuccess;
-      player1.changeState(customState);
+    // if (player1.control) {
+    //   player1.control = 0;
+    //   // you were thrown
+    //   // TODO: opponentThrowSuccess is a confusing name
+    //   // FIXME: CUSTOMSTATE
+    //   int customState = p1ThrownState.throwCb->opponentTechAttempt;
+    //   player1.changeState(customState);
 
-      player2.changeState(p1ThrownState.throwCb->throwSuccess);
-    }
+    //   player2.changeState(p1ThrownState.throwCb->throwAttempt);
+    // }
+    // else {
+    //   // you were thrown
+    //   // TODO: opponentThrowSuccess is a confusing name
+    //   // FIXME: CUSTOMSTATE
+    // }
   }
   else if (p2ThrownState.thrown) {
     player1.velocityX = 0;
     player1.velocityY = 0;
     player2.velocityX = 0;
     player2.velocityY = 0;
+    player2.changeState(p2ThrownState.throwCb->opponentThrowSuccess);
+    player1.changeState(p2ThrownState.throwCb->throwSuccess);
 
-    if (player2.control) {
-      player2.control = 0;
+    // if (player2.control) {
+    //   player2.control = 0;
 
-      int throwAttempt = p2ThrownState.throwCb->throwAttempt;
-      int techAttempt = p2ThrownState.throwCb->opponentTechAttempt;
+    //   int throwAttempt = p2ThrownState.throwCb->throwAttempt;
+    //   int techAttempt = p2ThrownState.throwCb->opponentTechAttempt;
 
-      // FIXME: CUSTOMSTATE
-      player2.changeState(techAttempt);
-      player1.changeState(throwAttempt);
-    }
-    else {
-      // FIXME: CUSTOMSTATE
-      player2.changeState(p2ThrownState.throwCb->opponentThrowSuccess);
-
-      player1.changeState(p2ThrownState.throwCb->throwSuccess);
-    }
+    //   // FIXME: CUSTOMSTATE
+    //   player2.changeState(techAttempt);
+    //   player1.changeState(throwAttempt);
+    // }
+    // else {
+    //   // FIXME: CUSTOMSTATE
+    // }
   }
 }
 
@@ -740,7 +745,7 @@ int FightingGameServer::checkProjectileCollisions(Character* player1, Character*
                     entity.hitStop = 6;
                     otherEntity.inHitStop = true;
                     otherEntity.hitStop = 6;
-                    if (--entity.currentDurability == 0) {
+                    if (--entity.currentDurability <= 0) {
 
                       entity.currentState->hitboxGroupDisabled[entityHitbox->groupID] = true;
                       entity.currentState->canHitCancel = true;
@@ -748,7 +753,7 @@ int FightingGameServer::checkProjectileCollisions(Character* player1, Character*
                       entity.soundsEffects.at(entityHitbox->hitSoundID).active = true;
                       entity.soundsEffects.at(entityHitbox->hitSoundID).channel = player1->soundChannel + 2;
                     };
-                    if (--otherEntity.currentDurability == 0) {
+                    if (--otherEntity.currentDurability <= 0) {
                       otherEntity.currentState->hitboxGroupDisabled[otherEntityHitbox->groupID] = true;
                       otherEntity.currentState->canHitCancel = true;
 
@@ -819,13 +824,36 @@ int FightingGameServer::checkProximityAgainst(Character* hitter, Character* hurt
         }
       }
     }
+    for (auto& entity : hitter->entityList) {
+      if (entity.active && !entity.currentState->hitboxesDisabled) {
+        for (auto entityHitbox : entity.currentState->proximityBoxes) {
+          bool groupDisabled = entity.currentState->hitboxGroupDisabled[entityHitbox->groupID];
+          if (!entityHitbox->disabled && !groupDisabled) {
+            for (auto p2HurtBox : hurter->currentState->hurtBoxes) {
+              if (!p2HurtBox->disabled && !entity.inHitStop) {
+                if (CollisionBox::checkAABB(*entityHitbox, *p2HurtBox)) {
+                  if (hurter->currentState->stateNum == hurter->specialStateMap[SS_WALK_B]) {
+                    hurter->changeState(hurter->specialStateMap[SS_BLOCK_STAND]);
+                  }
+                  if (hurter->currentState->stateNum == hurter->specialStateMap[SS_CROUCH] && hurter->_getInput(1)) {
+                    hurter->changeState(hurter->specialStateMap[SS_BLOCK_CROUCH]);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   return 0;
 }
 
 ThrowResult FightingGameServer::checkThrowAgainst(Character* thrower, Character* throwee) {
-  ThrowResult result = ThrowResult{ false, NULL };
-  bool canThrow = (!thrower->currentState->hitboxesDisabled
+  ThrowResult throwResult = ThrowResult{ false, NULL };
+  bool canThrow = (thrower->canThrow
+      &&thrower->control == true
+      && !thrower->currentState->hitboxesDisabled
       && throwee->hitstun <= 0 && throwee->blockstun <= 0
       && !throwee->hurtState(throwee->currentState->stateNum)
       && throwee->throwInvul <= 0);
@@ -837,15 +865,15 @@ ThrowResult FightingGameServer::checkThrowAgainst(Character* thrower, Character*
           if (!p2HurtBox->disabled) {
             if (CollisionBox::checkAABB(*p1ThrowHitbox, *p2HurtBox)) {
               if (p1ThrowHitbox->throwType == 1 && throwee->_getYPos() > 0) {
-                result.thrown = true;
-                result.throwCb = p1ThrowHitbox;
+                throwResult.thrown = true;
+                throwResult.throwCb = p1ThrowHitbox;
                 thrower->frameLastAttackConnected = frameCount;
                 thrower->currentState->hitboxesDisabled = true;
-
               }
               else if (p1ThrowHitbox->throwType == 2 && throwee->_getYPos() == 0) {
-                result.thrown = true;
-                result.throwCb = p1ThrowHitbox;
+                godot::UtilityFunctions::print("frame: ", thrower->currentState->stateTime," throws, conrol:", thrower->control);
+                throwResult.thrown = true;
+                throwResult.throwCb = p1ThrowHitbox;
                 thrower->frameLastAttackConnected = frameCount;
                 thrower->currentState->hitboxesDisabled = true;
               }
@@ -855,7 +883,7 @@ ThrowResult FightingGameServer::checkThrowAgainst(Character* thrower, Character*
       }
     }
   }
-  return result;
+  return throwResult;
 }
 
 void FightingGameServer::handleSameFrameThrowTech(SpecialState techState) {
@@ -1308,6 +1336,7 @@ HitResult FightingGameServer::checkEntityHitAgainst(Character* p1, Character* p2
               if (CollisionBox::checkAABB(*entityHitbox, *p2HurtBox)) {
                 // shakeCamera(entityHitbox->hitstop, &camera);
                 printf("found entity hit\n");
+                godot::UtilityFunctions::print("found entity hit");
                 CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(*entityHitbox, *p2HurtBox);
                 bool entityFaceRight = entity.faceRight;
                 entity.inHitStop = true;
@@ -1323,7 +1352,8 @@ HitResult FightingGameServer::checkEntityHitAgainst(Character* p1, Character* p2
 
                 p1->frameLastAttackConnected = frameCount;
                 printf("entity durability:%d \n", entity.currentDurability);
-                if (--entity.currentDurability == 0) {
+                godot::UtilityFunctions::print("entity durability:", entity.currentDurability);
+                if (--entity.currentDurability <= 0) {
                   entity.currentState->hitboxGroupDisabled[entityHitbox->groupID] = true;
                   entity.currentState->canHitCancel = true;
                 };
@@ -1652,6 +1682,7 @@ godot::Dictionary FightingGameServer::getGameState() {
   state["char1PosX"] = player1.position.first;
   state["char1PosY"] = player1.position.second;
   state["char1CurrentAnim"] = player1.currentState->animationPath.c_str();
+  state["char1LoopAnimation"] = player1.currentState->loopAnimation;
 
   godot::Array p1Boxes;
   for(auto collisionBox : player1.currentState->collisionBoxes) {
@@ -1666,10 +1697,26 @@ godot::Dictionary FightingGameServer::getGameState() {
   }
   state["p1CollisionBoxes"] = p1Boxes;
 
+  state["char1FireballPosX"] = player1.entityList[0].position.first;
+  state["char1FireballPosY"] = player1.entityList[0].position.second;
+  godot::Array p1FireballBoxes;
+  for(auto collisionBox : player1.entityList[0].currentState->collisionBoxes) {
+    godot::Dictionary cbDict;
+    cbDict["width"] = collisionBox->width;
+    cbDict["height"] = collisionBox->height;
+    cbDict["posX"] = collisionBox->positionX;
+    cbDict["posY"] = collisionBox->positionY;
+    cbDict["type"] = collisionBox->boxType;
+    cbDict["disabled"] = collisionBox->disabled;
+    p1FireballBoxes.append(cbDict);
+  }
+  state["p1FireballBoxes"] = p1FireballBoxes;
+
   state["char2FaceRight"] = player2.faceRight;
   state["char2StateNum"] = player2.currentState->stateNum;
   state["char2StateTime"] = player2.currentState->stateTime;
-  state["char2CurrentAnim"] = player1.currentState->animationPath.c_str();
+  state["char2CurrentAnim"] = player2.currentState->animationPath.c_str();
+  state["char2LoopAnimation"] = player2.currentState->loopAnimation;
   state["char2PosX"] = player2.position.first;
   state["char2PosY"] = player2.position.second;
   godot::Array p2Boxes;
@@ -1685,4 +1732,46 @@ godot::Dictionary FightingGameServer::getGameState() {
   }
   state["p2CollisionBoxes"] = p2Boxes;
   return state;
+}
+
+void FightingGameServer::saveState(GameState* _stateObj){
+  _stateObj->roundStartCounter = roundStartCounter;
+  _stateObj->roundStart = roundStart;
+  _stateObj->roundWinner = roundWinner;
+  _stateObj->slowMode = slowMode;
+  _stateObj->frameCount = frameCount;
+  _stateObj->currentRound = currentRound;
+  _stateObj->shouldUpdate = shouldUpdate;
+  _stateObj->slowMode = slowMode;
+  _stateObj->slowDownCounter = slowDownCounter;
+  _stateObj->screenFreeze = screenFreeze;
+  _stateObj->screenFreezeLength = screenFreezeLength;
+  _stateObj->screenFreezeCounter = screenFreezeCounter;
+  _stateObj->netPlayState = netPlayState;
+  _stateObj->doneSync = doneSync;
+
+  _stateObj->player1 = player1.saveState();
+  _stateObj->player2 = player2.saveState();
+  _stateObj->cameraState = camera.saveState();
+}
+
+void FightingGameServer::loadState(GameState* _stateObj){
+  roundStartCounter = _stateObj->roundStartCounter;
+  roundStart = _stateObj->roundStart;
+  roundWinner = _stateObj->roundWinner;
+  slowMode = _stateObj->slowMode;
+  frameCount = _stateObj->frameCount;
+  currentRound = _stateObj->currentRound;
+  shouldUpdate = _stateObj->shouldUpdate;
+  slowMode = _stateObj->slowMode;
+  slowDownCounter = _stateObj->slowDownCounter;
+  screenFreeze = _stateObj->screenFreeze;
+  screenFreezeLength = _stateObj->screenFreezeLength;
+  screenFreezeCounter = _stateObj->screenFreezeCounter;
+  netPlayState = _stateObj->netPlayState;
+  doneSync = _stateObj->doneSync;
+
+  player1.loadState(_stateObj->player1);
+  player2.loadState(_stateObj->player2);
+  camera.loadState(_stateObj->cameraState);
 }

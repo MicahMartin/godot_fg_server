@@ -8,7 +8,7 @@
     }
   } 
 
-  if($get_state_time == 42) {
+  if($get_state_time == 27) {
     $cancel_state 5003;
   }
 }

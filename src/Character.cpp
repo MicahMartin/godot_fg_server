@@ -38,15 +38,14 @@ void Character::init(const char* path){
   entityList.reserve(12);
   loadStates(path);
   godot::UtilityFunctions::print("stateList size:", (uint64_t)stateList.size());
-  // godot::UtilityFunctions::print("stateList after custom size:", stateList.size());
   for (auto i : specialStateMap) {
     godot::UtilityFunctions::print("SPECIAL STATE MAP: ", i.first, "|" , i.second);
   }
   changeState(specialStateMap[SS_PRE_MATCH]);
 }
 
-CharStateObj* Character::saveState(){
-  stateObj.virtualControllerObj = *virtualController->saveState();
+CharStateObj Character::saveState(){
+  CharStateObj stateObj;
 
   stateObj.positionX = position.first;
   stateObj.positionY = position.second;
@@ -88,44 +87,23 @@ CharStateObj* Character::saveState(){
   stateObj.auraActive = auraActive;
   stateObj.auraID = auraID;
 
+  stateObj.timeInHitstun = timeInHitstun;
+  stateObj.hurtGravity = hurtGravity;
+  stateObj.canThrow = canThrow;
+
   stateObj.cancelPointer = cancelPointer;
   stateObj.currentState = currentState->stateNum;
-  stateObj.stateDefObj = *currentState->saveState();
+  stateObj.stateDefObj = currentState->saveState();
+  stateObj.virtualControllerObj = virtualController->saveState();
 
-  // bool log = playerNum == 1;
-  // virtualController->serializeHistory(log);
+  for (int i = 0; i < entityList.size(); ++i) {
+    stateObj.entityStates[i] = entityList[i].saveState();
+  }
 
-  // printf("char:%d input history size:%d\n", playerNum, virtualController->inputHistory.size());
-  // {
-  //   boost::iostreams::basic_array_sink<char> sr(stateObj.inputBuffer, sizeof(stateObj.inputBuffer));
-  //   boost::iostreams::stream< boost::iostreams::basic_array_sink<char>> source(sr);
-  //   boost::archive::binary_oarchive oa(source);
-
-  //   oa << virtualController->inputHistory;
-  //   source.flush();
-  //   if(strlen(stateObj.inputBuffer) == 0) {
-  //   printf("char:%d save buffer is empty for some reason!!?\n", playerNum);
-  //   } else {
-  //     printf("char:%d save buffer:%d\n", playerNum, stateObj.inputBuffer);
-  //   }
-
-  // }
-
-  // for (int i = 0; i < entityList.size(); ++i) {
-  //   stateObj.entityStates[i] = entityList[i].saveState();
-  // }
-  return &stateObj;
+  return stateObj;
 }
 
 void Character::loadState(CharStateObj stateObj){
-  printf("GGPO PLAYER:%d { STATE TIME:%d | LOAD STATE:%d | CANCEL POINTER:%d }\n", 
-      playerNum, 
-      stateObj.stateDefObj.stateTime, 
-      stateObj.currentState, 
-      stateObj.cancelPointer);
-
-  // virtualController->loadState(stateObj.virtualControllerObj);
-  // virtualController->inputHistory = stateObj.inputBuffer;
 
   position.first = stateObj.positionX;
   position.second = stateObj.positionY;
@@ -171,19 +149,10 @@ void Character::loadState(CharStateObj stateObj){
   setCurrentState(stateObj.currentState);
   currentState->loadState(stateObj.stateDefObj);
 
-  // virtualController->inputHistorySnapShot = stateObj.inputHistory;
-  // bool log = playerNum == 1;
-  // virtualController->loadHistory(virtualController->inputHistorySnapShot, log);
-  
-  // for (int i = 0; i < entityList.size(); ++i) {
-  //   entityList[i].loadState(stateObj.entityStates[i]);
-  // }
-  // {
-  //   boost::iostreams::basic_array_source<char> device(stateObj.inputBuffer, sizeof(stateObj.inputBuffer));
-  //   boost::iostreams::stream<boost::iostreams::basic_array_source<char>> s(device);
-  //   boost::archive::binary_iarchive ia(s);
-  //   ia >> virtualController->inputHistory;
-  // }
+  for (int i = 0; i < entityList.size(); ++i) {
+    entityList[i].loadState(stateObj.entityStates[i]);
+  }
+  virtualController->loadState(stateObj.virtualControllerObj);
 }
 
 void Character::refresh(){
@@ -221,7 +190,7 @@ void Character::changeState(int stateDefNum){
   if(stateDefNum >= 6000){
     int theNum = stateDefNum - 6000;
     int customStateNum = stateCount + theNum;
-    // printf("the num:%d, the customStateNum%d\n", stateDefNum, customStateNum);
+
     currentState = &stateList.at(customStateNum-1);
   } else if (stateDefNum >= 5000) {
     int theNum = stateDefNum - 5000;
@@ -431,6 +400,7 @@ void Character::loadCustomStates(const char* path){
   configFile >> stateJson;
   // load states
   printf("loading custom states\n");
+  godot::UtilityFunctions::print("loading custom states");
   int counter = 0;
 
   for(auto i : stateJson.at("custom_states").items()){
@@ -441,6 +411,7 @@ void Character::loadCustomStates(const char* path){
     ++counter;
   }
   printf("custom state count value:%d\n", counter);
+  godot::UtilityFunctions::print("custom state count value:", counter);
 
   configFile.close();
   stateJson.clear();
@@ -449,7 +420,6 @@ void Character::loadCustomStates(const char* path){
 Character::~Character(){};
 
 void Character::handleInput(){ 
-  stateObj.tensionGained = 0;
   tensionGained = 0;
   if(cancelPointer != 0 && !inHitStop){
     changeState(cancelPointer);
@@ -538,6 +508,7 @@ void Character::update(){
     }
   }
 
+  // godot::UtilityFunctions::print("stateTime:", currentState->stateTime);
   currentState->update();
 
   updatePosition();

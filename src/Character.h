@@ -45,6 +45,8 @@ struct CharStateObj {
   currentState,
   inputState,
   inputPrevState,
+  timeInHitstun,
+  hurtGravity,
   positionY = 0;
 
   bool inCorner,
@@ -57,6 +59,7 @@ struct CharStateObj {
   isGreen,
   isLight,
   installMode,
+  canThrow,
   auraActive = false;
 
   long frameLastAttackConnected = 0;
@@ -131,7 +134,7 @@ public:
   void drawEntities();
   void drawFX();
 
-  CharStateObj* saveState();
+  CharStateObj saveState();
   void loadState(CharStateObj stateObj);
   int stateCount = 0;
 
@@ -218,6 +221,7 @@ public:
   bool isLight = false;
   bool installMode = false;
   bool auraActive = false;
+  bool canThrow = true;
   int auraID = 0;
   int throwInvul = 0;
   int hurtGravity = 1;
@@ -291,8 +295,6 @@ public:
   // std::unordered_map<int, SoundObj> soundsEffects;
   // std::unordered_map<int, SoundObj> hurtSoundEffects;
   std::unordered_map<SpecialState, int> specialStateMap;
-  CharStateObj stateObj;
-
 private:
   nlohmann::json stateJson;
   std::vector<StateDef> stateList;

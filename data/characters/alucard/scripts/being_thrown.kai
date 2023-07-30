@@ -3,14 +3,13 @@
     $set_combo 1;
     $set_control 0; 
     $velset_x 0; 
-    $velset_y 0; 
-    $snap_to_opponent 50; 
+    $velset_y 25000; 
+    $set_nograv_count 30;
+    $snap_to_opponent 150000; 
   } 
 
-  if($get_state_time == 10){ 
-    $set_nograv_count 10;
-    $velset_y 14000; 
-    $neg_velset_x 6000; 
+  if($get_state_time == 4){ 
+    $velset_y 0; 
   } 
 
   if($get_state_time == 30){ 

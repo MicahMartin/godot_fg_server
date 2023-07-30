@@ -57,6 +57,7 @@ public:
   int flags = 0;
   bool faceRight = true;
   bool inputFaceRight = true;
+  bool canThrow = false;
 
   virtual void _changeState(int stateNum) = 0;
   virtual void _cancelState(int stateNum) = 0;

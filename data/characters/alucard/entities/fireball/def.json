@@ -17,7 +17,8 @@
         { "file": "../GDExtensionTemplate/data/characters/alucard/entities/fireball/sprites/fireball_0006.png", "time": 2, "offsetX": 250, "offsetY":85, "width": 130, "height": 130}
       ],
       "collision_boxes": [
-        {"type": "PROJECTILE", "block_type": 1, "hitstun":22, "block_stun":22, "hitstop": 4, "damage":5, "push": 6, "push_time": 10,  "start": 2, "end": -1, "width":150, "height":125, "offsetX":0, "offsetY": 85, "hitsound": 2, "guardsound": 16,"hit_type": 1, "hit_velX": 8, "hit_velY": 8, "hit_push_time": 8}
+        {"type": "PROJECTILE", "block_type": 1, "hitstun":22, "block_stun":22, "hitstop": 12, "damage":5, "push": 6000, "push_time": 10,  "start": 1, "end": -1, "width":150, "height":125, "offsetX":-75, "offsetY": 190, "hitsound": 2, "guardsound": 16,"hit_type": 1, "hit_velX": 8000, "hit_velY": 8000, "hit_push_time": 8},
+        {"type": "PROXIMITY", "start": 1, "end": -1, "width":500, "height":80, "offsetX":0, "offsetY": 190, "group": 1}
       ],
       "sounds": [
         {"soundID": 1, "start": 1}
@@ -66,5 +67,6 @@
   ],
   "spawnOffsetX": 0, 
   "spawnOffsetY": 0,
+  "model": "Laser.glb",
   "isFireball": true
 }

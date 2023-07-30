@@ -46,7 +46,6 @@ public:
   int zoomThresh = 0;
   float zoomMag = 1;
   bool shaking = false;
-  CameraStateObj stateObj;
 
 private:
   int viewportCentreX;

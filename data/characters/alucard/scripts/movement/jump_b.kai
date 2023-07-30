@@ -5,7 +5,7 @@
     $velset_x 0; 
   } 
   if($get_state_time == 3){ 
-    $velset_y 27000; 
+    $velset_y 35000; 
     $neg_velset_x 6000; 
     $set_control 1; 
   } 

@@ -113,6 +113,7 @@ public:
   bool faceRight = false;
   bool inputFaceRight = false;
   bool isDead = false;
+  bool canThrow = false;
 
   void _changeState(int stateNum);
   void _cancelState(int stateNum);
