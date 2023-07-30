@@ -7,8 +7,4 @@
       $neg_velset_x 6000;
     }
   } 
-
-  if($get_state_time == 27) {
-    $cancel_state 5003;
-  }
 }

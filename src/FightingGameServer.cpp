@@ -100,10 +100,10 @@ void FightingGameServer::_physics_process(double delta) {
   }
   godot::Input* InputServer = godot::Input::get_singleton();
   if(InputServer->is_action_just_released("v_save_state")){
-    saveState(&stateObj);
+    saveState();
   }
   if(InputServer->is_action_just_released("v_load_state")){
-    loadState(&stateObj);
+    loadState();
   }
   if(InputServer->is_action_just_released("v_toggle_recording")){
     p1Vc.toggleRecording();
@@ -196,7 +196,7 @@ void FightingGameServer::_physics_process(double delta) {
   step(inputs);
   auto stop = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-  // godot::UtilityFunctions::print("time spent in server:", (uint64_t)duration.count());
+  // godot::UtilityFunctions::print("time spent in server:", duration.count());
 }
 
 void FightingGameServer::_process(double delta) { 
@@ -260,9 +260,9 @@ void FightingGameServer::step(int inputs[]){
     }
   }
 
+  checkThrowCollisions();
   checkProximityAgainst(&player1, &player2);
   checkProximityAgainst(&player2, &player1);
-  checkThrowCollisions();
   checkProjectileCollisions(&player1, &player2);
   checkHitCollisions();
   checkTriggerCollisions();
@@ -1650,6 +1650,7 @@ bool log_game_state(char* filename, unsigned char* buffer, int frame){
 }
 
 bool free_buffer(void* buffer){
+  ::free(buffer);
   return true;
 }
 
@@ -1732,44 +1733,54 @@ godot::Dictionary FightingGameServer::getGameState() {
   return state;
 }
 
-void FightingGameServer::saveState(GameState* _stateObj){
-  _stateObj->roundStartCounter = roundStartCounter;
-  _stateObj->roundStart = roundStart;
-  _stateObj->roundWinner = roundWinner;
-  _stateObj->slowMode = slowMode;
-  _stateObj->frameCount = frameCount;
-  _stateObj->currentRound = currentRound;
-  _stateObj->shouldUpdate = shouldUpdate;
-  _stateObj->slowMode = slowMode;
-  _stateObj->slowDownCounter = slowDownCounter;
-  _stateObj->screenFreeze = screenFreeze;
-  _stateObj->screenFreezeLength = screenFreezeLength;
-  _stateObj->screenFreezeCounter = screenFreezeCounter;
-  _stateObj->netPlayState = netPlayState;
-  _stateObj->doneSync = doneSync;
+void FightingGameServer::saveState(){
+  ::free(myBuffer);
+  stateObj.roundStartCounter = roundStartCounter;
+  stateObj.roundStart = roundStart;
+  stateObj.roundWinner = roundWinner;
+  stateObj.slowMode = slowMode;
+  stateObj.frameCount = frameCount;
+  stateObj.currentRound = currentRound;
+  stateObj.shouldUpdate = shouldUpdate;
+  stateObj.slowMode = slowMode;
+  stateObj.slowDownCounter = slowDownCounter;
+  stateObj.screenFreeze = screenFreeze;
+  stateObj.screenFreezeLength = screenFreezeLength;
+  stateObj.screenFreezeCounter = screenFreezeCounter;
+  stateObj.netPlayState = netPlayState;
+  stateObj.doneSync = doneSync;
 
-  _stateObj->player1 = player1.saveState();
-  _stateObj->player2 = player2.saveState();
-  _stateObj->cameraState = camera.saveState();
+  stateObj.player1 = player1.saveState();
+  stateObj.player2 = player2.saveState();
+  stateObj.cameraState = camera.saveState();
+  myLen = sizeof(stateObj);
+  myBuffer = (unsigned char*)malloc(myLen);
+  if(!myBuffer) {
+    godot::UtilityFunctions::print("error creating buffer of len:!", myLen);
+  } else {
+    godot::UtilityFunctions::print("created buffer of len:!", myLen);
+    memcpy(myBuffer, &stateObj, myLen);
+  }
 }
 
-void FightingGameServer::loadState(GameState* _stateObj){
-  roundStartCounter = _stateObj->roundStartCounter;
-  roundStart = _stateObj->roundStart;
-  roundWinner = _stateObj->roundWinner;
-  slowMode = _stateObj->slowMode;
-  frameCount = _stateObj->frameCount;
-  currentRound = _stateObj->currentRound;
-  shouldUpdate = _stateObj->shouldUpdate;
-  slowMode = _stateObj->slowMode;
-  slowDownCounter = _stateObj->slowDownCounter;
-  screenFreeze = _stateObj->screenFreeze;
-  screenFreezeLength = _stateObj->screenFreezeLength;
-  screenFreezeCounter = _stateObj->screenFreezeCounter;
-  netPlayState = _stateObj->netPlayState;
-  doneSync = _stateObj->doneSync;
+void FightingGameServer::loadState(){
+  memcpy(&stateObj, myBuffer, myLen);
+  roundStartCounter = stateObj.roundStartCounter;
+  roundStart = stateObj.roundStart;
+  roundWinner = stateObj.roundWinner;
+  slowMode = stateObj.slowMode;
+  frameCount = stateObj.frameCount;
+  currentRound = stateObj.currentRound;
+  shouldUpdate = stateObj.shouldUpdate;
+  slowMode = stateObj.slowMode;
+  slowDownCounter = stateObj.slowDownCounter;
+  screenFreeze = stateObj.screenFreeze;
+  screenFreezeLength = stateObj.screenFreezeLength;
+  screenFreezeCounter = stateObj.screenFreezeCounter;
+  netPlayState = stateObj.netPlayState;
+  doneSync = stateObj.doneSync;
 
-  player1.loadState(_stateObj->player1);
-  player2.loadState(_stateObj->player2);
-  camera.loadState(_stateObj->cameraState);
+  player1.loadState(stateObj.player1);
+  player2.loadState(stateObj.player2);
+  camera.loadState(stateObj.cameraState);
 }

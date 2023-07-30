@@ -49,11 +49,5 @@
         $cancel_state 20;
       }
     }
-
-    if(kick){
-      if (!anyDown){
-        $cancel_state 15;
-      }
-    }
   }
 }

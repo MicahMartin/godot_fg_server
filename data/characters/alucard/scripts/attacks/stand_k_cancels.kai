@@ -17,6 +17,7 @@
     var qcf_k = $check_command 2;
     var qcb_p = $check_command 3;
     var slash = $was_pressed 12;
+    var kick = $was_pressed 11;
 
     var lb = $check_command 10;
 
@@ -58,6 +59,11 @@
         }
       } else {
         $cancel_state 20;
+      }
+    }
+    if(kick){
+      if (anyDown){
+        $cancel_state 22;
       }
     }
 

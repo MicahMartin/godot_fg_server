@@ -129,8 +129,8 @@ class FightingGameServer : public godot::Node{
         p2RoundsWon,
         time_passed = 0;
 
-    void saveState(GameState* stateObj);
-    void loadState(GameState* stateObj);
+    void saveState();
+    void loadState();
     unsigned char* mostRecentState;
     unsigned char* localSaveBuffer;
     int localSaveBufferLen;
@@ -149,6 +149,8 @@ class FightingGameServer : public godot::Node{
     VirtualController p1Vc;
     VirtualController p2Vc;
     Camera camera;
+    unsigned char* myBuffer = 0;
+    int myLen = 0;
 };
 
 #endif
