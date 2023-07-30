@@ -48,8 +48,8 @@
       "loop_animation": true,
       "collision_boxes": [
         {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
-        {"type": "HURT", "start": 1, "end": -1, "width":175, "height":200, "offsetX":-75, "offsetY": 0},
-        {"type": "THROW_HURT", "start": 1, "end": -1, "width":175, "height":200, "offsetX":-75, "offsetY": 0}
+        {"type": "HURT", "start": 1, "end": -1, "width":175, "height":250, "offsetX":-75, "offsetY": 0},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":175, "height":25, "offsetX":-75, "offsetY": 0}
       ]
     },
     {
@@ -123,7 +123,7 @@
       "animation_path": "stand_p",
       "collision_boxes": [
         {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
-        {"type": "HIT", "block_type": 1, "hitstun":10, "block_stun":4, "hitstop": 11, "damage":3, "push": 8000, "push_time": 8, "start": 5, "end": 6, "width":100, "height":110, "offsetX":75, "offsetY": 235, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "HIT", "block_type": 1, "hitstun":11, "block_stun":10, "hitstop": 11, "damage":3, "push": 8000, "push_time": 8, "start": 5, "end": 6, "width":100, "height":110, "offsetX":75, "offsetY": 200, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
         {"type": "PROXIMITY", "start": 1, "end": 16, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
         {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
         {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
@@ -414,7 +414,7 @@
       "animation_path": "crouch_p",
       "collision_boxes": [
         {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
-        {"type": "HIT", "block_type": 1, "hitstun":11, "block_stun":4, "hitstop": 11, "damage":1, "push": 8000, "push_time": 8,  "start": 9, "end": 10, "width":150, "height":60, "offsetX":100, "offsetY": 150, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "HIT", "block_type": 2, "hitstun":12, "block_stun":8, "hitstop": 11, "damage":1, "push": 8000, "push_time": 8,  "start": 9, "end": 10, "width":150, "height":60, "offsetX":100, "offsetY": 150, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
         {"type": "PROXIMITY", "start": 1, "end": 8, "width":290, "height":120, "offsetX":50, "offsetY": 100, "group": 1},
         {"type": "HURT", "start": 1, "end": -1, "width":175, "height":200, "offsetX":-75, "offsetY": 0},
         {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
@@ -559,7 +559,7 @@
       ],
       "collision_boxes": [
         {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
-        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":250, "offsetX":-75, "offsetY": 0}
       ]
     },
     {
@@ -1310,7 +1310,7 @@
       ],
       "collision_boxes": [
         {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
-        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":250, "offsetX":-75, "offsetY": 0}
       ],
       "visual_effects": [
         {"visualID": 7, "start": 1}
@@ -1497,7 +1497,7 @@
   ],
   "custom_states": [
     {
-      "state_num": 1,
+      "state_num": 6001,
       "state_name": "BEING_THROWN_FWD",
       "flags": [
         "NO_TURN"
@@ -1513,7 +1513,7 @@
       "collision_boxes": [ ]
     },
     {
-      "state_num": 2,
+      "state_num": 6002,
       "state_name": "BEING_THROWN_BACK",
       "flags": [
         "NO_TURN"

@@ -60,6 +60,8 @@ VirtualController::VirtualController() {
   // stateObj.prevInputState = 0;
   currentInputState = 0;
   prevInputState = 0;
+  isRecording = false;
+  isPlayback = false;
   for (int i = 0; i < inputHistory.capacity(); i++) {
     inputHistory.push_back(std::list<InputEvent>());
   }
@@ -73,6 +75,16 @@ void VirtualController::update(uint16_t input){
   // use gamestate 
   // stateObj.inputHistory.push_back(std::list<InputEvent>());
   inputHistory.push_back(std::list<InputEvent>());
+  if(isRecording){
+    recording.push_back(input);
+  } else if(isPlayback){
+    if(recordIterator == recording.end()){
+      togglePlayback();
+    } else {
+      input = *recordIterator;
+      ++recordIterator;
+    }
+  }
   // stateObj.prevInputState = currentInputState;
   prevInputState = currentInputState;
   uint8_t oldStickState = currentInputState & 0x0F;
@@ -275,4 +287,32 @@ void VirtualController::loadState(VirtualControllerObj stateObj){
   inputHistory = stateObj.inputHistory;
   prevInputState = stateObj.prevInputState;
   currentInputState = stateObj.currentInputState;
+}
+
+void VirtualController::toggleRecording(){
+  if(isPlayback){
+    return;
+  }
+  if(isRecording){
+    isRecording = false;
+    godot::UtilityFunctions::print("Recording stopped, size:", int(recording.size()));
+  } else {
+    recording.clear();
+    isRecording = true;
+    godot::UtilityFunctions::print("Recording started");
+  }
+}
+
+void VirtualController::togglePlayback(){
+  if(isRecording){
+    return;
+  }
+  if(isPlayback){
+    isPlayback = false;
+    godot::UtilityFunctions::print("Playback stopped");
+  } else {
+    isPlayback = true;
+    recordIterator = recording.begin();
+    godot::UtilityFunctions::print("Playback started");
+  }
 }

@@ -85,6 +85,9 @@ class VirtualController {
     VirtualControllerObj saveState();
     void loadState(VirtualControllerObj stateObj);
 
+    void toggleRecording();
+    void togglePlayback();
+
     uint16_t currentInputState;
     uint16_t prevInputState;
 
@@ -92,6 +95,11 @@ class VirtualController {
     static std::map<int, Input(*)(bool)> inputMap;
     static std::map<Input, const char*> inputToString;
   private:
+    bool isRecording = false;
+    bool isPlayback = false;
+    std::list<uint16_t> recording;
+    std::list<uint16_t>::iterator recordIterator; 
+    int recordingIndex = 0;
     CommandCompiler commandCompiler;
     CircularBuffer<std::list<InputEvent>> inputHistory{120};
 };

@@ -30,6 +30,7 @@ void Entity::activateEntity(){
   cancelPointer = 0;
   noGravityCounter = 0;
   frameLastAttackConnected = 0;
+  currentDurability = 0;
   inCorner = false;
   inHitStop = false;
   gravity = true;
@@ -378,6 +379,7 @@ EntityStateObj Entity::saveState(){
   stateObj.currentStateObj = currentState->saveState();
   stateObj.positionX = position.first;
   stateObj.positionY = position.second;
+  stateObj.currentDurability = currentDurability;
 
   return stateObj;
 }
@@ -406,6 +408,7 @@ void Entity::loadState(EntityStateObj stateObj){
   faceRight = stateObj.faceRight;
   inputFaceRight = stateObj.inputFaceRight;
   isDead = stateObj.isDead;
+  currentDurability = stateObj.currentDurability;
   updateFacing = stateObj.updateFacing;
   setCurrentState(stateObj.currentStateNum);
   currentState->loadState(stateObj.currentStateObj);

@@ -56,10 +56,8 @@ struct TriggerResult {
 
 class FightingGameServer : public godot::Node{
   GDCLASS(FightingGameServer, Node)
-  static FightingGameServer* singleton;
 
   public:
-    static FightingGameServer* getSingleton();
 
     FightingGameServer ();
     ~FightingGameServer ();

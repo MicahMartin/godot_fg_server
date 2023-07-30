@@ -24,6 +24,7 @@ struct EntityStateObj {
   int health = 1;
   int velocityX = 0;
   int velocityY = 0;
+  int currentDurability = 0;
   int positionX;
   int positionY;
   long frameLastAttackConnected = 0;

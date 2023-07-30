@@ -7,11 +7,6 @@
 #include <godot_cpp/godot.hpp>
 
 #include "FightingGameServer.h"
-
-/// @file
-/// Register our classes with Godot.
-
-static FightingGameServer* _singleton;
 namespace
 {
     /// @brief Called by Godot to let us register our classes with Godot.
@@ -27,11 +22,6 @@ namespace
         }
 
         godot::ClassDB::register_class<FightingGameServer>();
-        _singleton = memnew(FightingGameServer);
-        godot::Engine::get_singleton()->register_singleton("FightingGameServer", 
-            FightingGameServer::getSingleton());
-
-        // Register singleton
     }
 
     /// @brief Called by Godot to let us do any cleanup.
@@ -43,8 +33,6 @@ namespace
         {
             return;
         }
-        godot::Engine::get_singleton()->unregister_singleton("FightingGameServer");
-        memdelete(_singleton); // Segmentation fault with and without this line.
     }
 }
 
@@ -71,9 +59,7 @@ extern "C"
 
             init_obj.register_initializer( initializeExtension );
             init_obj.register_terminator( uninitializeExtension );
-            init_obj.set_minimum_library_initialization_level(
-                godot::MODULE_INITIALIZATION_LEVEL_SCENE );
-
+            init_obj.set_minimum_library_initialization_level( godot::MODULE_INITIALIZATION_LEVEL_SCENE );
             return init_obj.init();
         }
     }

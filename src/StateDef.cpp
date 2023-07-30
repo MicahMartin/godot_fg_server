@@ -121,11 +121,6 @@ void StateDef::init(nlohmann::json::value_type json, VirtualMachine* _charVm, fl
 
 
 StateDefObj StateDef::saveState(){
-  // std::unordered_map<CollisionBox*, CollisionBoxState> cbStates;
-  // for (auto i : collisionBoxes) {
-  //   cbStates[i] = i->saveState();
-  // }
-  //
   StateDefObj stateObj;
 
   stateObj.stateTime = stateTime;

@@ -211,9 +211,11 @@ void Character::changeState(int stateDefNum){
 };
 
 void Character::setCurrentState(int stateDefNum){
+  godot::UtilityFunctions::print("setting state from save:", stateDefNum);
   if(stateDefNum >= 6000){
     int theNum = stateDefNum - 6000;
     int customStateNum = stateCount + theNum;
+    godot::UtilityFunctions::print("loading custom state");
     // printf("the num:%d, the customStateNum%d\n", stateDefNum, customStateNum);
     currentState = &stateList.at(customStateNum-1);
   } else if (stateDefNum >= 5000) {

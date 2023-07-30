@@ -41,20 +41,12 @@ bool airHurtState(int playerNum, int state) {
       || state == characters[playerNum]->specialStateMap[SS_FLOAT_HURT_RECOVERY]);
 }
 
-FightingGameServer* FightingGameServer::singleton = nullptr;
-
 FightingGameServer::FightingGameServer() { 
   godot::UtilityFunctions::print("engine constructor");
-  singleton = this; 
 }
 
 FightingGameServer::~FightingGameServer() { 
   godot::UtilityFunctions::print("engine destructor");
-  singleton = nullptr;
-}
-
-FightingGameServer* FightingGameServer::getSingleton() {
-  return singleton;
 }
 
 void FightingGameServer::enter(){
@@ -107,6 +99,18 @@ void FightingGameServer::_physics_process(double delta) {
     return;
   }
   godot::Input* InputServer = godot::Input::get_singleton();
+  if(InputServer->is_action_just_released("v_save_state")){
+    saveState(&stateObj);
+  }
+  if(InputServer->is_action_just_released("v_load_state")){
+    loadState(&stateObj);
+  }
+  if(InputServer->is_action_just_released("v_toggle_recording")){
+    p1Vc.toggleRecording();
+  }
+  if(InputServer->is_action_just_released("v_toggle_playback")){
+    p1Vc.togglePlayback();
+  }
   int inputs[2] = {0};
   int inputFrame = 0;
   int inputAxisX = 0;
@@ -193,12 +197,6 @@ void FightingGameServer::_physics_process(double delta) {
   auto stop = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
   // godot::UtilityFunctions::print("time spent in server:", (uint64_t)duration.count());
-  if(InputServer->is_action_just_released("v_save_state")){
-    saveState(&stateObj);
-  }
-  if(InputServer->is_action_just_released("v_load_state")){
-    loadState(&stateObj);
-  }
 }
 
 void FightingGameServer::_process(double delta) { 
