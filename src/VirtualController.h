@@ -40,15 +40,19 @@ struct InputEvent {
   InputEvent(){}
   ~InputEvent(){}
 
-  uint16_t inputBit;
-  bool pressed;
+  uint16_t inputBit = -1;
+  bool pressed = 0;
   bool valid = true;
+};
+
+struct InputFrame {
+  int numEvents = 0;
+  InputEvent events[16];
 };
 
 struct VirtualControllerObj {
   int currentInputState;
   int prevInputState;
-  CircularBuffer<std::list<InputEvent>> inputHistory{120};
 };
 
 class CommandCompiler;
@@ -102,6 +106,7 @@ class VirtualController {
     int recordingIndex = 0;
     CommandCompiler commandCompiler;
     CircularBuffer<std::list<InputEvent>> inputHistory{120};
+    CircularBuffer<InputFrame> testHistory{120};
 };
 
 #endif

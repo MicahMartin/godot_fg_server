@@ -62,7 +62,7 @@ VirtualController::VirtualController() {
   prevInputState = 0;
   isRecording = false;
   isPlayback = false;
-  for (int i = 0; i < inputHistory.capacity(); i++) {
+  for (int i = 0; i < 120; i++) {
     inputHistory.push_back(std::list<InputEvent>());
   }
 }
@@ -74,7 +74,7 @@ VirtualController::~VirtualController() {
 void VirtualController::update(uint16_t input){
   // use gamestate 
   // stateObj.inputHistory.push_back(std::list<InputEvent>());
-  inputHistory.push_back(std::list<InputEvent>());
+  InputFrame currentFrame; 
   if(isRecording){
     recording.push_back(input);
   } else if(isPlayback){
@@ -85,36 +85,50 @@ void VirtualController::update(uint16_t input){
       ++recordIterator;
     }
   }
-  // stateObj.prevInputState = currentInputState;
+  inputHistory.push_back(std::list<InputEvent>());
+
   prevInputState = currentInputState;
-  uint8_t oldStickState = currentInputState & 0x0F;
+  uint8_t prevStickState = currentInputState & 0x0F;
 
-  // stateObj.currentInputState = input;
   currentInputState = input;
-  uint8_t newStickState = input & 0x0F;
+  uint8_t currentStickState = input & 0x0F;
 
-  if (oldStickState != newStickState) {
-    // Cardinal Events
-    if (oldStickState == 0) {
+  // Cardinal Events
+  if (prevStickState != currentStickState) {
+    if (prevStickState == 0) {
       // godot::UtilityFunctions::print("Neutral Release");
-      // stateObj.inputHistory.back().push_back(InputEvent(NOINPUT, false));
       inputHistory.back().push_back(InputEvent(NOINPUT, false));
-    }
-    else {
-      // godot::UtilityFunctions::print(inputToString[Input(oldStickState)], " Release");
-      // stateObj.inputHistory.back().push_back(InputEvent(oldStickState, false));
-      inputHistory.back().push_back(InputEvent(oldStickState, false));
+
+      currentFrame.events[currentFrame.numEvents] = InputEvent(NOINPUT, false);
+      currentFrame.numEvents++;
+      // testHistory.back()[eventCounter] = InputEvent(NOINPUT, false);
+      // eventCounter++;
+    } else {
+      // godot::UtilityFunctions::print(inputToString[Input(prevStickState)], " Release");
+      inputHistory.back().push_back(InputEvent(prevStickState, false));
+
+      currentFrame.events[currentFrame.numEvents] = InputEvent(prevStickState, false);
+      currentFrame.numEvents++;
+      // testHistory.back()[eventCounter] = InputEvent(prevStickState, false);
+      // eventCounter++;
     }
 
-    if (newStickState == 0) {
+    if (currentStickState == 0) {
       // godot::UtilityFunctions::print("Neutral Press");
-      // stateObj.inputHistory.back().push_back(InputEvent(NOINPUT, true));
       inputHistory.back().push_back(InputEvent(NOINPUT, true));
-    }
-    else {
-      // godot::UtilityFunctions::print(inputToString[Input(newStickState)], " Press");
-      // stateObj.inputHistory.back().push_back(InputEvent(newStickState, true));
-      inputHistory.back().push_back(InputEvent(newStickState, true));
+
+      currentFrame.events[currentFrame.numEvents] = InputEvent(NOINPUT, true);
+      currentFrame.numEvents++;
+      // testHistory.back()[eventCounter] = InputEvent(NOINPUT, true);
+      // eventCounter++;
+    } else {
+      // godot::UtilityFunctions::print(inputToString[Input(currentStickState)], " Press");
+      inputHistory.back().push_back(InputEvent(currentStickState, true));
+
+      currentFrame.events[currentFrame.numEvents] = InputEvent(currentStickState, true);
+      currentFrame.numEvents++;
+      // testHistory.back()[eventCounter] = InputEvent(currentStickState, true);
+      // eventCounter++;
     }
 
   }
@@ -122,22 +136,28 @@ void VirtualController::update(uint16_t input){
 
 
   // Button Presses
-  std::bitset<16> oldButtonState(prevInputState);
-  std::bitset<16> newButtonState(currentInputState);
+  std::bitset<16> prevButtonState(prevInputState);
+  std::bitset<16> currentButtonState(currentInputState);
   for (int i = 4; i < 10; ++i) {
     uint16_t mask = 0;
     mask |= (1 << i);
-    if (newButtonState.test(i) && !oldButtonState.test(i)) {
-      godot::UtilityFunctions::print(inputToString[Input(mask)], " Press");
-      // stateObj.inputHistory.back().push_back(InputEvent(mask, true));
+    if (currentButtonState.test(i) && !prevButtonState.test(i)) {
+      // godot::UtilityFunctions::print(inputToString[Input(mask)], " Press");
       inputHistory.back().push_back(InputEvent(mask, true));
-    }
-    else if (!newButtonState.test(i) && oldButtonState.test(i)) {
-      godot::UtilityFunctions::print(inputToString[Input(mask)], " Release");
-      // stateObj.inputHistory.back().push_back(InputEvent(mask, false));
+      currentFrame.events[currentFrame.numEvents] = InputEvent(mask, true);
+      currentFrame.numEvents++;
+      // testHistory.back()[eventCounter] = InputEvent(mask, true);
+      // eventCounter++;
+    } else if (!currentButtonState.test(i) && prevButtonState.test(i)) {
+      // godot::UtilityFunctions::print(inputToString[Input(mask)], " Release");
       inputHistory.back().push_back(InputEvent(mask, false));
+      currentFrame.events[currentFrame.numEvents] = InputEvent(mask, false);
+      currentFrame.numEvents++;
+      // testHistory.back()[eventCounter] = InputEvent(mask, false);
+      // eventCounter++;
     }
   }
+  testHistory.push_back(currentFrame);
 }
 
 void VirtualController::initCommandCompiler(const char* path) { 
@@ -215,21 +235,19 @@ bool VirtualController::isPressed(Input input, bool strict) {
 }
 
 bool VirtualController::checkCommand(int commandIndex, bool faceRight) {
-  // printf("in checkCommand\n");
-  // damn I used to be smart af
   bool foundPart = false;
   bool foundCommand = false;
   bool breakFlag = false;
+  bool firstFind = true;
   int searchOffset = 0;
   int firstFindOffet = 0;
-  bool firstFind = true;
 
   if (commandIndex >= commandCompiler.commands.size()) {
     return false;
   }
 
-  bool clears = commandCompiler.commands[commandIndex].clears;
   std::vector<CommandNode>* command = &commandCompiler.commands[commandIndex].command;
+  bool clears = commandCompiler.commands[commandIndex].clears;
   for (int i = command->size() - 1; i >= 0 && !breakFlag; i--) {
     CommandNode& funcNode = (*command)[i];
 
@@ -275,18 +293,33 @@ bool VirtualController::checkCommand(int commandIndex, bool faceRight) {
 
 VirtualControllerObj VirtualController::saveState(){
   VirtualControllerObj stateObj;
-
-  stateObj.inputHistory = inputHistory;
   stateObj.prevInputState = prevInputState;
   stateObj.currentInputState = currentInputState;
-
+  // for (int i = 0; i < 120; i++) {
+  //   stateObj.foobar[i] = 0;
+  //   if(inputHistory[i].size() > 0){
+  //     int counter = 0;
+  //     for (auto const& event : inputHistory[i]) {
+  //       stateObj.serializedInput[i][counter] = event;
+  //       counter++;
+  //     }
+  //     stateObj.foobar[i] = counter;
+  //   }
+  // }
   return stateObj;
 }
 
 void VirtualController::loadState(VirtualControllerObj stateObj){
-  inputHistory = stateObj.inputHistory;
   prevInputState = stateObj.prevInputState;
   currentInputState = stateObj.currentInputState;
+  // inputHistory.clear();
+  // for (int i = 0; i < 120; i++) {
+  //   if(stateObj.foobar[i] > 0){
+  //     for (int x = 0; x < stateObj.foobar[i]; x++) {
+  //       inputHistory[i].push_back(stateObj.serializedInput[i][x]);
+  //     }
+  //   }
+  // }
 }
 
 void VirtualController::toggleRecording(){

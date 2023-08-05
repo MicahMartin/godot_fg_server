@@ -69,7 +69,7 @@ public:
   void draw(std::pair<int,int> position, bool faceRight, bool inHitStop);
   void drawCollisionBoxes();
 
-  StateDefObj saveState();
+  StateDefObj* saveState();
   void loadState(StateDefObj stateObj);
 
   void resetAnim();
@@ -112,6 +112,7 @@ public:
   std::string charName = "";
   std::string animationPath = "";
 
+  StateDefObj stateObj;
 private:
   static std::map<std::string, FlagBit> flagMap;
   uint8_t flagByte = 0;

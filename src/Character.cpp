@@ -46,9 +46,9 @@ void Character::init(const char* path){
 
 CharStateObj Character::saveState(){
   CharStateObj stateObj;
-
-  stateObj.positionX = position.first;
-  stateObj.positionY = position.second;
+  if(playerNum == 2){
+    // godot::UtilityFunctions::print("In char save state, the cancelPointer:", cancelPointer, " stateNum:", currentState->stateNum);
+  }
   stateObj.control = control;
   stateObj.hitstun = hitstun;
   stateObj.blockstun = blockstun;
@@ -58,6 +58,7 @@ CharStateObj Character::saveState(){
   stateObj.comebackCounter = comebackCounter;
   stateObj.hasAirAction = hasAirAction;
   stateObj.comboCounter = comboCounter;
+  stateObj.cancelPointer = cancelPointer;
   stateObj.noGravityCounter = noGravityCounter;
   stateObj.velocityX = velocityX;
   stateObj.velocityY = velocityY;
@@ -70,43 +71,37 @@ CharStateObj Character::saveState(){
   stateObj.hitPushVelY = hitPushVelY;
   stateObj.meter = meter;
   stateObj.comeback = comeback;
+  stateObj.flashCounter = flashCounter;
+  stateObj.auraID = auraID;
+  stateObj.timeInHitstun = timeInHitstun;
+  stateObj.hurtGravity = hurtGravity;
   stateObj.frameLastAttackConnected = frameLastAttackConnected;
+  stateObj.currentState = currentState->stateNum;
+  stateObj.positionX = position.first;
+  stateObj.positionY = position.second;
+
   stateObj.inCorner = inCorner;
   stateObj.inHitStop = inHitStop;
   stateObj.gravity = gravity;
   stateObj.isDead = isDead;
   stateObj.faceRight = faceRight;
   stateObj.inputFaceRight = inputFaceRight;
-  stateObj.currentHurtSoundID = currentHurtSoundID;
-  stateObj.soundChannel = soundChannel;
-  stateObj.flashCounter = flashCounter;
   stateObj.isRed = isRed;
   stateObj.isGreen = isGreen;
   stateObj.isLight = isLight;
   stateObj.installMode = installMode;
-  stateObj.auraActive = auraActive;
-  stateObj.auraID = auraID;
-
-  stateObj.timeInHitstun = timeInHitstun;
-  stateObj.hurtGravity = hurtGravity;
   stateObj.canThrow = canThrow;
+  stateObj.auraActive = auraActive;
 
-  stateObj.cancelPointer = cancelPointer;
-  stateObj.currentState = currentState->stateNum;
-  stateObj.stateDefObj = currentState->saveState();
-  stateObj.virtualControllerObj = virtualController->saveState();
-
-  for (int i = 0; i < entityList.size(); ++i) {
+  stateObj.stateDefObj = *currentState->saveState();
+  for (int i = 0; i < entityList.size(); i++) {
     stateObj.entityStates[i] = entityList[i].saveState();
   }
-
+  stateObj.virtualControllerObj = virtualController->saveState();
   return stateObj;
 }
 
 void Character::loadState(CharStateObj stateObj){
-
-  position.first = stateObj.positionX;
-  position.second = stateObj.positionY;
   control = stateObj.control;
   hitstun = stateObj.hitstun;
   blockstun = stateObj.blockstun;
@@ -116,6 +111,7 @@ void Character::loadState(CharStateObj stateObj){
   comebackCounter = stateObj.comebackCounter;
   hasAirAction = stateObj.hasAirAction;
   comboCounter = stateObj.comboCounter;
+  cancelState(stateObj.cancelPointer);
   noGravityCounter = stateObj.noGravityCounter;
   velocityX = stateObj.velocityX;
   velocityY = stateObj.velocityY;
@@ -128,28 +124,30 @@ void Character::loadState(CharStateObj stateObj){
   hitPushVelY = stateObj.hitPushVelY;
   meter = stateObj.meter;
   comeback = stateObj.comeback;
+  flashCounter = stateObj.flashCounter;
+  auraID = stateObj.auraID;
+  timeInHitstun = stateObj.timeInHitstun;
+  hurtGravity = stateObj.hurtGravity;
   frameLastAttackConnected = stateObj.frameLastAttackConnected;
+  setCurrentState(stateObj.currentState);
+  position.first = stateObj.positionX;
+  position.second = stateObj.positionY;
+
   inCorner = stateObj.inCorner;
   inHitStop = stateObj.inHitStop;
   gravity = stateObj.gravity;
   isDead = stateObj.isDead;
   faceRight = stateObj.faceRight;
   inputFaceRight = stateObj.inputFaceRight;
-  currentHurtSoundID = stateObj.currentHurtSoundID;
-  soundChannel = stateObj.soundChannel;
-  flashCounter = stateObj.flashCounter;
   isRed = stateObj.isRed;
   isGreen = stateObj.isGreen;
   isLight = stateObj.isLight;
   installMode = stateObj.installMode;
+  canThrow = stateObj.canThrow;
   auraActive = stateObj.auraActive;
-  auraID = stateObj.auraID;
-
-  cancelPointer = stateObj.cancelPointer;
-  setCurrentState(stateObj.currentState);
+  
   currentState->loadState(stateObj.stateDefObj);
-
-  for (int i = 0; i < entityList.size(); ++i) {
+  for (int i = 0; i < entityList.size(); i++) {
     entityList[i].loadState(stateObj.entityStates[i]);
   }
   virtualController->loadState(stateObj.virtualControllerObj);
@@ -211,7 +209,7 @@ void Character::changeState(int stateDefNum){
 };
 
 void Character::setCurrentState(int stateDefNum){
-  godot::UtilityFunctions::print("setting state from save:", stateDefNum);
+  // godot::UtilityFunctions::print("setting state from save:", stateDefNum);
   if(stateDefNum >= 6000){
     int theNum = stateDefNum - 6000;
     int customStateNum = stateCount + theNum;
@@ -286,10 +284,10 @@ void Character::loadStates(const char* path){
   // load states
   printf("loading states\n");
   for(auto i : stateJson.at("states").items()){
-    StateDef* newStateDef = &stateList.emplace_back();
-    newStateDef->owner = this;
-    newStateDef->charName = charName;
-    newStateDef->init(i.value(), &virtualMachine, animScale);
+    auto& newStateDef = stateList.emplace_back();
+    newStateDef.owner = this;
+    newStateDef.charName = charName;
+    newStateDef.init(i.value(), &virtualMachine, animScale);
   }
 
   printf("loading entities\n");
@@ -298,7 +296,8 @@ void Character::loadStates(const char* path){
     if (i.value().count("defPath")) {
       std::string defString = i.value().at("defPath");
       printf("the defPath %s\n", defString.c_str());
-      entityList.emplace_back(this, i.value().at("entityID"), defString.c_str()).init();
+      auto& newEntity = entityList.emplace_back(this, i.value().at("entityID"), defString.c_str());
+      newEntity.init();
       printf("done loading entities\n");
     }
   }
@@ -422,12 +421,15 @@ void Character::loadCustomStates(const char* path){
 Character::~Character(){};
 
 void Character::handleInput(){ 
+  // hmm? can we call 3 scripts per frame?
+  // how many times can we change state per frame?
   tensionGained = 0;
   if(cancelPointer != 0 && !inHitStop){
     changeState(cancelPointer);
   }
 
   if(control){
+    // vmCalls++;
     virtualMachine.execute(&inputScript);
   }
 };
@@ -511,6 +513,8 @@ void Character::update(){
   }
 
   // godot::UtilityFunctions::print("stateTime:", currentState->stateTime);
+  // vmCalls++;
+  //TODO: Should i be running the vm 3 times a frame??
   currentState->update();
 
   updatePosition();

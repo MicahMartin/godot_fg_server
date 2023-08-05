@@ -11,9 +11,9 @@
 //#include "VisualEffect.h"
 #include "Entity.h"
 
+const int ENTITY_MAX = 3;
 struct CharStateObj {
-  int tensionGained,
-  control,
+  int control,
   hitstun,
   blockstun,
   hitStop,
@@ -25,8 +25,6 @@ struct CharStateObj {
   cancelPointer,
   noGravityCounter,
   velocityX,
-  momentum,
-  mass,
   velocityY,
   health,
   redHealth,
@@ -37,17 +35,14 @@ struct CharStateObj {
   hitPushVelY,
   meter,
   comeback,
-  currentHurtSoundID,
-  soundChannel,
   flashCounter,
   auraID,
-  positionX,
-  currentState,
-  inputState,
-  inputPrevState,
   timeInHitstun,
   hurtGravity,
-  positionY = 0;
+  frameLastAttackConnected,
+  currentState,
+  positionX,
+  positionY;
 
   bool inCorner,
   inHitStop,
@@ -60,13 +55,11 @@ struct CharStateObj {
   isLight,
   installMode,
   canThrow,
-  auraActive = false;
-
-  long frameLastAttackConnected = 0;
+  auraActive;
 
   StateDefObj stateDefObj;
-  EntityStateObj entityStates[3];
   VirtualControllerObj virtualControllerObj;
+  EntityStateObj entityStates[1];
 };
 
 typedef enum {
@@ -137,6 +130,7 @@ public:
   CharStateObj saveState();
   void loadState(CharStateObj stateObj);
   int stateCount = 0;
+  int vmCalls = 0;
 
   // position stuff
   std::pair<int,int> getPos();
@@ -149,6 +143,7 @@ public:
   void updateCollisionBoxPositions();
   void updateCollisionBoxes();
   void activateVisFX(int visID);
+  void countVmCalls(int frameCount);
   int getSoundChannel();
   int getAnimScale();
   bool hurtState(int state);
@@ -295,6 +290,7 @@ public:
   // std::unordered_map<int, SoundObj> soundsEffects;
   // std::unordered_map<int, SoundObj> hurtSoundEffects;
   std::unordered_map<SpecialState, int> specialStateMap;
+  int prevFrame = 0;
 private:
   nlohmann::json stateJson;
   std::vector<StateDef> stateList;

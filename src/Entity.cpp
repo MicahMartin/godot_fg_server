@@ -376,7 +376,7 @@ EntityStateObj Entity::saveState(){
   stateObj.isDead = isDead;
   stateObj.updateFacing = updateFacing;
   stateObj.currentStateNum = currentState->stateNum;
-  stateObj.currentStateObj = currentState->saveState();
+  stateObj.currentStateObj = *currentState->saveState();
   stateObj.positionX = position.first;
   stateObj.positionY = position.second;
   stateObj.currentDurability = currentDurability;

@@ -7,16 +7,47 @@
 #include <bitset>
 #include <godot_cpp/variant/variant.hpp>
 #include <godot_cpp/variant/vector2.hpp>
-
 #include "FightingGameServer.h"
+#include "ggponet.h"
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
-GGPOSession* ggpo = nullptr;
-GGPOErrorCode result;
-GGPOSessionCallbacks cb;
+#define SYNC_TEST
+
+GGPOSession* ggpo;
+// GGPOSessionCallbacks cb;
+GGPOPlayer p1, p2;
+GGPOPlayerHandle player_handles[2];
+GGPOPlayerHandle* local_player_handle;
+
 GameState stateObj;
-
+FightingGameServer* fgServer;
 Character* characters[2];
+godot::Input* InputServer;
+
+int fletcher32_checksum(short *data, size_t len) {
+   int sum1 = 0xffff, sum2 = 0xffff;
+
+   while (len) {
+      size_t tlen = len > 360 ? 360 : len;
+      len -= tlen;
+      do {
+         sum1 += *data++;
+         sum2 += sum1;
+      } while (--tlen);
+      sum1 = (sum1 & 0xffff) + (sum1 >> 16);
+      sum2 = (sum2 & 0xffff) + (sum2 >> 16);
+   }
+
+   /* Second reduction step to reduce sums to 16 bits */
+   sum1 = (sum1 & 0xffff) + (sum1 >> 16);
+   sum2 = (sum2 & 0xffff) + (sum2 >> 16);
+   return sum2 << 16 | sum1;
+}
 
 bool blockState(int playerNum, int state) {
   return (state == characters[playerNum]->specialStateMap[SS_BLOCK_STAND]
@@ -51,6 +82,9 @@ FightingGameServer::~FightingGameServer() {
 
 void FightingGameServer::enter(){
   godot::UtilityFunctions::print(std::filesystem::current_path().c_str());
+  netPlayState = true;
+  netPnum = 1;
+  fgServer = this;
   characters[0] = &player1;
   characters[1] = &player2;
 
@@ -82,6 +116,9 @@ void FightingGameServer::enter(){
   roundStartCounter = 60;
   roundStart = true;
   slowMode = false;
+  if(netPlayState){
+    ggpoInit();
+  }
 }
 void FightingGameServer::_ready() { 
   if(godot::Engine::get_singleton()->is_editor_hint()){
@@ -89,16 +126,64 @@ void FightingGameServer::_ready() {
     return;
   }
   godot::UtilityFunctions::print("in ready");
+  InputServer = godot::Input::get_singleton();
   enter();
 }
 
-void FightingGameServer::_physics_process(double delta) {
-  auto start = std::chrono::high_resolution_clock::now();
-  if(godot::Engine::get_singleton()->is_editor_hint()){
-    //man wtf?
-    return;
+int FightingGameServer::readGodotInputs(int pNum){
+  int inputFrame = 0;
+  int inputAxisX = 0;
+  int inputAxisY = 0;
+  std::string prefix = pNum == 1 ? "p1_":"p2_";
+  std::string right = prefix + "right";
+  std::string left = prefix + "left";
+  std::string up = prefix + "up";
+  std::string down = prefix + "down";
+  std::string buttonA = prefix + "button_A";
+  std::string buttonB = prefix + "button_B";
+  std::string buttonC = prefix + "button_C";
+  std::string buttonD = prefix + "button_D";
+  if(InputServer->is_action_pressed(right.c_str())){
+    inputAxisX++;
   }
-  godot::Input* InputServer = godot::Input::get_singleton();
+  if(InputServer->is_action_pressed(left.c_str())){
+    inputAxisX--;
+  }
+  if(InputServer->is_action_pressed(up.c_str())){
+    inputAxisY++;
+  }
+  if(InputServer->is_action_pressed(down.c_str())){
+    inputAxisY--;
+  }
+  if(InputServer->is_action_pressed(buttonA.c_str())){
+    inputFrame |= LP;
+  }
+  if(InputServer->is_action_pressed(buttonB.c_str())){
+    inputFrame |= LK;
+  }
+  if(InputServer->is_action_pressed(buttonC.c_str())){
+    inputFrame |= MP;
+  }
+  if(InputServer->is_action_pressed(buttonD.c_str())){
+    inputFrame |= MK;
+  }
+
+  if(inputAxisX == 1){
+    inputFrame |= RIGHT;
+  }
+  if(inputAxisX == -1){
+    inputFrame |= LEFT;
+  }
+  if(inputAxisY == 1){
+    inputFrame |= UP;
+  }
+  if(inputAxisY == -1){
+    inputFrame |= DOWN;
+  }
+  return inputFrame;
+}
+
+void FightingGameServer::readGodotTrainingInput(){
   if(InputServer->is_action_just_released("v_save_state")){
     saveState();
   }
@@ -111,99 +196,46 @@ void FightingGameServer::_physics_process(double delta) {
   if(InputServer->is_action_just_released("v_toggle_playback")){
     p1Vc.togglePlayback();
   }
+}
+
+void FightingGameServer::_physics_process(double delta) {
+  if(godot::Engine::get_singleton()->is_editor_hint()){ return; }
+  if(netPlayState){
+    ggpo_idle(ggpo, 1);
+  }
+  GGPOErrorCode result = GGPO_OK;
+  int disconnectFlags;
+  // readGodotTrainingInput();
+
   int inputs[2] = {0};
-  int inputFrame = 0;
-  int inputAxisX = 0;
-  int inputAxisY = 0;
-  if(InputServer->is_action_pressed("v_right")){
-    inputAxisX++;
-  }
-  if(InputServer->is_action_pressed("v_left")){
-    inputAxisX--;
-  }
-  if(InputServer->is_action_pressed("v_up")){
-    inputAxisY++;
-  }
-  if(InputServer->is_action_pressed("v_down")){
-    inputAxisY--;
-  }
-  if(InputServer->is_action_pressed("v_button_A")){
-    inputFrame |= LP;
-  }
-  if(InputServer->is_action_pressed("v_button_B")){
-    inputFrame |= LK;
-  }
-  if(InputServer->is_action_pressed("v_button_C")){
-    inputFrame |= MP;
-  }
-  if(InputServer->is_action_pressed("v_button_D")){
-    inputFrame |= MK;
-  }
-  if(inputAxisX == 1){
-    inputFrame |= RIGHT;
-  }
-  if(inputAxisX == -1){
-    inputFrame |= LEFT;
-  }
-  if(inputAxisY == 1){
-    inputFrame |= UP;
-  }
-  if(inputAxisY == -1){
-    inputFrame |= DOWN;
+  // inputs[0] = readGodotInputs(1);
+  // inputs[1] = readGodotInputs(2);
+#if defined(SYNC_TEST)
+  inputs[0] = 0; // test: use random inputs to demonstrate sync testing
+#endif
+
+  if(netPlayState){
+    result = ggpo_add_local_input(ggpo, player_handles[0], &inputs[0], sizeof(inputs[0]));
+    if (GGPO_SUCCEEDED(result)) {
+      result = ggpo_synchronize_input(ggpo, (void *)inputs, sizeof(int) * 2, &disconnectFlags);
+      if (GGPO_SUCCEEDED(result)) {
+        // inputs[0] and inputs[1] contain the inputs for p1 and p2.  Advance
+        // the game by 1 frame using those inputs.
+        step(inputs);
+      }
+    }
+
+  } else {
+    step(inputs);
   }
 
-  inputs[0] = inputFrame;
-  inputFrame = 0;
-  inputAxisX = 0;
-  inputAxisY = 0;
-  if(InputServer->is_action_pressed("v2_right")){
-    inputAxisX++;
-  }
-  if(InputServer->is_action_pressed("v2_left")){
-    inputAxisX--;
-  }
-  if(InputServer->is_action_pressed("v2_up")){
-    inputAxisY++;
-  }
-  if(InputServer->is_action_pressed("v2_down")){
-    inputAxisY--;
-  }
-  if(InputServer->is_action_pressed("v2_button_A")){
-    inputFrame |= LP;
-  }
-  if(InputServer->is_action_pressed("v2_button_B")){
-    inputFrame |= LK;
-  }
-  if(InputServer->is_action_pressed("v2_button_C")){
-    inputFrame |= MP;
-  }
-  if(InputServer->is_action_pressed("v2_button_D")){
-    inputFrame |= MK;
-  }
-  if(inputAxisX == 1){
-    inputFrame |= RIGHT;
-  }
-  if(inputAxisX == -1){
-    inputFrame |= LEFT;
-  }
-  if(inputAxisY == 1){
-    inputFrame |= UP;
-  }
-  if(inputAxisY == -1){
-    inputFrame |= DOWN;
-  }
-  inputs[1] = inputFrame;
-  step(inputs);
-  auto stop = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+  // auto stop = std::chrono::high_resolution_clock::now();
+  // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
   // godot::UtilityFunctions::print("time spent in server:", duration.count());
 }
 
 void FightingGameServer::_process(double delta) { 
-  if(godot::Engine::get_singleton()->is_editor_hint()){
-    //man wtf?
-    return;
-  }
+  if(godot::Engine::get_singleton()->is_editor_hint()){ return; }
 }
 
 void FightingGameServer::_bind_methods() { 
@@ -215,9 +247,6 @@ void FightingGameServer::_bind_methods() {
 void FightingGameServer::step(int inputs[]){
   p1Vc.update(inputs[0]);
   p2Vc.update(inputs[1]);
-  if (!shouldUpdate || (netPlayState && !doneSync)) {
-    return;
-  }
   frameCount++;
 
 
@@ -244,7 +273,7 @@ void FightingGameServer::step(int inputs[]){
         i.handleInput();
       }
     }
-    checkThrowTechs();
+    // checkThrowTechs();
   }
 
   player1.currentState->handleCancels();
@@ -270,10 +299,6 @@ void FightingGameServer::step(int inputs[]){
   checkCorner(&player2);
   checkBounds();
   updateFaceRight();
-
-  if (!shouldUpdate || (netPlayState && !doneSync)) {
-    return;
-  }
 
   if (!slowMode && !screenFreeze) {
     if (!player1.inHitStop) {
@@ -309,6 +334,7 @@ void FightingGameServer::step(int inputs[]){
   }
 
 
+  //TODO: Fix redundancies
   checkBounds();
   updateFaceRight();
   checkCorner(&player1);
@@ -355,52 +381,18 @@ void FightingGameServer::step(int inputs[]){
     }
   }
   // updateVisuals();
+  if(netPlayState){
+    ggpo_advance_frame(ggpo);
+  }
 }
 
 
 void FightingGameServer::handleRoundStart(){
   if (roundStartCounter > 0) {
-    // godot::UtilityFunctions::print("ROUND START: ", roundStartCounter);
-    // printf("roundStarTCounter!:%d\n", roundStartCounter);
     if (--roundStartCounter == 0) {
-      // stateObj.player1.control = 1;
-      // stateObj.player2.control = 1;
       player1.control = 1;
       player2.control = 1;
-      // stateObj.roundStart = false;
       roundStart = false;
-    }
-    // if (roundStartCounter == 200) {
-    //     matchIntroPopup.setStateTime(0);
-    //     matchIntroPopup.setActive(true);
-    //     Mix_PlayChannel(0, yawl_ready, 0);
-    // }
-    if (roundStartCounter == 130) {
-      switch (currentRound) {
-        case 0:
-          // round1.setStateTime(0);
-          // round1.setActive(true);
-          // Mix_PlayChannel(0, round1Sound, 0);
-          break;
-        case 1:
-          // round2Popup.setStateTime(0);
-          // round2Popup.setActive(true);
-          // Mix_PlayChannel(0, round2Sound, 0);
-          break;
-        case 2:
-          // finalRoundPopup.setStateTime(0);
-          // finalRoundPopup.setActive(true);
-          // Mix_PlayChannel(0, finalRoundSound, 0);
-          break;
-        default:
-          break;
-      }
-    }
-
-    if (roundStartCounter == 60) {
-      // fightPopup.setStateTime(0);
-      // fightPopup.setActive(true);
-      // Mix_PlayChannel(0, fightSound, 0);
     }
   }
 }
@@ -1622,47 +1614,6 @@ void FightingGameServer::updateVisuals(){
 }
 
 
-//** GGPO **//
-bool advance_frame_callback(int frame){
-  int inputs[2] = { 0 };
-  int disconnectFlags;
-  ggpo_synchronize_input(ggpo, (void*) inputs, sizeof(int) * 2, &disconnectFlags);
-  return true;
-}
-
-bool save_state_callback(unsigned char** buffer, int* len, int* checksum, int frame){
-  *len = sizeof(stateObj);
-  *buffer = (unsigned char*)malloc(*len);
-  if(!*buffer) {
-    return false;
-  }
-  memcpy(*buffer, &stateObj, *len);
-  return true;
-}
-
-bool load_state_callback(unsigned char* buffer, int len){
-  memcpy(&stateObj, buffer, len);
-  return true;
-}
-
-bool log_game_state(char* filename, unsigned char* buffer, int frame){
-  return true;
-}
-
-bool free_buffer(void* buffer){
-  ::free(buffer);
-  return true;
-}
-
-bool begin_game_callback(const char* message){ 
-  return true; 
-}
-
-bool on_event_callback(GGPOEvent* info){ 
-  return true; 
-}
-
-
 //** GODOT FUNCTIONS **//
 godot::String FightingGameServer::getModelName(int p_charNum) { 
   return characters[p_charNum]->modelName.c_str();
@@ -1733,8 +1684,129 @@ godot::Dictionary FightingGameServer::getGameState() {
   return state;
 }
 
+//** GGPO **//
+bool begin_game_callback(const char* message){ 
+  godot::UtilityFunctions::print("GGPO SESSION STARTED");
+  return true; 
+}
+
+bool on_event_callback(GGPOEvent* info){
+  int progress;
+  switch (info->code) {
+    case GGPO_EVENTCODE_CONNECTED_TO_PEER:
+      godot::UtilityFunctions::print("GGPO player:",info->u.connected.player, " is connecting");
+      // ngs.SetConnectState(info->u.connected.player, Synchronizing);
+      break;
+    case GGPO_EVENTCODE_SYNCHRONIZING_WITH_PEER:
+      progress = 100 * info->u.synchronizing.count / info->u.synchronizing.total;
+      godot::UtilityFunctions::print("GGPO player:", info->u.connected.player, " progress:",  progress);
+      // ngs.UpdateConnectProgress(info->u.synchronizing.player, progress);
+      break;
+    case GGPO_EVENTCODE_SYNCHRONIZED_WITH_PEER:
+      godot::UtilityFunctions::print("GGPO player:",info->u.connected.player, " done connecting");
+      // ngs.UpdateConnectProgress(info->u.synchronized.player, 100);
+      break;
+    case GGPO_EVENTCODE_RUNNING:
+      godot::UtilityFunctions::print("GGPO running");
+      // ngs.SetConnectState(Running);
+      // renderer->SetStatusText("");
+      break;
+    case GGPO_EVENTCODE_CONNECTION_INTERRUPTED:
+      godot::UtilityFunctions::print("GGPO connection interrupted");
+      // ngs.SetDisconnectTimeout(info->u.connection_interrupted.player, timeGetTime(), info->u.connection_interrupted.disconnect_timeout);
+      break;
+    case GGPO_EVENTCODE_CONNECTION_RESUMED:
+      godot::UtilityFunctions::print("GGPO connection resumed");
+      // ngs.SetConnectState(info->u.connection_resumed.player, Running);
+      break;
+    case GGPO_EVENTCODE_DISCONNECTED_FROM_PEER:
+      godot::UtilityFunctions::print("GGPO connection disconnected");
+      // ngs.SetConnectState(info->u.disconnected.player, Disconnected);
+      break;
+    case GGPO_EVENTCODE_TIMESYNC:
+      godot::UtilityFunctions::print("GGPO timesync");
+#ifdef _WIN32
+      Sleep(1000 * info->u.timesync.frames_ahead / 60);
+#else
+      sleep(1000 * info->u.timesync.frames_ahead / 60);
+#endif
+      break;
+  }
+  return true;
+}
+
+bool advance_frame_callback(int frame){
+  int inputs[2] = { 0 };
+  int disconnectFlags;
+  ggpo_synchronize_input(ggpo, (void*) inputs, sizeof(int) * 2, &disconnectFlags);
+  fgServer->step(inputs);
+  return true;
+}
+
+bool save_state_callback(unsigned char** buffer, int* len, int* checksum, int frame){
+  stateObj.roundStartCounter = fgServer->roundStartCounter;
+  stateObj.roundStart = fgServer->roundStart;
+  stateObj.roundWinner = fgServer->roundWinner;
+  stateObj.slowMode = fgServer->slowMode;
+  stateObj.frameCount = fgServer->frameCount;
+  stateObj.currentRound = fgServer->currentRound;
+  stateObj.shouldUpdate = fgServer->shouldUpdate;
+  stateObj.slowMode = fgServer->slowMode;
+  stateObj.slowDownCounter = fgServer->slowDownCounter;
+  stateObj.screenFreeze = fgServer->screenFreeze;
+  stateObj.screenFreezeLength = fgServer->screenFreezeLength;
+  stateObj.screenFreezeCounter = fgServer->screenFreezeCounter;
+  stateObj.netPlayState = fgServer->netPlayState;
+
+  stateObj.player1 = fgServer->player1.saveState();
+  stateObj.player2 = fgServer->player2.saveState();
+  stateObj.cameraState = fgServer->camera.saveState();
+
+  *len = sizeof(stateObj);
+  *buffer = (unsigned char*)malloc(*len);
+  if(!*buffer) {
+    return false;
+  }
+  memcpy(*buffer, &stateObj, *len);
+  *checksum = fletcher32_checksum((short *)*buffer, *len / 2);
+  godot::UtilityFunctions::print("frameCount:", stateObj.frameCount, " checksum:", *checksum);
+  return true;
+}
+
+bool load_state_callback(unsigned char* buffer, int len){
+  memcpy(&stateObj, buffer, len);
+  godot::UtilityFunctions::print("loading frame ", stateObj.frameCount);
+  fgServer->roundStartCounter = stateObj.roundStartCounter;
+  fgServer->roundStart = stateObj.roundStart;
+  fgServer->roundWinner = stateObj.roundWinner;
+  fgServer->slowMode = stateObj.slowMode;
+  fgServer->frameCount = stateObj.frameCount;
+  fgServer->currentRound = stateObj.currentRound;
+  fgServer->shouldUpdate = stateObj.shouldUpdate;
+  fgServer->slowMode = stateObj.slowMode;
+  fgServer->slowDownCounter = stateObj.slowDownCounter;
+  fgServer->screenFreeze = stateObj.screenFreeze;
+  fgServer->screenFreezeLength = stateObj.screenFreezeLength;
+  fgServer->screenFreezeCounter = stateObj.screenFreezeCounter;
+  fgServer->netPlayState = stateObj.netPlayState;
+
+  fgServer->player1.loadState(stateObj.player1);
+  fgServer->player2.loadState(stateObj.player2);
+  fgServer->camera.loadState(stateObj.cameraState);
+  return true;
+}
+
+bool log_game_state(char* filename, unsigned char* buffer, int frame){
+  return true;
+}
+
+void free_buffer(void* buffer){
+  std::free(buffer);
+}
+
+
 void FightingGameServer::saveState(){
-  ::free(myBuffer);
+  // why would godot have a function called free in its namespace wtf??
   stateObj.roundStartCounter = roundStartCounter;
   stateObj.roundStart = roundStart;
   stateObj.roundWinner = roundWinner;
@@ -1748,23 +1820,23 @@ void FightingGameServer::saveState(){
   stateObj.screenFreezeLength = screenFreezeLength;
   stateObj.screenFreezeCounter = screenFreezeCounter;
   stateObj.netPlayState = netPlayState;
-  stateObj.doneSync = doneSync;
 
   stateObj.player1 = player1.saveState();
   stateObj.player2 = player2.saveState();
   stateObj.cameraState = camera.saveState();
-  myLen = sizeof(stateObj);
-  myBuffer = (unsigned char*)malloc(myLen);
-  if(!myBuffer) {
-    godot::UtilityFunctions::print("error creating buffer of len:!", myLen);
+
+  localBufferSize = sizeof(stateObj);
+  localBuffer = (unsigned char*)malloc(localBufferSize);
+  if(!localBuffer) {
+    godot::UtilityFunctions::print("error creating buffer of len:!", localBufferSize);
   } else {
-    godot::UtilityFunctions::print("created buffer of len:!", myLen);
-    memcpy(myBuffer, &stateObj, myLen);
+    godot::UtilityFunctions::print("created buffer of len:!", localBufferSize);
+    memcpy(localBuffer, &stateObj, localBufferSize);
   }
 }
 
 void FightingGameServer::loadState(){
-  memcpy(&stateObj, myBuffer, myLen);
+  memcpy(&stateObj, localBuffer, localBufferSize);
   roundStartCounter = stateObj.roundStartCounter;
   roundStart = stateObj.roundStart;
   roundWinner = stateObj.roundWinner;
@@ -1778,9 +1850,79 @@ void FightingGameServer::loadState(){
   screenFreezeLength = stateObj.screenFreezeLength;
   screenFreezeCounter = stateObj.screenFreezeCounter;
   netPlayState = stateObj.netPlayState;
-  doneSync = stateObj.doneSync;
 
   player1.loadState(stateObj.player1);
   player2.loadState(stateObj.player2);
   camera.loadState(stateObj.cameraState);
+}
+
+int FightingGameServer::getPort(){
+  return 9998;
+}
+
+std::string FightingGameServer::getIp(){
+  return "127.0.0.1";
+}
+
+void FightingGameServer::ggpoInit(){
+  godot::UtilityFunctions::print("IN GGPO INIT");
+  p1.player_num = 1;
+  p1.size = sizeof(p1);
+
+  p2.player_num = 2;
+  p2.size = sizeof(p2);
+
+  localPort = getPort();
+  localIp = getIp();
+
+#if defined(SYNC_TEST)
+  remoteIp = "1.1.1.1";
+  remotePort = 9999;
+#else
+  // get remote IP & remote port from godot somehow
+#endif
+
+  godot::UtilityFunctions::print("remote address (", remoteIp.c_str(), ":", remotePort, ")");
+  godot::UtilityFunctions::print("local address (", localIp.c_str(), ":", localPort, ")");
+
+  if (netPnum == 1) {
+    p1.type = GGPO_PLAYERTYPE_LOCAL;
+    local_player_handle = &player_handles[0];
+
+    p2.type = GGPO_PLAYERTYPE_REMOTE;
+    strcpy(p2.u.remote.ip_address, remoteIp.c_str());
+    p2.u.remote.port = remotePort;
+  }
+  else {
+    p2.type = GGPO_PLAYERTYPE_LOCAL;
+    local_player_handle = &player_handles[1];
+
+    p1.type = GGPO_PLAYERTYPE_REMOTE;
+    strcpy(p1.u.remote.ip_address, remoteIp.c_str());
+    p1.u.remote.port = remotePort;
+  }
+
+  GGPOSessionCallbacks cb;
+  cb.on_event = on_event_callback;
+  cb.begin_game = begin_game_callback;
+  cb.advance_frame = advance_frame_callback;
+  cb.load_game_state = load_state_callback;
+  cb.save_game_state = save_state_callback;
+  cb.free_buffer = free_buffer;
+  cb.log_game_state = log_game_state;
+
+  // Start Session
+  GGPOErrorCode result;
+#if defined(SYNC_TEST)
+  result = ggpo_start_synctest(&ggpo, &cb, "beatdown", 2, sizeof(int), 1);
+#else
+  result = ggpo_start_session(&ggpo, &cb, "beatdown", 2, sizeof(int), localPort);
+#endif
+
+  ggpo_set_disconnect_timeout(ggpo, 3000);
+  ggpo_set_disconnect_notify_start(ggpo, 2000);
+
+  // Add Player 1
+  result = ggpo_add_player(ggpo, &p1, &player_handles[0]);
+  result = ggpo_add_player(ggpo, &p2, &player_handles[1]);
 }

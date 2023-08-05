@@ -73,10 +73,60 @@ class FightingGameServer : public godot::Node{
     void _process(double_t delta) override;
     void _ready() override;
 
+    // GGPO
+    int getPort();
+    std::string getIp();
+
+    bool shouldUpdate = true;
+    bool netPlayState, 
+         doneSync,
+         slowMode,
+         everythingCompiled,
+         inSlowDown,
+         roundEnd,
+         roundStart,
+         screenFreeze = false;
+
+    int frameCount,
+        currentState,
+        screenFreezeLength,
+        slowDownCounter,
+        roundWinner,
+        screenFreezeCounter,
+        currentRound,
+        roundStartCounter,
+        p1RoundsWon,
+        p2RoundsWon,
+        time_passed,
+        localBufferSize,
+        remotePort,
+        localPort,
+        netPnum = 0;
+
+    std::string remoteIp, 
+                localIp = "";
+
+    int p1StartPos = 1700 * COORDINATE_SCALE;
+    int p2StartPos = 2200 * COORDINATE_SCALE;
+
+    int worldWidth = 3840 * COORDINATE_SCALE;
+    int camWidth = 1280 * COORDINATE_SCALE;
+    int camHeight = 720 * COORDINATE_SCALE;
+
+    unsigned char* localBuffer = 0;
+    Camera camera;
+    VirtualController p1Vc;
+    VirtualController p2Vc;
+    Character player1 = Character(std::make_pair(p1StartPos, 0), 1);
+    Character player2 = Character(std::make_pair(p2StartPos, 0), 2);
+
   protected:
     static void _bind_methods();
 
   private:
+    int readGodotInputs(int pNum);
+    void readGodotTrainingInput();
+
     void checkTriggerCollisions();
     void checkPushCollisions();
     void checkThrowCollisions();
@@ -106,51 +156,10 @@ class FightingGameServer : public godot::Node{
     void handleSameFrameThrowTech(SpecialState techState);
     int checkProjectileCollisions(Character* player1, Character* player2);
 
-    bool shouldUpdate = true;
-
-    bool netPlayState, 
-         doneSync,
-         slowMode,
-         everythingCompiled,
-         inSlowDown,
-         roundEnd,
-         roundStart,
-         screenFreeze = false;
-
-    int frameCount,
-        currentState,
-        screenFreezeLength,
-        slowDownCounter,
-        roundWinner,
-        screenFreezeCounter,
-        currentRound,
-        roundStartCounter,
-        p1RoundsWon,
-        p2RoundsWon,
-        time_passed = 0;
-
+    // GGPO
     void saveState();
     void loadState();
-    unsigned char* mostRecentState;
-    unsigned char* localSaveBuffer;
-    int localSaveBufferLen;
-
-    int p1StartPos = 1700 * COORDINATE_SCALE;
-    int p2StartPos = 2200 * COORDINATE_SCALE;
-
-    int worldWidth = 3840 * COORDINATE_SCALE;
-    int camWidth = 1280 * COORDINATE_SCALE;
-    int camHeight = 720 * COORDINATE_SCALE;
-
-
-    Character player1 = Character(std::make_pair(p1StartPos, 0), 1);
-    Character player2 = Character(std::make_pair(p2StartPos, 0), 2);
-
-    VirtualController p1Vc;
-    VirtualController p2Vc;
-    Camera camera;
-    unsigned char* myBuffer = 0;
-    int myLen = 0;
+    void ggpoInit(); 
 };
 
 #endif

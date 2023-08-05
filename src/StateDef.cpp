@@ -120,9 +120,7 @@ void StateDef::init(nlohmann::json::value_type json, VirtualMachine* _charVm, fl
 
 
 
-StateDefObj StateDef::saveState(){
-  StateDefObj stateObj;
-
+StateDefObj* StateDef::saveState(){
   stateObj.stateTime = stateTime;
   stateObj.animTime = animTime;
 
@@ -142,7 +140,7 @@ StateDefObj StateDef::saveState(){
   }
   // stateObj.collisionBoxStates = cbStates;
  
-  return stateObj;
+  return &stateObj;
 }
 
 void StateDef::loadState(StateDefObj stateObj){
