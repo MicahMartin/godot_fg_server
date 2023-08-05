@@ -78,6 +78,7 @@ class FightingGameServer : public godot::Node{
     std::string getIp();
 
     bool shouldUpdate = true;
+    bool stepOnce = false;
     bool netPlayState, 
          doneSync,
          slowMode,
@@ -156,9 +157,14 @@ class FightingGameServer : public godot::Node{
     void handleSameFrameThrowTech(SpecialState techState);
     int checkProjectileCollisions(Character* player1, Character* player2);
 
-    // GGPO
+    //Training mode functions
     void saveState();
     void loadState();
+    void pauseState();
+    void unpauseState();
+    void stepState();
+
+    // GGPO
     void ggpoInit(); 
 };
 

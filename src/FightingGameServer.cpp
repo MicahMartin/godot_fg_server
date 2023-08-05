@@ -83,6 +83,7 @@ FightingGameServer::~FightingGameServer() {
 void FightingGameServer::enter(){
   godot::UtilityFunctions::print(std::filesystem::current_path().c_str());
   netPlayState = false;
+  shouldUpdate = true;
   netPnum = 1;
   fgServer = this;
   characters[0] = &player1;
@@ -190,6 +191,15 @@ void FightingGameServer::readGodotTrainingInput(){
   if(InputServer->is_action_just_released("v_load_state")){
     loadState();
   }
+  if(InputServer->is_action_just_released("v_pause_state")){
+    pauseState();
+  }
+  if(InputServer->is_action_just_released("v_unpause_state")){
+    unpauseState();
+  }
+  if(InputServer->is_action_just_released("v_step_state")){
+    stepState();
+  }
   if(InputServer->is_action_just_released("v_toggle_recording")){
     p1Vc.toggleRecording();
   }
@@ -203,9 +213,7 @@ void FightingGameServer::_physics_process(double delta) {
   if(netPlayState){
     ggpo_idle(ggpo, 1);
   }
-  GGPOErrorCode result = GGPO_OK;
-  int disconnectFlags;
-  // readGodotTrainingInput();
+  readGodotTrainingInput();
 
   int inputs[2] = {0};
   inputs[0] = readGodotInputs(1);
@@ -215,6 +223,8 @@ void FightingGameServer::_physics_process(double delta) {
 #endif
 
   if(netPlayState){
+    int disconnectFlags;
+    GGPOErrorCode result = GGPO_OK;
     result = ggpo_add_local_input(ggpo, player_handles[0], &inputs[0], sizeof(inputs[0]));
     if (GGPO_SUCCEEDED(result)) {
       result = ggpo_synchronize_input(ggpo, (void *)inputs, sizeof(int) * 2, &disconnectFlags);
@@ -226,7 +236,12 @@ void FightingGameServer::_physics_process(double delta) {
     }
 
   } else {
-    step(inputs);
+    if(shouldUpdate || stepOnce){
+      step(inputs);
+      if(stepOnce){
+        stepOnce = false;
+      }
+    }
   }
 
   // auto stop = std::chrono::high_resolution_clock::now();
@@ -1854,6 +1869,17 @@ void FightingGameServer::loadState(){
   player1.loadState(stateObj.player1);
   player2.loadState(stateObj.player2);
   camera.loadState(stateObj.cameraState);
+}
+
+void FightingGameServer::pauseState(){
+  shouldUpdate = false;
+}
+void FightingGameServer::unpauseState(){
+  shouldUpdate = true;
+}
+
+void FightingGameServer::stepState(){
+  stepOnce = true;
 }
 
 int FightingGameServer::getPort(){
