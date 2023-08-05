@@ -53,6 +53,7 @@ struct InputFrame {
 struct VirtualControllerObj {
   int currentInputState;
   int prevInputState;
+  InputFrame flatHistory[120];
 };
 
 class CommandCompiler;
@@ -106,7 +107,6 @@ class VirtualController {
     int recordingIndex = 0;
     CommandCompiler commandCompiler;
     CircularBuffer<std::list<InputEvent>> inputHistory{120};
-    CircularBuffer<InputFrame> testHistory{120};
 };
 
 #endif

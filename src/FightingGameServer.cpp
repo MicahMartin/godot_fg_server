@@ -16,7 +16,7 @@
 #include <unistd.h>
 #endif
 
-#define SYNC_TEST
+// #define SYNC_TEST
 
 GGPOSession* ggpo;
 // GGPOSessionCallbacks cb;
@@ -82,7 +82,7 @@ FightingGameServer::~FightingGameServer() {
 
 void FightingGameServer::enter(){
   godot::UtilityFunctions::print(std::filesystem::current_path().c_str());
-  netPlayState = true;
+  netPlayState = false;
   netPnum = 1;
   fgServer = this;
   characters[0] = &player1;
@@ -208,10 +208,10 @@ void FightingGameServer::_physics_process(double delta) {
   // readGodotTrainingInput();
 
   int inputs[2] = {0};
-  // inputs[0] = readGodotInputs(1);
-  // inputs[1] = readGodotInputs(2);
+  inputs[0] = readGodotInputs(1);
+  inputs[1] = readGodotInputs(2);
 #if defined(SYNC_TEST)
-  inputs[0] = 0; // test: use random inputs to demonstrate sync testing
+  inputs[0] = rand(); // test: use random inputs to demonstrate sync testing
 #endif
 
   if(netPlayState){

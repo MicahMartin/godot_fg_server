@@ -74,7 +74,6 @@ VirtualController::~VirtualController() {
 void VirtualController::update(uint16_t input){
   // use gamestate 
   // stateObj.inputHistory.push_back(std::list<InputEvent>());
-  InputFrame currentFrame; 
   if(isRecording){
     recording.push_back(input);
   } else if(isPlayback){
@@ -98,37 +97,17 @@ void VirtualController::update(uint16_t input){
     if (prevStickState == 0) {
       // godot::UtilityFunctions::print("Neutral Release");
       inputHistory.back().push_back(InputEvent(NOINPUT, false));
-
-      currentFrame.events[currentFrame.numEvents] = InputEvent(NOINPUT, false);
-      currentFrame.numEvents++;
-      // testHistory.back()[eventCounter] = InputEvent(NOINPUT, false);
-      // eventCounter++;
     } else {
       // godot::UtilityFunctions::print(inputToString[Input(prevStickState)], " Release");
       inputHistory.back().push_back(InputEvent(prevStickState, false));
-
-      currentFrame.events[currentFrame.numEvents] = InputEvent(prevStickState, false);
-      currentFrame.numEvents++;
-      // testHistory.back()[eventCounter] = InputEvent(prevStickState, false);
-      // eventCounter++;
     }
 
     if (currentStickState == 0) {
       // godot::UtilityFunctions::print("Neutral Press");
       inputHistory.back().push_back(InputEvent(NOINPUT, true));
-
-      currentFrame.events[currentFrame.numEvents] = InputEvent(NOINPUT, true);
-      currentFrame.numEvents++;
-      // testHistory.back()[eventCounter] = InputEvent(NOINPUT, true);
-      // eventCounter++;
     } else {
       // godot::UtilityFunctions::print(inputToString[Input(currentStickState)], " Press");
       inputHistory.back().push_back(InputEvent(currentStickState, true));
-
-      currentFrame.events[currentFrame.numEvents] = InputEvent(currentStickState, true);
-      currentFrame.numEvents++;
-      // testHistory.back()[eventCounter] = InputEvent(currentStickState, true);
-      // eventCounter++;
     }
 
   }
@@ -144,20 +123,11 @@ void VirtualController::update(uint16_t input){
     if (currentButtonState.test(i) && !prevButtonState.test(i)) {
       // godot::UtilityFunctions::print(inputToString[Input(mask)], " Press");
       inputHistory.back().push_back(InputEvent(mask, true));
-      currentFrame.events[currentFrame.numEvents] = InputEvent(mask, true);
-      currentFrame.numEvents++;
-      // testHistory.back()[eventCounter] = InputEvent(mask, true);
-      // eventCounter++;
     } else if (!currentButtonState.test(i) && prevButtonState.test(i)) {
       // godot::UtilityFunctions::print(inputToString[Input(mask)], " Release");
       inputHistory.back().push_back(InputEvent(mask, false));
-      currentFrame.events[currentFrame.numEvents] = InputEvent(mask, false);
-      currentFrame.numEvents++;
-      // testHistory.back()[eventCounter] = InputEvent(mask, false);
-      // eventCounter++;
     }
   }
-  testHistory.push_back(currentFrame);
 }
 
 void VirtualController::initCommandCompiler(const char* path) { 
@@ -295,31 +265,28 @@ VirtualControllerObj VirtualController::saveState(){
   VirtualControllerObj stateObj;
   stateObj.prevInputState = prevInputState;
   stateObj.currentInputState = currentInputState;
-  // for (int i = 0; i < 120; i++) {
-  //   stateObj.foobar[i] = 0;
-  //   if(inputHistory[i].size() > 0){
-  //     int counter = 0;
-  //     for (auto const& event : inputHistory[i]) {
-  //       stateObj.serializedInput[i][counter] = event;
-  //       counter++;
-  //     }
-  //     stateObj.foobar[i] = counter;
-  //   }
-  // }
+  for (int i = 0; i < 120; i++) {
+    InputFrame currentFrame;
+    for(auto& inputEvent : inputHistory[i]) {
+      currentFrame.events[currentFrame.numEvents] = inputEvent;
+      currentFrame.numEvents++;
+    }
+    stateObj.flatHistory[i] = currentFrame;
+  }
   return stateObj;
 }
 
 void VirtualController::loadState(VirtualControllerObj stateObj){
   prevInputState = stateObj.prevInputState;
   currentInputState = stateObj.currentInputState;
-  // inputHistory.clear();
-  // for (int i = 0; i < 120; i++) {
-  //   if(stateObj.foobar[i] > 0){
-  //     for (int x = 0; x < stateObj.foobar[i]; x++) {
-  //       inputHistory[i].push_back(stateObj.serializedInput[i][x]);
-  //     }
-  //   }
-  // }
+  inputHistory.clear();
+  for (int i = 0; i < 120; i++) {
+    inputHistory.push_back(std::list<InputEvent>());
+    InputFrame currentFrame = stateObj.flatHistory[i];
+    for (int x = 0; x < currentFrame.numEvents; x++) {
+      inputHistory[i].push_back(currentFrame.events[x]);
+    }
+  }
 }
 
 void VirtualController::toggleRecording(){
