@@ -275,7 +275,7 @@
       "collision_boxes": [
         {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
         {"type": "HIT", "block_type": 1, "hitstun":24, "block_stun":21, "hitstop": 12, "damage":2, "push": 13000, "push_time": 10,  "start": 11, "end": 12, "width":250, "height":100, "offsetX":75, "offsetY": 240, "group": 1, "hitsound": 10, "guardsound": 17, "hitsparkID": 2, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 12000, "hit_push_time": 20, "meter": 10},
-        {"type": "HIT", "block_type": 1, "hitstun":24, "block_stun":21, "hitstop": 12, "damage":2, "push": 13000, "push_time": 10,  "start": 11, "end": 12, "width":100, "height":240, "offsetX":75, "offsetY": 0, "group": 1, "hitsound": 10, "guardsound": 17, "hitsparkID": 2, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 12000, "hit_push_time": 20, "meter": 10},
+        {"type": "HIT", "block_type": 1, "hitstun":24, "block_stun":21, "hitstop": 12, "damage":2, "push": 13000, "push_time": 10,  "start": 11, "end": 12, "width":100, "height":200, "offsetX":75, "offsetY": 75, "group": 1, "hitsound": 10, "guardsound": 17, "hitsparkID": 2, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 12000, "hit_push_time": 20, "meter": 10},
         {"type": "PROXIMITY", "start": 1, "end": 12, "width":350, "height":300, "offsetX":75, "offsetY": 190, "group": 1},
         {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
         {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},

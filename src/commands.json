@@ -1,6 +1,6 @@
 {
   "commands": [
-    {"num": 0, "name": "dash", "clears": false, "command":"F, N, 1F"},
+    {"num": 0, "name": "dash", "clears": false, "command":"F, N, F"},
     {"name": "back_dash", "clears": false, "command":"B, N, 1B"},
     {"name": "236M", "clears": false, "command":"16~D, 16DF, 16F, LK | ~LK"},
     {"name": "236L", "clears": true, "command":"~D, DF, F, LP | ~LP"},

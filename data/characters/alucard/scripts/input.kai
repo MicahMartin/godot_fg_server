@@ -1,7 +1,6 @@
 {
   var grounded = ($get_y_pos == 0);
   var airborne = ($get_y_pos > 0);
-  var hasAirAction = $has_air_action;
   var stateNum = $get_state_num; 
   var yPos = $get_y_pos;
 
@@ -143,11 +142,27 @@
   }
 
   if (airborne) {
+    var hasAirAction = $has_air_action;
+    var aboveMinHeight = ($get_y_pos > 100);
+    var can_dbl_jump = false;
+    if($get_state_time > 15){ 
+      can_dbl_jump = true;
+    }
+
     if (meter >= 1) {
       var lk = $get_input 11;
       var mp = $get_input 12;
       if ((lk and mp) and anyBack) {
         $change_state 79;
+      }
+    }
+
+    if(aboveMinHeight and hasAirAction){
+      if(dash_f){
+        $change_state 12; 
+      }
+      if(dash_b){
+        $change_state 13; 
       }
     }
 
@@ -163,6 +178,20 @@
     }
     if(punch){
       $change_state 18; 
+    }
+    if(hasAirAction and can_dbl_jump){
+      var p_up = $was_pressed 8;
+      var p_upforward = $was_pressed 9;
+      var p_upback = $was_pressed 7;
+      if(p_up){
+        $change_state 41;
+      }
+      if(p_upforward){
+        $change_state 42;
+      }
+      if(p_upback){
+        $change_state 43;
+      }
     }
   }
 }
