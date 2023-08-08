@@ -598,7 +598,7 @@ bool Compiler::compile(const char* path, Script* script, const char* scriptTag){
   while (!match(TOKEN_EOF)) {
     declaration();
   }
-  godot::UtilityFunctions::print("matched EOF");
+  // godot::UtilityFunctions::print("matched EOF");
   if(parser.hadError){
     godot::UtilityFunctions::print("Parser error");
   }

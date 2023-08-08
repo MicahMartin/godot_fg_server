@@ -38,9 +38,9 @@ void Character::init(const char* path){
   entityList.reserve(12);
   loadStates(path);
   godot::UtilityFunctions::print("stateList size:", (uint64_t)stateList.size());
-  for (auto i : specialStateMap) {
-    godot::UtilityFunctions::print("SPECIAL STATE MAP: ", i.first, "|" , i.second);
-  }
+  // for (auto i : specialStateMap) {
+  //   godot::UtilityFunctions::print("SPECIAL STATE MAP: ", i.first, "|" , i.second);
+  // }
   changeState(specialStateMap[SS_PRE_MATCH]);
 }
 

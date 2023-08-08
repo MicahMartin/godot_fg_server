@@ -1,4 +1,6 @@
 #include <chrono>
+#include <cstdlib>
+#include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
@@ -82,9 +84,7 @@ FightingGameServer::~FightingGameServer() {
 
 void FightingGameServer::enter(){
   godot::UtilityFunctions::print(std::filesystem::current_path().c_str());
-  netPlayState = false;
   shouldUpdate = true;
-  netPnum = 1;
   fgServer = this;
   characters[0] = &player1;
   characters[1] = &player2;
@@ -122,12 +122,34 @@ void FightingGameServer::enter(){
   }
 }
 void FightingGameServer::_ready() { 
-  if(godot::Engine::get_singleton()->is_editor_hint()){
-    //man wtf?
-    return;
-  }
-  godot::UtilityFunctions::print("in ready");
+  if(godot::Engine::get_singleton()->is_editor_hint()){ return; }
   InputServer = godot::Input::get_singleton();
+  godot::UtilityFunctions::print("in ready");
+
+  bool _isNetPlay = this->get_parent()->get_meta("isNetPlay");
+  netPlayState = _isNetPlay;
+
+  int _netPnum = this->get_parent()->get_meta("netPnum");
+  netPnum = _netPnum;
+
+  int _localPort = this->get_parent()->get_meta("localPort");
+  localPort = _localPort;
+
+  int _remotePort = this->get_parent()->get_meta("remotePort");
+  remotePort = _remotePort;
+
+  std::string _p1Name(this->get_parent()->get_meta("p1Name").stringify().utf8().get_data());
+  std::string _p2Name(this->get_parent()->get_meta("p2Name").stringify().utf8().get_data());
+  std::string _remoteIp(this->get_parent()->get_meta("remoteIp").stringify().utf8().get_data());
+  remoteIp = _remoteIp;
+
+  godot::UtilityFunctions::print("p1:", _p1Name.c_str(), 
+      " p2:", _p2Name.c_str(), 
+      " netPnum :", _netPnum,
+      " isNetPlay:", _isNetPlay,
+      " localPort:", _localPort,
+      " remotePort:",_remotePort,
+      " remoteIp:", _remoteIp.c_str());
   enter();
 }
 
@@ -216,16 +238,19 @@ void FightingGameServer::_physics_process(double delta) {
   readGodotTrainingInput();
 
   int inputs[2] = {0};
-  inputs[0] = readGodotInputs(1);
-  inputs[1] = readGodotInputs(2);
+  if(!netPlayState){
+    inputs[0] = readGodotInputs(1);
+    inputs[1] = readGodotInputs(2);
+  }
 #if defined(SYNC_TEST)
   inputs[0] = rand(); // test: use random inputs to demonstrate sync testing
 #endif
 
   if(netPlayState){
+    int input = readGodotInputs(1);
     int disconnectFlags;
     GGPOErrorCode result = GGPO_OK;
-    result = ggpo_add_local_input(ggpo, player_handles[0], &inputs[0], sizeof(inputs[0]));
+    result = ggpo_add_local_input(ggpo, player_handles[netPnum - 1], &input, sizeof(int));
     if (GGPO_SUCCEEDED(result)) {
       result = ggpo_synchronize_input(ggpo, (void *)inputs, sizeof(int) * 2, &disconnectFlags);
       if (GGPO_SUCCEEDED(result)) {
@@ -1743,7 +1768,7 @@ bool on_event_callback(GGPOEvent* info){
 #ifdef _WIN32
       Sleep(1000 * info->u.timesync.frames_ahead / 60);
 #else
-      sleep(1000 * info->u.timesync.frames_ahead / 60);
+      // sleep(1000 * info->u.timesync.frames_ahead / 60);
 #endif
       break;
   }
@@ -1784,7 +1809,7 @@ bool save_state_callback(unsigned char** buffer, int* len, int* checksum, int fr
   }
   memcpy(*buffer, &stateObj, *len);
   *checksum = fletcher32_checksum((short *)*buffer, *len / 2);
-  godot::UtilityFunctions::print("frameCount:", stateObj.frameCount, " checksum:", *checksum);
+  // godot::UtilityFunctions::print("frameCount:", stateObj.frameCount, " checksum:", *checksum);
   return true;
 }
 
@@ -1897,9 +1922,6 @@ void FightingGameServer::ggpoInit(){
 
   p2.player_num = 2;
   p2.size = sizeof(p2);
-
-  localPort = getPort();
-  localIp = getIp();
 
 #if defined(SYNC_TEST)
   remoteIp = "1.1.1.1";
