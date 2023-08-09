@@ -18,10 +18,15 @@ struct CharStateObj {
   blockstun,
   hitStop,
   pushTime,
+  defenseValue,
+  riskScaling,
+  comboScale,
+  comboDamage,
   pushBackVelocity,
   comebackCounter,
   hasAirAction,
   comboCounter,
+  comboProration,
   cancelPointer,
   noGravityCounter,
   velocityX,
@@ -42,7 +47,8 @@ struct CharStateObj {
   frameLastAttackConnected,
   currentState,
   positionX,
-  positionY;
+  positionY,
+  throwInvul;
 
   bool inCorner,
   inHitStop,
@@ -179,14 +185,8 @@ public:
   int cancelPointer = 0;
   int noGravityCounter = 0;
   long frameLastAttackConnected = 0;
-  bool inCorner = false;
-  bool inHitStop = false;
-  bool gravity = true;
   int gravityVal = 1;
-  bool isDead = false;
   int velocityX = 0;
-  int momentum = 0;
-  int mass = 1;
   int velocityY = 0;
   int velocityMinimumY = 0;
   int velocityMaximumY = 0;
@@ -209,18 +209,22 @@ public:
   int currentHurtSoundID = 1;
   int soundChannel = 0;
   int flashCounter = 0;
+  int auraID = 0;
+  int throwInvul = 0;
+  int hurtGravity = 1;
+  int timeInHitstun = 1;
   float animScale = 4;
   double modelScale = 1.0;
+  bool isDead = false;
+  bool inCorner = false;
+  bool inHitStop = false;
+  bool gravity = true;
   bool isRed = false;
   bool isGreen = false;
   bool isLight = false;
   bool installMode = false;
   bool auraActive = false;
   bool canThrow = true;
-  int auraID = 0;
-  int throwInvul = 0;
-  int hurtGravity = 1;
-  int timeInHitstun = 1;
   std::string charName = "";
   std::string modelName = "";
   std::string commandPath = "";

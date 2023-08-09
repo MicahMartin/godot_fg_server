@@ -186,53 +186,6 @@ void StateDef::handleCancels(){
   }
 }
 
-// void StateDef::draw(std::pair<int,int> position, bool faceRight, bool inHitStop){
-//   // anim.hitShake = inHitStop;
-//   // anim.render(position.first/COORDINATE_SCALE, position.second/COORDINATE_SCALE, faceRight, animTime);
-// 
-//   if (Graphics::getInstance()->getFlag(GF_SHOW_CB)) {
-//     drawCollisionBoxes();
-//   }
-// };
-// 
-// void StateDef::drawCollisionBoxes(){
-//   for(auto cb : pushBoxes) {
-//      if(!cb->disabled){
-//        cb->render();
-//      }
-//   }
-//   for(auto cb : hitBoxes) {
-//      if(!cb->disabled){
-//        cb->render();
-//      }
-//   }
-//   for (auto cb : throwHitBoxes) {
-//     if(!cb->disabled){
-//       cb->render();
-//     }
-//   }
-//   for (auto cb : throwHurtBoxes) {
-//     if(!cb->disabled){
-//       cb->render();
-//     }
-//   }
-//   for (auto cb : proximityBoxes) {
-//     if(!cb->disabled){
-//       cb->render();
-//     }
-//   }
-//   for (auto cb : projectileBoxes) {
-//     if(!cb->disabled){
-//       cb->render();
-//     }
-//   }
-//   for(auto cb : hurtBoxes) {
-//      if(!cb->disabled){
-//        cb->render();
-//      }
-//   }
-// }
-
 void StateDef::loadFlags(nlohmann::json::value_type json){
   for(auto i : json.items()){
     std::string flag(i.value());

@@ -38,7 +38,7 @@
     }
   }
 
-  if($get_state_time == 37){ 
+  if($get_state_time == 34){ 
     $set_control 1; 
   } 
 } 

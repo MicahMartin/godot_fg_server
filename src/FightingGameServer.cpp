@@ -24,7 +24,7 @@ GGPOSession* ggpo;
 // GGPOSessionCallbacks cb;
 GGPOPlayer p1, p2;
 GGPOPlayerHandle player_handles[2];
-GGPOPlayerHandle* local_player_handle;
+GGPOPlayerHandle local_player_handle;
 
 GameState stateObj;
 FightingGameServer* fgServer;
@@ -232,30 +232,27 @@ void FightingGameServer::readGodotTrainingInput(){
 
 void FightingGameServer::_physics_process(double delta) {
   if(godot::Engine::get_singleton()->is_editor_hint()){ return; }
+  int inputs[2] = {0};
+  int input = 0;
   if(netPlayState){
     ggpo_idle(ggpo, 1);
-  }
-  readGodotTrainingInput();
-
-  int inputs[2] = {0};
-  if(!netPlayState){
+    input = readGodotInputs(1);
+  } else {
     inputs[0] = readGodotInputs(1);
     inputs[1] = readGodotInputs(2);
+    readGodotTrainingInput();
   }
 #if defined(SYNC_TEST)
-  inputs[0] = rand(); // test: use random inputs to demonstrate sync testing
+  input = rand(); // test: use random inputs to demonstrate sync testing
 #endif
 
   if(netPlayState){
-    int input = readGodotInputs(1);
     int disconnectFlags;
     GGPOErrorCode result = GGPO_OK;
     result = ggpo_add_local_input(ggpo, player_handles[netPnum - 1], &input, sizeof(int));
     if (GGPO_SUCCEEDED(result)) {
       result = ggpo_synchronize_input(ggpo, (void *)inputs, sizeof(int) * 2, &disconnectFlags);
       if (GGPO_SUCCEEDED(result)) {
-        // inputs[0] and inputs[1] contain the inputs for p1 and p2.  Advance
-        // the game by 1 frame using those inputs.
         step(inputs);
       }
     }
@@ -1768,6 +1765,7 @@ bool on_event_callback(GGPOEvent* info){
 #ifdef _WIN32
       Sleep(1000 * info->u.timesync.frames_ahead / 60);
 #else
+      godot::UtilityFunctions::print("you are ", info->u.timesync.frames_ahead, " frames ahead!");
       // sleep(1000 * info->u.timesync.frames_ahead / 60);
 #endif
       break;
@@ -1917,38 +1915,6 @@ std::string FightingGameServer::getIp(){
 
 void FightingGameServer::ggpoInit(){
   godot::UtilityFunctions::print("IN GGPO INIT");
-  p1.player_num = 1;
-  p1.size = sizeof(p1);
-
-  p2.player_num = 2;
-  p2.size = sizeof(p2);
-
-#if defined(SYNC_TEST)
-  remoteIp = "1.1.1.1";
-  remotePort = 9999;
-#else
-  // get remote IP & remote port from godot somehow
-#endif
-
-  godot::UtilityFunctions::print("remote address (", remoteIp.c_str(), ":", remotePort, ")");
-  godot::UtilityFunctions::print("local address (", localIp.c_str(), ":", localPort, ")");
-
-  if (netPnum == 1) {
-    p1.type = GGPO_PLAYERTYPE_LOCAL;
-    local_player_handle = &player_handles[0];
-
-    p2.type = GGPO_PLAYERTYPE_REMOTE;
-    strcpy(p2.u.remote.ip_address, remoteIp.c_str());
-    p2.u.remote.port = remotePort;
-  }
-  else {
-    p2.type = GGPO_PLAYERTYPE_LOCAL;
-    local_player_handle = &player_handles[1];
-
-    p1.type = GGPO_PLAYERTYPE_REMOTE;
-    strcpy(p1.u.remote.ip_address, remoteIp.c_str());
-    p1.u.remote.port = remotePort;
-  }
 
   GGPOSessionCallbacks cb;
   cb.on_event = on_event_callback;
@@ -1960,17 +1926,40 @@ void FightingGameServer::ggpoInit(){
   cb.log_game_state = log_game_state;
 
   // Start Session
-  GGPOErrorCode result;
+  // GGPOErrorCode result;
 #if defined(SYNC_TEST)
-  result = ggpo_start_synctest(&ggpo, &cb, "beatdown", 2, sizeof(int), 1);
+  ggpo_start_synctest(&ggpo, &cb, "beatdown", 2, sizeof(int), 1);
 #else
-  result = ggpo_start_session(&ggpo, &cb, "beatdown", 2, sizeof(int), localPort);
+  ggpo_start_session(&ggpo, &cb, "beatdown", 2, sizeof(int), localPort);
 #endif
 
   ggpo_set_disconnect_timeout(ggpo, 3000);
-  ggpo_set_disconnect_notify_start(ggpo, 2000);
+  ggpo_set_disconnect_notify_start(ggpo, 1000);
 
-  // Add Player 1
-  result = ggpo_add_player(ggpo, &p1, &player_handles[0]);
-  result = ggpo_add_player(ggpo, &p2, &player_handles[1]);
+
+  p1.player_num = 1;
+  p1.size = sizeof(p1);
+
+  p2.player_num = 2;
+  p2.size = sizeof(p2);
+
+  if (netPnum == 1) {
+    p1.type = GGPO_PLAYERTYPE_LOCAL;
+    local_player_handle = player_handles[0];
+
+    p2.type = GGPO_PLAYERTYPE_REMOTE;
+    strcpy(p2.u.remote.ip_address, remoteIp.c_str());
+    p2.u.remote.port = remotePort;
+  }
+  else {
+    p2.type = GGPO_PLAYERTYPE_LOCAL;
+    local_player_handle = player_handles[1];
+
+    p1.type = GGPO_PLAYERTYPE_REMOTE;
+    strcpy(p1.u.remote.ip_address, remoteIp.c_str());
+    p1.u.remote.port = remotePort;
+  }
+
+  ggpo_add_player(ggpo, &p1, &player_handles[0]);
+  ggpo_add_player(ggpo, &p2, &player_handles[1]);
 }

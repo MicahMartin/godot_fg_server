@@ -6,7 +6,7 @@
     $neg_velset_x 12000; 
     $velset_y 0; 
   }
-  if($get_state_time == 12){
+  if($get_state_time == 11){
     $set_control 1;
   }
 }

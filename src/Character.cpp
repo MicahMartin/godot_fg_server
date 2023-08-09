@@ -46,17 +46,19 @@ void Character::init(const char* path){
 
 CharStateObj Character::saveState(){
   CharStateObj stateObj;
-  if(playerNum == 2){
-    // godot::UtilityFunctions::print("In char save state, the cancelPointer:", cancelPointer, " stateNum:", currentState->stateNum);
-  }
   stateObj.control = control;
   stateObj.hitstun = hitstun;
   stateObj.blockstun = blockstun;
   stateObj.hitStop = hitStop;
   stateObj.pushTime = pushTime;
+  stateObj.defenseValue = 1;
+  stateObj.riskScaling = 1;
+  stateObj.comboScale = 1;
   stateObj.pushBackVelocity = pushBackVelocity;
+  stateObj.comboDamage = 1;
   stateObj.comebackCounter = comebackCounter;
   stateObj.hasAirAction = hasAirAction;
+  stateObj.comboProration = comboProration;
   stateObj.comboCounter = comboCounter;
   stateObj.cancelPointer = cancelPointer;
   stateObj.noGravityCounter = noGravityCounter;
@@ -79,6 +81,7 @@ CharStateObj Character::saveState(){
   stateObj.currentState = currentState->stateNum;
   stateObj.positionX = position.first;
   stateObj.positionY = position.second;
+  stateObj.throwInvul = throwInvul;
 
   stateObj.inCorner = inCorner;
   stateObj.inHitStop = inHitStop;
@@ -132,6 +135,7 @@ void Character::loadState(CharStateObj stateObj){
   setCurrentState(stateObj.currentState);
   position.first = stateObj.positionX;
   position.second = stateObj.positionY;
+  throwInvul = stateObj.throwInvul;
 
   inCorner = stateObj.inCorner;
   inHitStop = stateObj.inHitStop;
