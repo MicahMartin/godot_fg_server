@@ -206,135 +206,135 @@ void Entity::updatePosition(){
   }
 }
 void Entity::updateCollisionBoxPositions(){
-  for (auto cb : currentState->pushBoxes) {
-    cb->positionX = position.first - (cb->width / 2);
-    cb->positionY = position.second + cb->offsetY;
+  for (auto cbId : currentState->pushBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first - (currentState->collisionBoxes[cbId].width / 2);
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
   }
 
-  for (auto cb : currentState->hurtBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
+  for (auto cbId : currentState->hurtBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
   }
 
-  for (auto cb : currentState->hitBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
+  for (auto cbId : currentState->hitBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
   }
-  for (auto cb : currentState->throwHitBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
+  for (auto cbId : currentState->throwHitBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
   }
-  for (auto cb : currentState->throwHurtBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
+  for (auto cbId : currentState->throwHurtBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
   }
-  for (auto cb : currentState->proximityBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
+  for (auto cbId : currentState->proximityBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
   }
-  for (auto cb : currentState->projectileBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
+  for (auto cbId : currentState->projectileBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
   }
 }
 
 void Entity::updateCollisionBoxes(){
   // TODO: abstract into updateCollisionBoxPos function
   int stateTime = currentState->stateTime + 1;
-  for (auto cb : currentState->pushBoxes) {
-    cb->positionX = position.first - (cb->width / 2);
-    cb->positionY = position.second;
-    if (stateTime < cb->start) {
-      cb->disabled = true;
+  for (auto cbId : currentState->pushBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first - (currentState->collisionBoxes[cbId].width / 2);
+    currentState->collisionBoxes[cbId].positionY = position.second;
+    if (stateTime < currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
-    if (cb->end == -1 || stateTime == cb->start) {
-      cb->disabled = false;
+    if (currentState->collisionBoxes[cbId].end == -1 || stateTime == currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = false;
     }
-    if (stateTime == cb->end) {
-      cb->disabled = true;
-    }
-  }
-
-  for (auto cb : currentState->hurtBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
-    if (stateTime < cb->start) {
-      cb->disabled = true;
-    }
-    if (cb->end == -1 || stateTime == cb->start) {
-      cb->disabled = false;
-    }
-    if (stateTime == cb->end) {
-      cb->disabled = true;
+    if (stateTime == currentState->collisionBoxes[cbId].end) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
   }
 
-  for (auto cb : currentState->throwHurtBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
-    if (stateTime < cb->start) {
-      cb->disabled = true;
+  for (auto cbId : currentState->hurtBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
+    if (stateTime < currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
-    if (cb->end == -1 || stateTime == cb->start) {
-      cb->disabled = false;
+    if (currentState->collisionBoxes[cbId].end == -1 || stateTime == currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = false;
     }
-    if (stateTime == cb->end) {
-      cb->disabled = true;
-    }
-  }
-
-  for (auto cb : currentState->hitBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
-    if (stateTime < cb->start) {
-      cb->disabled = true;
-    }
-    if (stateTime == cb->start) {
-      cb->disabled = false;
-    }
-    if (stateTime == cb->end) {
-      cb->disabled = true;
+    if (stateTime == currentState->collisionBoxes[cbId].end) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
   }
 
-  for (auto cb : currentState->throwHitBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
-    if (stateTime < cb->start) {
-      cb->disabled = true;
+  for (auto cbId : currentState->throwHurtBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
+    if (stateTime < currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
-    if (stateTime == cb->start) {
-      cb->disabled = false;
+    if (currentState->collisionBoxes[cbId].end == -1 || stateTime == currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = false;
     }
-    if (stateTime == cb->end) {
-      cb->disabled = true;
+    if (stateTime == currentState->collisionBoxes[cbId].end) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
   }
 
-  for (auto cb : currentState->proximityBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
-    if (stateTime < cb->start) {
-      cb->disabled = true;
+  for (auto cbId : currentState->hitBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
+    if (stateTime < currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
-    if (stateTime == cb->start) {
-      cb->disabled = false;
+    if (stateTime == currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = false;
     }
-    if (stateTime == cb->end) {
-      cb->disabled = true;
+    if (stateTime == currentState->collisionBoxes[cbId].end) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
   }
-  for (auto cb : currentState->projectileBoxes) {
-    cb->positionX = position.first + (faceRight ? cb->offsetX : - (cb->offsetX + cb->width));
-    cb->positionY = position.second + cb->offsetY;
-    if (stateTime < cb->start) {
-      cb->disabled = true;
+
+  for (auto cbId : currentState->throwHitBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
+    if (stateTime < currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
-    if (stateTime == cb->start) {
-      cb->disabled = false;
+    if (stateTime == currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = false;
     }
-    if (stateTime == cb->end) {
-      cb->disabled = true;
+    if (stateTime == currentState->collisionBoxes[cbId].end) {
+      currentState->collisionBoxes[cbId].disabled = true;
+    }
+  }
+
+  for (auto cbId : currentState->proximityBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
+    if (stateTime < currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = true;
+    }
+    if (stateTime == currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = false;
+    }
+    if (stateTime == currentState->collisionBoxes[cbId].end) {
+      currentState->collisionBoxes[cbId].disabled = true;
+    }
+  }
+  for (auto cbId : currentState->projectileBoxIds) {
+    currentState->collisionBoxes[cbId].positionX = position.first + (faceRight ? currentState->collisionBoxes[cbId].offsetX : - (currentState->collisionBoxes[cbId].offsetX + currentState->collisionBoxes[cbId].width));
+    currentState->collisionBoxes[cbId].positionY = position.second + currentState->collisionBoxes[cbId].offsetY;
+    if (stateTime < currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = true;
+    }
+    if (stateTime == currentState->collisionBoxes[cbId].start) {
+      currentState->collisionBoxes[cbId].disabled = false;
+    }
+    if (stateTime == currentState->collisionBoxes[cbId].end) {
+      currentState->collisionBoxes[cbId].disabled = true;
     }
   }
 
@@ -424,6 +424,10 @@ std::pair<int,int> Entity::getPos(){
 
 StateDef* Entity::getCurrentState(){
   return currentState;
+};
+
+CollisionBox& Entity::getCollisionBox(int cbId){
+  return currentState->collisionBoxes[cbId];
 };
 
 // Mix_Chunk* Entity::getSoundWithId(int id){

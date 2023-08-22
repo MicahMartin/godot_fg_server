@@ -54,9 +54,10 @@ public:
   CollisionBox(CollisionType boxType, int width, int height, int offsetX, 
       int offsetY, int start, int end, int damage, int pushback, int hitstop, int hitstun, int pushTime, int blockstun, int blocktype);
 
+  CollisionBox();
   ~CollisionBox();
 
-  CollisionBoxState* saveState();
+  CollisionBoxState saveState();
   void loadState(CollisionBoxState stateObj);
   
 
@@ -104,6 +105,7 @@ public:
 
   int selfState;
   int activatorState;
+  int collisionBoxId;
 
   int groupID = 1;
   int hitSoundID = 0;

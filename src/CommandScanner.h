@@ -2,6 +2,7 @@
 #define _COMMANDSCANNER_H
 
 #include <vector>
+#include <map>
 typedef enum {
   CTOKEN_NEUTRAL, CTOKEN_FORWARD, CTOKEN_BACK, CTOKEN_UP, CTOKEN_DOWN,
   CTOKEN_UPFORWARD, CTOKEN_UPBACK, CTOKEN_DOWNFORWARD, CTOKEN_DOWNBACK,
@@ -17,13 +18,13 @@ typedef enum {
   CTOKEN_DELIM,
   CTOKEN_END,
 
-} CommandTokenType;
+}CommandTokenType;
 
 struct CommandToken {
   CommandTokenType type;
   const char* start;
   uint8_t length;
-} ;
+};
 
 class CommandScanner {
 public:
@@ -44,6 +45,30 @@ public:
   bool isDigit(char c);
   CommandTokenType checkKeyword(int start, int end, const char* rest, CommandTokenType type);
 
+  std::map<CommandTokenType, const char*> tokenToString = {
+    {CTOKEN_NEUTRAL, "NEUTRAL"},
+    {CTOKEN_DOWN, "DOWN"},
+    {CTOKEN_FORWARD, "FORWARD"},
+    {CTOKEN_BACK, "BACK"},
+    {CTOKEN_UP, "UP"},
+    {CTOKEN_DOWNBACK, "DOWNBACK"},
+    {CTOKEN_DOWNFORWARD, "DOWNFORWARD"},
+    {CTOKEN_UPBACK, "UPBACK"},
+    {CTOKEN_UPFORWARD, "UPFORWARD"},
+    {CTOKEN_LP, "LP"},
+    {CTOKEN_LK, "LK"},
+    {CTOKEN_MP, "MP"},
+    {CTOKEN_MK, "MK"},
+    {CTOKEN_NUMBER, "NUMBER"},
+    {CTOKEN_RELEASED, "RELEASED"},
+    {CTOKEN_HELD, "HELD"},
+    {CTOKEN_AND, "AND"},
+    {CTOKEN_OR, "OR"},
+    {CTOKEN_ANY, "ANY"},
+    {CTOKEN_NOT, "NOT"},
+    {CTOKEN_DELIM, "DELIM"},
+    {CTOKEN_END, "END"},
+  };
 private:
   const char* scannerStart;
   const char* scannerCurrent;

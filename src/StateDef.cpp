@@ -16,42 +16,6 @@
 StateDef::StateDef(){}
 
 StateDef::~StateDef() {
-  // TODO: DeleteCB method
-  for (auto cb : pushBoxes) {
-    if (cb != NULL) {
-      delete cb;
-    }
-  }
-  for (auto cb : hurtBoxes) {
-    if (cb != NULL) {
-      delete cb;
-    }
-  }
-  for (auto cb : hitBoxes) {
-    if (cb != NULL) {
-      delete cb;
-    }
-  }
-  for (auto cb : throwHitBoxes) {
-    if (cb != NULL) {
-      delete cb;
-    }
-  }
-  for (auto cb : throwHurtBoxes) {
-    if (cb != NULL) {
-      delete cb;
-    }
-  }
-  for (auto cb : proximityBoxes) {
-    if (cb != NULL) {
-      delete cb;
-    }
-  }
-  for (auto cb : projectileBoxes) {
-    if (cb != NULL) {
-      delete cb;
-    }
-  }
 }
 
 void StateDef::init(nlohmann::json::value_type json, VirtualMachine* _charVm, float _animScale){
@@ -132,33 +96,33 @@ StateDefObj* StateDef::saveState(){
   stateObj.counterHitFlag = counterHitFlag;
 
   // stateObj.animObj = *anim.saveState();
-  for (int i = 0; i < hitboxGroupDisabled.size(); ++i) {
+  for (int i = 0; static_cast<std::vector<int>::size_type>(i) < hitboxGroupDisabled.size(); ++i) {
     stateObj.hitboxGroupDisabled[i] = hitboxGroupDisabled[i];
   }
-  for (int i = 0; i < collisionBoxes.size(); ++i) {
-    stateObj.collisionBoxStates[i] = *collisionBoxes[i]->saveState();
+  for (int i = 0; i < collisionBoxCount; ++i) {
+    stateObj.collisionBoxStates[i] = collisionBoxes[i].saveState();
   }
   // stateObj.collisionBoxStates = cbStates;
  
   return &stateObj;
 }
 
-void StateDef::loadState(StateDefObj stateObj){
-  stateTime = stateObj.stateTime;
-  animTime = stateObj.animTime;
-  freezeFrame = stateObj.freezeFrame;
-  freezeLength = stateObj.freezeLength;
-  hitboxesDisabled = stateObj.hitboxesDisabled;
-  canWhiffCancel = stateObj.canWhiffCancel;
-  canHitCancel = stateObj.canHitCancel;
-  counterHitFlag = stateObj.counterHitFlag;
+void StateDef::loadState(StateDefObj _stateObj){
+  stateTime = _stateObj.stateTime;
+  animTime = _stateObj.animTime;
+  freezeFrame = _stateObj.freezeFrame;
+  freezeLength = _stateObj.freezeLength;
+  hitboxesDisabled = _stateObj.hitboxesDisabled;
+  canWhiffCancel = _stateObj.canWhiffCancel;
+  canHitCancel = _stateObj.canHitCancel;
+  counterHitFlag = _stateObj.counterHitFlag;
 
   // anim.loadState(stateObj.animObj);
-  for (int i = 0; i < hitboxGroupDisabled.size(); ++i) {
-    hitboxGroupDisabled[i] = stateObj.hitboxGroupDisabled[i];
+  for (int i = 0; static_cast<std::vector<int>::size_type>(i) < hitboxGroupDisabled.size(); ++i) {
+    hitboxGroupDisabled[i] = _stateObj.hitboxGroupDisabled[i];
   }
-  for (int i = 0; i < collisionBoxes.size(); ++i) {
-    collisionBoxes[i]->loadState(stateObj.collisionBoxStates[i]);
+  for (int i = 0; i < collisionBoxCount; ++i) {
+    collisionBoxes[i].loadState(_stateObj.collisionBoxStates[i]);
   }
 }
 
@@ -198,6 +162,7 @@ void StateDef::loadAnimation(nlohmann::json json){
 };
 
 void StateDef::loadCollisionBoxes(nlohmann::json json){
+  int id = 0;
   for(auto i : json.items()){
     // TODO: POLYMORPH THIS SHIT
     CollisionBox::CollisionType type = CollisionBox::collisionTypeMap.at(i.value().at("type"));
@@ -209,100 +174,103 @@ void StateDef::loadCollisionBoxes(nlohmann::json json){
     int start = i.value().at("start");
     int end = i.value().at("end");
 
-    CollisionBox* cb;
+    CollisionBox cb;
     if(type == CollisionBox::HIT || type == CollisionBox::THROW || type == CollisionBox::PROJECTILE){
       // TODO: Fix collisionbox loading
-      cb = new CollisionBox(type, width, height, offsetX, offsetY, start, end, 
+      cb = CollisionBox(type, width, height, offsetX, offsetY, start, end, 
           i.value().at("damage"), i.value().at("push"), i.value().at("hitstop"), 
           i.value().at("hitstun"), i.value().at("push_time"), i.value().at("block_stun"), 
           i.value().at("block_type"));
       if(type == CollisionBox::THROW){
-        cb->throwType = i.value().at("throw_type");
-        cb->throwSuccess = i.value().at("throwSuccess");
-        cb->opponentThrowSuccess = i.value().at("opponentThrowSuccess");
-        cb->throwAttempt = i.value().at("throwAttempt");
-        cb->techAttempt = i.value().at("techAttempt");
+        cb.throwType = i.value().at("throw_type");
+        cb.throwSuccess = i.value().at("throwSuccess");
+        cb.opponentThrowSuccess = i.value().at("opponentThrowSuccess");
+        cb.throwAttempt = i.value().at("throwAttempt");
+        cb.techAttempt = i.value().at("techAttempt");
       }
       if(type == CollisionBox::HIT || type == CollisionBox::PROJECTILE){
-        cb->guardsparkID = 1;
-        cb->hitsparkID = 1;
+        cb.guardsparkID = 1;
+        cb.hitsparkID = 1;
         if (i.value().count("meter")) {
-          cb->hitMeterGain = i.value().at("meter");
+          cb.hitMeterGain = i.value().at("meter");
         }
         if (i.value().count("guardsparkID")) {
-          cb->guardsparkID = i.value().at("guardsparkID");
+          cb.guardsparkID = i.value().at("guardsparkID");
         }
         if (i.value().count("hitsparkID")) {
-          cb->hitsparkID = i.value().at("hitsparkID");
+          cb.hitsparkID = i.value().at("hitsparkID");
         }
       }
       if (i.value().count("group")) {
-        cb->groupID = i.value().at("group");
-        hitboxGroupDisabled[cb->groupID] = false;
+        cb.groupID = i.value().at("group");
+        hitboxGroupDisabled[cb.groupID] = false;
       }
       if (i.value().contains("canTrip")) {
-        cb->canTrip = true;
+        cb.canTrip = true;
       }
       if (i.value().count("hitsound")) {
-        cb->hitSoundID = i.value().at("hitsound");
+        cb.hitSoundID = i.value().at("hitsound");
       }
       if (i.value().count("guardsound")) {
-        cb->guardSoundID = i.value().at("guardsound");
+        cb.guardSoundID = i.value().at("guardsound");
       }
       if (i.value().count("hit_type")) {
-        cb->hitType = i.value().at("hit_type");
+        cb.hitType = i.value().at("hit_type");
       }
       if (i.value().count("hit_velX")) {
-        cb->hitVelocityX = i.value().at("hit_velX");
+        cb.hitVelocityX = i.value().at("hit_velX");
       }
       if (i.value().count("hit_velY")) {
-        cb->hitVelocityY = i.value().at("hit_velY");
+        cb.hitVelocityY = i.value().at("hit_velY");
       }
       if (i.value().count("hit_push_time")) {
-        cb->hitPushTime = i.value().at("hit_push_time");
+        cb.hitPushTime = i.value().at("hit_push_time");
       }
       if (i.value().count("air_hitstun")) {
-        cb->airHitstun = i.value().at("air_hitstun");
+        cb.airHitstun = i.value().at("air_hitstun");
       }
       if (i.value().count("air_hitvelX")) {
-        cb->airHitVelocityX = i.value().at("air_hitvelX");
+        cb.airHitVelocityX = i.value().at("air_hitvelX");
       }
       if (i.value().count("air_hitpushtime")) {
-        cb->airHitPushTime = i.value().at("air_hitpushtime");
+        cb.airHitPushTime = i.value().at("air_hitpushtime");
       }
 
     } else {
-      cb = new CollisionBox(type, width, height, offsetX, offsetY, start, end);
+      cb = CollisionBox(type, width, height, offsetX, offsetY, start, end);
     }
 
-    cb->positionX = 0;
-    cb->positionY = 0;
+    cb.collisionBoxId = id;
+    cb.positionX = 0;
+    cb.positionY = 0;
 
     switch (type) {
       case CollisionBox::POSITION:
-        pushBoxes.push_back(cb);
+        pushBoxIds.push_back(id);
         break;
       case CollisionBox::HURT:
-        hurtBoxes.push_back(cb);
+        hurtBoxIds.push_back(id);
         break;
       case CollisionBox::HIT:
-        hitBoxes.push_back(cb);
+        hitBoxIds.push_back(id);
         break;
       case CollisionBox::THROW:
-        throwHitBoxes.push_back(cb);
+        throwHitBoxIds.push_back(id);
         break;
       case CollisionBox::THROW_HURT:
-        throwHurtBoxes.push_back(cb);
+        throwHurtBoxIds.push_back(id);
         break;
       case CollisionBox::PROXIMITY:
-        proximityBoxes.push_back(cb);
+        proximityBoxIds.push_back(id);
         break;
       case CollisionBox::PROJECTILE:
-        projectileBoxes.push_back(cb);
+        projectileBoxIds.push_back(id);
         break;
     }
-    collisionBoxes.push_back(cb);
+    collisionBoxes[id] = cb;
+    id++;
   }
+  collisionBoxCount = id;
 };
 
 void StateDef::loadVisualEffects(nlohmann::json::value_type json){

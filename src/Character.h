@@ -155,6 +155,7 @@ public:
   bool hurtState(int state);
   bool blockState(int state);
   StateDef* getCurrentState();
+  CollisionBox& getCollisionBox(int cbId);
   // Mix_Chunk* getSoundWithId(int id);
 
   void clearFlag(ObjFlag flag);

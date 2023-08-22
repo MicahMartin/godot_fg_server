@@ -76,6 +76,7 @@ public:
   void updateCollisionBoxPositions();
   void updateCollisionBoxes();
   StateDef* getCurrentState();
+  CollisionBox& getCollisionBox(int cbId);
   // Mix_Chunk* getSoundWithId(int id);
   int getSoundChannel();
   int getAnimScale();

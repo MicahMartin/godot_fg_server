@@ -1,7 +1,7 @@
 {
   "commands": [
-    {"num": 0, "name": "dash", "clears": false, "command":"10@F, 10N, 4F"},
-    {"name": "back_dash", "clears": false, "command":"10@B, N, 4B"},
+    {"num": 0, "name": "dash", "clears": false, "command":"F, N, F"},
+    {"name": "back_dash", "clears": false, "command":"@B, N, B"},
     {"name": "236M", "clears": false, "command":"16~D, 16DF, 16F, LK | ~LK"},
     {"name": "236L", "clears": true, "command":"~D, DF, F, LP | ~LP"},
     {"name": "214L", "clears": true, "command":"~D, DB, B, LP | ~LP"},

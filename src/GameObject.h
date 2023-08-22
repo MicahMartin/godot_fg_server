@@ -8,6 +8,7 @@ enum ObjFlag {
 };
 
 class StateDef;
+class CollisionBox;
 class GameObject {
 public:
   virtual ~GameObject() {};
@@ -28,6 +29,7 @@ public:
   virtual void updateCollisionBoxes() = 0;
   virtual int getSoundChannel() = 0;
   virtual StateDef* getCurrentState() = 0;
+  virtual CollisionBox& getCollisionBox(int cbId) = 0;
   virtual int getAnimScale() = 0;
 
   virtual void clearFlag(ObjFlag flag) = 0;

@@ -11,7 +11,7 @@
 #include "VirtualMachine.h"
 
 
-typedef std::vector<CollisionBox*> CollisionBoxList;
+typedef std::vector<CollisionBox> CollisionBoxList;
 
 enum FlagBit {
   NO_TURN = 0x01,
@@ -77,15 +77,16 @@ public:
   Script cancelScript;
 
   // TODO: Polymorph or atleast use a union
-  CollisionBoxList pushBoxes;
-  CollisionBoxList hurtBoxes;
-  CollisionBoxList hitBoxes;
-  CollisionBoxList throwHitBoxes;
-  CollisionBoxList throwHurtBoxes;
-  CollisionBoxList proximityBoxes;
-  CollisionBoxList projectileBoxes;
-  CollisionBoxList triggerBoxes;
-  std::vector<CollisionBox*> collisionBoxes;
+  std::vector<int> pushBoxIds;
+  std::vector<int> hurtBoxIds;
+  std::vector<int> hitBoxIds;
+  std::vector<int> throwHitBoxIds;
+  std::vector<int> throwHurtBoxIds;
+  std::vector<int> proximityBoxIds;
+  std::vector<int> projectileBoxIds;
+  std::vector<int> triggerBoxIds;
+  CollisionBox collisionBoxes[COLLISION_BOX_MAX];
+  int collisionBoxCount = 0;
 
   std::unordered_map<int, std::vector<int>> soundIndexMap;
   std::unordered_map<int, int> visualEffectMap; // <startFrame, visualID>
