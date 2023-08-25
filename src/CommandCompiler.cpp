@@ -255,124 +255,126 @@ CommandNode CommandCompiler::compileOneNode(){
   bool strictness = true;
   finalNode.bufferLength = 8;
 
-  switch (currentToken->type) {
-    case CTOKEN_RELEASED: {
-      funcPointer = std::bind(&VirtualController::wasReleasedWrapper, controllerPointer, _1, _2, _3, _4);
-      godot::UtilityFunctions::print("setting func pointer to wasReleasedWrapper\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_HELD: {
-      funcPointer = std::bind(&VirtualController::isPressedWrapper, controllerPointer, _1, _2, _3, _4);
-      godot::UtilityFunctions::print("setting func pointer to isPressedWrapper\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_ANY: {
-      strictness = false;
-      godot::UtilityFunctions::print("setting strictness to false\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_NEUTRAL: {
-     finalFunc = std::bind(funcPointer, NOINPUT, strictness, _1, _2);
-     godot::UtilityFunctions::print("building neutral\n");
-     currentToken++;
-    }
-    break;
-    case CTOKEN_FORWARD: {
-     finalFunc = std::bind(funcPointer, RIGHT, strictness, _1, _2);
-     godot::UtilityFunctions::print("building forward\n");
-     currentToken++;
-    }
-    break;
-    case CTOKEN_BACK: {
-      finalFunc = std::bind(funcPointer, LEFT, strictness, _1, _2);
-      godot::UtilityFunctions::print("building back\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_UP: {
-      finalFunc = std::bind(funcPointer, UP, strictness, _1, _2);
-      godot::UtilityFunctions::print("building up\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_DOWN: {
-      finalFunc = std::bind(funcPointer, DOWN, strictness, _1, _2);
-      godot::UtilityFunctions::print("building down\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_UPFORWARD: {
-      finalFunc = std::bind(funcPointer, UPRIGHT, strictness, _1, _2);
-      godot::UtilityFunctions::print("building upforward\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_UPBACK: {
-      finalFunc = std::bind(funcPointer, UPLEFT, strictness, _1, _2);
-      godot::UtilityFunctions::print("building upback\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_DOWNFORWARD: {
-      finalFunc = std::bind(funcPointer, DOWNRIGHT, strictness, _1, _2);
-      godot::UtilityFunctions::print("building upforward\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_DOWNBACK: {
-      finalFunc = std::bind(funcPointer, DOWNLEFT, strictness, _1, _2);
-      godot::UtilityFunctions::print("building downback\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_LP: {
-      finalFunc = std::bind(funcPointer, LP, strictness, _1, _2);
-      godot::UtilityFunctions::print("building lightpunch\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_LK: {
-      finalFunc = std::bind(funcPointer, LK, strictness, _1, _2);
-      godot::UtilityFunctions::print("building lightk\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_MP: {
-      finalFunc = std::bind(funcPointer, MP, strictness, _1, _2);
-      godot::UtilityFunctions::print("building mediumP\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_MK: {
-      finalFunc = std::bind(funcPointer, MK, strictness, _1, _2);
-      godot::UtilityFunctions::print("building mediumKick\n");
-      currentToken++;
-    }
-    break;
-    case CTOKEN_NUMBER: {
-      finalNode.bufferLength = strtol(currentToken->start, NULL, 10);
-      godot::UtilityFunctions::print("we got a number! %d\n", finalNode.bufferLength);
-      currentToken++;
-    }
-    break;
-    case CTOKEN_OR: {
-      currentToken++;
-      godot::UtilityFunctions::print("building or\n");
-      finalFunc = binaryCommand(finalFunc, CTOKEN_OR);
-      godot::UtilityFunctions::print("or control returned\n");
-    }
-    break;
-    case CTOKEN_AND: {
-      currentToken++;
-      godot::UtilityFunctions::print("building and\n");
-      finalFunc = binaryCommand(finalFunc, CTOKEN_AND);
-    }
-    break;
-    default:
+  while(currentToken->type != CTOKEN_DELIM && currentToken->type != CTOKEN_END) {
+    switch (currentToken->type) {
+      case CTOKEN_RELEASED: {
+        funcPointer = std::bind(&VirtualController::wasReleasedWrapper, controllerPointer, _1, _2, _3, _4);
+        godot::UtilityFunctions::print("setting func pointer to wasReleasedWrapper\n");
+        currentToken++;
+      }
       break;
+      case CTOKEN_HELD: {
+        funcPointer = std::bind(&VirtualController::isPressedWrapper, controllerPointer, _1, _2, _3, _4);
+        godot::UtilityFunctions::print("setting func pointer to isPressedWrapper\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_ANY: {
+        strictness = false;
+        godot::UtilityFunctions::print("setting strictness to false\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_NEUTRAL: {
+       finalFunc = std::bind(funcPointer, NOINPUT, strictness, _1, _2);
+       godot::UtilityFunctions::print("building neutral\n");
+       currentToken++;
+      }
+      break;
+      case CTOKEN_FORWARD: {
+       finalFunc = std::bind(funcPointer, RIGHT, strictness, _1, _2);
+       godot::UtilityFunctions::print("building forward\n");
+       currentToken++;
+      }
+      break;
+      case CTOKEN_BACK: {
+        finalFunc = std::bind(funcPointer, LEFT, strictness, _1, _2);
+        godot::UtilityFunctions::print("building back\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_UP: {
+        finalFunc = std::bind(funcPointer, UP, strictness, _1, _2);
+        godot::UtilityFunctions::print("building up\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_DOWN: {
+        finalFunc = std::bind(funcPointer, DOWN, strictness, _1, _2);
+        godot::UtilityFunctions::print("building down\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_UPFORWARD: {
+        finalFunc = std::bind(funcPointer, UPRIGHT, strictness, _1, _2);
+        godot::UtilityFunctions::print("building upforward\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_UPBACK: {
+        finalFunc = std::bind(funcPointer, UPLEFT, strictness, _1, _2);
+        godot::UtilityFunctions::print("building upback\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_DOWNFORWARD: {
+        finalFunc = std::bind(funcPointer, DOWNRIGHT, strictness, _1, _2);
+        godot::UtilityFunctions::print("building upforward\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_DOWNBACK: {
+        finalFunc = std::bind(funcPointer, DOWNLEFT, strictness, _1, _2);
+        godot::UtilityFunctions::print("building downback\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_LP: {
+        finalFunc = std::bind(funcPointer, LP, strictness, _1, _2);
+        godot::UtilityFunctions::print("building lightpunch\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_LK: {
+        finalFunc = std::bind(funcPointer, LK, strictness, _1, _2);
+        godot::UtilityFunctions::print("building lightk\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_MP: {
+        finalFunc = std::bind(funcPointer, MP, strictness, _1, _2);
+        godot::UtilityFunctions::print("building mediumP\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_MK: {
+        finalFunc = std::bind(funcPointer, MK, strictness, _1, _2);
+        godot::UtilityFunctions::print("building mediumKick\n");
+        currentToken++;
+      }
+      break;
+      case CTOKEN_NUMBER: {
+        finalNode.bufferLength = strtol(currentToken->start, NULL, 10);
+        godot::UtilityFunctions::print("we got a number! %d\n", finalNode.bufferLength);
+        currentToken++;
+      }
+      break;
+      case CTOKEN_OR: {
+        currentToken++;
+        godot::UtilityFunctions::print("building or\n");
+        finalFunc = binaryCommand(finalFunc, CTOKEN_OR);
+        godot::UtilityFunctions::print("or control returned\n");
+      }
+      break;
+      case CTOKEN_AND: {
+        currentToken++;
+        godot::UtilityFunctions::print("building and\n");
+        finalFunc = binaryCommand(finalFunc, CTOKEN_AND);
+      }
+      break;
+      default:
+        break;
+    }
   }
 
   return finalNode;
