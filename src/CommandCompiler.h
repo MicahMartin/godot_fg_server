@@ -33,6 +33,7 @@ public:
   void compile(const char* inputString, bool clears);
 
   CommandNode compileNode();
+  CommandNode compileOneNode();
   CommandFunction binaryCommand(CommandFunction currentFunc, CommandTokenType type);
 
   std::vector<CommandStringObj> commandStrings;

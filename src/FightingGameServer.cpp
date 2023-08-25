@@ -282,11 +282,9 @@ void FightingGameServer::_bind_methods() {
 }
 
 void FightingGameServer::step(int inputs[]){
+  frameCount++;
   p1Vc.update(inputs[0]);
   p2Vc.update(inputs[1]);
-  frameCount++;
-
-
   // Handle Input
   if (!slowMode && !screenFreeze) {
     handleRoundStart();

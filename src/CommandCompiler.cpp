@@ -51,22 +51,26 @@ CommandCompiler::~CommandCompiler(){ }
 void CommandCompiler::init(const char* path) {
   std::ifstream configFile(path);
   nlohmann::json commandJson;
+
   configFile >> commandJson;
   godot::UtilityFunctions::print("loaded command json\n");
-  printf("loaded command json\n");
+
   commandStrings.clear();
   commands.clear();
+
   for (auto& commandStringObj : commandJson["commands"].items()) {
-    std::string name = commandStringObj.value()["name"].get<std::string>();
     std::string commandString = commandStringObj.value()["command"].get<std::string>();
     bool clears = commandStringObj.value()["clears"].get<bool>();
-    // godot::UtilityFunctions::print("commad-", name.c_str(), "-", commandString.c_str(), "-", clears);
-    printf("commad-%s:%s:%d\n", name.c_str(), commandString.c_str(), clears);
+
     CommandStringObj command{ commandString, clears };
+
     commandStrings.push_back(command);
   }
+
   for (int i = 0; i < commandStrings.size(); ++i) {
-    godot::UtilityFunctions::print("compiling command string: ", commandStrings[i].command.c_str());
+    godot::UtilityFunctions::print("compiling command string: ", 
+        commandStrings[i].command.c_str());
+
     compile(commandStrings[i].command.c_str(), commandStrings[i].clears);
   }
   godot::UtilityFunctions::print("done compiling commands\n");
@@ -96,7 +100,9 @@ void CommandCompiler::compile(const char* inputString, bool clears) {
     godot::UtilityFunctions::print(commandScanner.tokenToString[token.type]," ");
   }
   while(currentToken->type != CTOKEN_END){
+    godot::UtilityFunctions::print("new node start\n");
     commandObj.command.push_back(compileNode());
+    godot::UtilityFunctions::print("new node end\n");
   }
   commands.push_back(commandObj);
 }
@@ -111,7 +117,7 @@ CommandNode CommandCompiler::compileNode(){
   bool strictness = true;
   finalNode.bufferLength = 8;
 
-  while(currentToken->type != CTOKEN_DELIM && currentToken->type != CTOKEN_END){
+  while(currentToken->type != CTOKEN_DELIM && currentToken->type != CTOKEN_END) {
     switch (currentToken->type) {
       case CTOKEN_RELEASED: {
         funcPointer = std::bind(&VirtualController::wasReleasedWrapper, controllerPointer, _1, _2, _3, _4);
@@ -134,13 +140,13 @@ CommandNode CommandCompiler::compileNode(){
       case CTOKEN_NEUTRAL: {
        finalFunc = std::bind(funcPointer, NOINPUT, strictness, _1, _2);
        godot::UtilityFunctions::print("building neutral\n");
-        currentToken++;
+       currentToken++;
       }
       break;
       case CTOKEN_FORWARD: {
        finalFunc = std::bind(funcPointer, RIGHT, strictness, _1, _2);
        godot::UtilityFunctions::print("building forward\n");
-        currentToken++;
+       currentToken++;
       }
       break;
       case CTOKEN_BACK: {
@@ -219,6 +225,7 @@ CommandNode CommandCompiler::compileNode(){
         currentToken++;
         godot::UtilityFunctions::print("building or\n");
         finalFunc = binaryCommand(finalFunc, CTOKEN_OR);
+        godot::UtilityFunctions::print("or control returned\n");
       }
       break;
       case CTOKEN_AND: {
@@ -237,8 +244,142 @@ CommandNode CommandCompiler::compileNode(){
   return finalNode;
 }
 
+
+CommandNode CommandCompiler::compileOneNode(){
+  // function pointer is &VirtualController::wasPressed by default
+  // bool strictness is true by default
+  using namespace std::placeholders;
+  std::function<bool(Input, bool, int, bool)> funcPointer = std::bind(&VirtualController::wasPressedWrapper, controllerPointer, _1, _2, _3, _4);
+  CommandNode finalNode;
+  CommandFunction& finalFunc = finalNode.function;
+  bool strictness = true;
+  finalNode.bufferLength = 8;
+
+  switch (currentToken->type) {
+    case CTOKEN_RELEASED: {
+      funcPointer = std::bind(&VirtualController::wasReleasedWrapper, controllerPointer, _1, _2, _3, _4);
+      godot::UtilityFunctions::print("setting func pointer to wasReleasedWrapper\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_HELD: {
+      funcPointer = std::bind(&VirtualController::isPressedWrapper, controllerPointer, _1, _2, _3, _4);
+      godot::UtilityFunctions::print("setting func pointer to isPressedWrapper\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_ANY: {
+      strictness = false;
+      godot::UtilityFunctions::print("setting strictness to false\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_NEUTRAL: {
+     finalFunc = std::bind(funcPointer, NOINPUT, strictness, _1, _2);
+     godot::UtilityFunctions::print("building neutral\n");
+     currentToken++;
+    }
+    break;
+    case CTOKEN_FORWARD: {
+     finalFunc = std::bind(funcPointer, RIGHT, strictness, _1, _2);
+     godot::UtilityFunctions::print("building forward\n");
+     currentToken++;
+    }
+    break;
+    case CTOKEN_BACK: {
+      finalFunc = std::bind(funcPointer, LEFT, strictness, _1, _2);
+      godot::UtilityFunctions::print("building back\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_UP: {
+      finalFunc = std::bind(funcPointer, UP, strictness, _1, _2);
+      godot::UtilityFunctions::print("building up\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_DOWN: {
+      finalFunc = std::bind(funcPointer, DOWN, strictness, _1, _2);
+      godot::UtilityFunctions::print("building down\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_UPFORWARD: {
+      finalFunc = std::bind(funcPointer, UPRIGHT, strictness, _1, _2);
+      godot::UtilityFunctions::print("building upforward\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_UPBACK: {
+      finalFunc = std::bind(funcPointer, UPLEFT, strictness, _1, _2);
+      godot::UtilityFunctions::print("building upback\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_DOWNFORWARD: {
+      finalFunc = std::bind(funcPointer, DOWNRIGHT, strictness, _1, _2);
+      godot::UtilityFunctions::print("building upforward\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_DOWNBACK: {
+      finalFunc = std::bind(funcPointer, DOWNLEFT, strictness, _1, _2);
+      godot::UtilityFunctions::print("building downback\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_LP: {
+      finalFunc = std::bind(funcPointer, LP, strictness, _1, _2);
+      godot::UtilityFunctions::print("building lightpunch\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_LK: {
+      finalFunc = std::bind(funcPointer, LK, strictness, _1, _2);
+      godot::UtilityFunctions::print("building lightk\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_MP: {
+      finalFunc = std::bind(funcPointer, MP, strictness, _1, _2);
+      godot::UtilityFunctions::print("building mediumP\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_MK: {
+      finalFunc = std::bind(funcPointer, MK, strictness, _1, _2);
+      godot::UtilityFunctions::print("building mediumKick\n");
+      currentToken++;
+    }
+    break;
+    case CTOKEN_NUMBER: {
+      finalNode.bufferLength = strtol(currentToken->start, NULL, 10);
+      godot::UtilityFunctions::print("we got a number! %d\n", finalNode.bufferLength);
+      currentToken++;
+    }
+    break;
+    case CTOKEN_OR: {
+      currentToken++;
+      godot::UtilityFunctions::print("building or\n");
+      finalFunc = binaryCommand(finalFunc, CTOKEN_OR);
+      godot::UtilityFunctions::print("or control returned\n");
+    }
+    break;
+    case CTOKEN_AND: {
+      currentToken++;
+      godot::UtilityFunctions::print("building and\n");
+      finalFunc = binaryCommand(finalFunc, CTOKEN_AND);
+    }
+    break;
+    default:
+      break;
+  }
+
+  return finalNode;
+}
+
 CommandFunction CommandCompiler::binaryCommand(CommandFunction currentFunc, CommandTokenType type){
-  CommandNode nextStatement = compileNode();
+  CommandNode nextStatement = compileOneNode();
   CommandFunction returnFunction = [currentFunc, nextStatement, type](int index, bool faceRight) -> bool {
     if(type == CTOKEN_OR){
       return (currentFunc(index, faceRight) || nextStatement.function(index, faceRight));

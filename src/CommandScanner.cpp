@@ -17,13 +17,16 @@ std::vector<CommandToken> CommandScanner::scan(const char* inputString) {
       while(isAlpha(peek())){
         advance();
       }
+
       returnVect.push_back(makeToken(getInputType()));
       scannerStart = scannerCurrent;
     };
+
     if (isDigit(c)){
       while(isDigit(peek())){
         advance();
       }
+
       returnVect.push_back(makeToken(CTOKEN_NUMBER));
       scannerStart = scannerCurrent;
     };
@@ -59,19 +62,20 @@ std::vector<CommandToken> CommandScanner::scan(const char* inputString) {
         break;
     }
   }
-  if(isAtEnd()){
-    returnVect.push_back(makeToken(CTOKEN_END));
-  }
 
+  returnVect.push_back(makeToken(CTOKEN_END));
   return returnVect;
 }
 
 CommandTokenType CommandScanner::getInputType() {
   switch (scannerStart[0]) {
     case 'N': return CTOKEN_NEUTRAL;
+              break;
     case 'F': return CTOKEN_FORWARD;
+              break;
     case 'B': return CTOKEN_BACK;
-    case 'U':
+              break;
+    case 'U': { 
       if (scannerCurrent - scannerStart > 1) {
         switch (scannerStart[1]) {
           case 'F': return CTOKEN_UPFORWARD;
@@ -79,7 +83,9 @@ CommandTokenType CommandScanner::getInputType() {
         }
       }
       return CTOKEN_UP;
-    case 'D':
+    }
+    break;
+    case 'D':{
       if (scannerCurrent - scannerStart > 1) {
         switch (scannerStart[1]) {
           case 'F': return CTOKEN_DOWNFORWARD;
@@ -87,21 +93,28 @@ CommandTokenType CommandScanner::getInputType() {
         }
       }
       return CTOKEN_DOWN;
-    case 'L':
+    }
+    break;
+    case 'L': {
       if (scannerCurrent - scannerStart > 1) {
         switch (scannerStart[1]) {
           case 'P': return CTOKEN_LP;
           case 'K': return CTOKEN_LK;
         }
       }
-    case 'M':
+    }
+    break; 
+    case 'M': {
       if (scannerCurrent - scannerStart > 1) {
         switch (scannerStart[1]) {
           case 'P': return CTOKEN_MP;
           case 'K': return CTOKEN_MK;
         }
       }
+    }
+    break;
   }
+
 }
 
 CommandToken CommandScanner::makeToken(CommandTokenType tokenType) {
