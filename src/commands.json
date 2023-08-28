@@ -1,8 +1,8 @@
 {
   "commands": [
     {"num": 0, "name": "dash", "clears": false, "command":"F | UF, N, F"},
-    {"name": "back_dash", "clears": false, "command":"@B, N, B"},
-    {"name": "236M", "clears": false, "command":"16~D, 16DF, 16F, LK | ~LK"},
+    {"name": "back_dash", "clears": false, "command":"B | UB, N, B"},
+    {"name": "236M", "clears": false, "command":"~D, DF, F, LK | ~LK"},
     {"name": "236L", "clears": true, "command":"~D, DF, F, LP | ~LP"},
     {"name": "214L", "clears": true, "command":"~D, DB, B, LP | ~LP"},
     {"name": "throw", "clears": false, "command":"LK & LP"},

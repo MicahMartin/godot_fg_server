@@ -84,7 +84,8 @@ void VirtualController::update(uint16_t input){
       ++recordIterator;
     }
   }
-  inputHistory.push_back(std::list<InputEvent>());
+
+  std::list<InputEvent> eventFrame;
 
   prevInputState = currentInputState;
   uint8_t prevStickState = currentInputState & 0x0F;
@@ -96,18 +97,18 @@ void VirtualController::update(uint16_t input){
   if (prevStickState != currentStickState) {
     if (prevStickState == 0) {
       // godot::UtilityFunctions::print("Neutral Release");
-      inputHistory.back().push_back(InputEvent(NOINPUT, false));
+      eventFrame.push_back(InputEvent(NOINPUT, false));
     } else {
       // godot::UtilityFunctions::print(inputToString[Input(prevStickState)], " Release");
-      inputHistory.back().push_back(InputEvent(prevStickState, false));
+      eventFrame.push_back(InputEvent(prevStickState, false));
     }
 
     if (currentStickState == 0) {
       // godot::UtilityFunctions::print("Neutral Press");
-      inputHistory.back().push_back(InputEvent(NOINPUT, true));
+      eventFrame.push_back(InputEvent(NOINPUT, true));
     } else {
       // godot::UtilityFunctions::print(inputToString[Input(currentStickState)], " Press");
-      inputHistory.back().push_back(InputEvent(currentStickState, true));
+      eventFrame.push_back(InputEvent(currentStickState, true));
     }
 
   }
@@ -122,12 +123,14 @@ void VirtualController::update(uint16_t input){
     mask |= (1 << i);
     if (currentButtonState.test(i) && !prevButtonState.test(i)) {
       // godot::UtilityFunctions::print(inputToString[Input(mask)], " Press");
-      inputHistory.back().push_back(InputEvent(mask, true));
+      eventFrame.push_back(InputEvent(mask, true));
     } else if (!currentButtonState.test(i) && prevButtonState.test(i)) {
       // godot::UtilityFunctions::print(inputToString[Input(mask)], " Release");
-      inputHistory.back().push_back(InputEvent(mask, false));
+      eventFrame.push_back(InputEvent(mask, false));
     }
   }
+
+  inputHistory.push_back(eventFrame);
 }
 
 void VirtualController::initCommandCompiler(const char* path) { 
