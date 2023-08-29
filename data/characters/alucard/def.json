@@ -1534,6 +1534,126 @@
       "sounds": [
         {"soundID": 9, "start": 1}
       ]
+    },
+    {
+      "state_num": 85,
+      "state_name": "AIR_DASH_DF",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/movement/airdash_df.kai",
+      "animation_path": "air_dash_f",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
+    },
+    {
+      "state_num": 86,
+      "state_name": "AIR_DASH_UF",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/movement/airdash_uf.kai",
+      "animation_path": "air_dash_f",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
+    },
+    {
+      "state_num": 87,
+      "state_name": "AIR_DASH_D",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/movement/airdash_d.kai",
+      "animation_path": "air_dash_f",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
+    },
+    {
+      "state_num": 88,
+      "state_name": "AIR_DASH_U",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/movement/airdash_u.kai",
+      "animation_path": "air_dash_f",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
+    },
+    {
+      "state_num": 89,
+      "state_name": "AIR_DASH_UB",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/movement/airdash_ub.kai",
+      "animation_path": "air_dash_f",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
+    },
+    {
+      "state_num": 90,
+      "state_name": "AIR_DASH_DB",
+      "flags": [
+        "NO_TURN"
+      ],
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/movement/airdash_db.kai",
+      "animation_path": "air_dash_f",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":150, "offsetX":-75, "offsetY": 150},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0}
+      ],
+      "sounds": [
+        {"soundID": 8, "start": 1}
+      ],
+      "visual_effects": [
+        {"visualID": 6, "start": 1}
+      ]
     }
   ],
   "custom_states": [

@@ -5,6 +5,8 @@
   var yPos = $get_y_pos;
 
   var dash_f = $check_command 0 or $check_command 40;
+  var dash_uf = $check_command 0;
+  var dash_df = $check_command 0;
   var dash_b = $check_command 1 or $check_command 41;
   var qcf_k = $check_command 2;
   var qcb_p = $check_command 3;
@@ -166,16 +168,8 @@
         $change_state 13; 
       }
     }
-
-    if(slash){
-      $change_state 16; 
-    }
     if(kick){
-      if (anyDown) {
-        $change_state 19; 
-      } else {
-        $change_state 80;
-      }
+      $change_state 80;
     }
     if(punch){
       $change_state 18; 

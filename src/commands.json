@@ -41,6 +41,8 @@
     {"name": "parry_plink1", "clears": false, "command":"LK, 2MP"},
     {"name": "parry_plink2", "clears": false, "command":"MP, 2LK"},
     {"num": 40, "name": "dash", "clears": false, "command":"F | UF, N, F"},
-    {"name": "back_dash", "clears": false, "command":"B | UB, N, B"}
+    {"name": "back_dash", "clears": false, "command":"B | UB, N, B"},
+    {"name": "airdash_uf", "clears": true, "command":"*UF & LP & LK"},
+    {"name": "airdash_df", "clears": true, "command":"*DF & LP & LK"}
   ]
 }
