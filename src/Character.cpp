@@ -991,5 +991,5 @@ int Character::_getVelY(){
 };
 
 int Character::_getVelX(){
-  return velocityX;
+  return faceRight ? velocityX : velocityX * -1;
 };

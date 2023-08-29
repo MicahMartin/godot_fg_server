@@ -4,8 +4,8 @@
   var stateNum = $get_state_num; 
   var yPos = $get_y_pos;
 
-  var dash_f = $check_command 0;
-  var dash_b = $check_command 1;
+  var dash_f = $check_command 0 or $check_command 40;
+  var dash_b = $check_command 1 or $check_command 41;
   var qcf_k = $check_command 2;
   var qcb_p = $check_command 3;
   var down_down_lp = $check_command 4;
@@ -46,6 +46,14 @@
     }
     
     
+    if(dash_f){
+      $change_state 10; 
+    }
+
+    if(dash_b){
+      $change_state 11; 
+    }
+
     if (meter >= 1) {
       var anyBackNotDown = (back or upback);
       var lk = $get_input 11;
@@ -105,13 +113,6 @@
       }
     }
 
-    if(dash_f){
-      $change_state 10; 
-    }
-
-    if(dash_b){
-      $change_state 11; 
-    }
 
     if(upforward){
       $change_state 6; 

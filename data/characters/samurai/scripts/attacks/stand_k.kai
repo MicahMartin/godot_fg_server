@@ -12,22 +12,11 @@
   var lp_and_lk = $was_pressed 10;
 
   if($get_state_time < 2){
-    if (meter >= 1) {
-      var anyBackNotDown = (back or upback);
-      var lk = $get_input 11;
-      var mp = $get_input 12;
-      if ((lk and mp) and anyBackNotDown) {
-        $cancel_state 5022;
-      }
-      if ((lk and mp) and downback) {
-        $cancel_state 5023;
-      }
-    }
     if (lp_and_lk) {
       if(anyBack){
-        $cancel_state 5036;
+        $change_state 11;
       } else { 
-        $cancel_state 5032;
+        $change_state 10;
       }
     }
   }

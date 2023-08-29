@@ -82,7 +82,9 @@ class VirtualController {
       return wasReleased(relativeInput, strict, index);
     };
     inline bool isPressedWrapper(Input input, bool strict, int index, bool faceRight){
-      strict = false;
+      if (input > 16) {
+        strict = false;
+      }
       Input relativeInput = inputEnumMap[input](faceRight);
       return isPressed(relativeInput, strict);
     };

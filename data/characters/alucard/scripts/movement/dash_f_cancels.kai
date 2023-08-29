@@ -32,6 +32,11 @@
         $cancel_state 74;
       }
     }
+
+    if(anyDown){ 
+      $cancel_state 4; 
+    }
+
     if(qcf_k){
       $cancel_state 14;
     }
@@ -56,7 +61,7 @@
       if (anyDown) {
         $cancel_state 22;
       } else {
-        $cancel_state 15;
+        $cancel_state 84;
       }
     }
 
@@ -64,7 +69,7 @@
       if (anyDown) {
         $cancel_state 21;
       } else {
-        $cancel_state 8;
+        $cancel_state 83;
       }
     }
 

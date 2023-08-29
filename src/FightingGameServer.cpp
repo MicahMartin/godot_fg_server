@@ -13,9 +13,9 @@
 #include "ggponet.h"
 
 #ifdef _WIN32
-#include <Windows.h>
+  #include <Windows.h>
 #else
-#include <unistd.h>
+  #include <unistd.h>
 #endif
 
 // #define SYNC_TEST
@@ -121,7 +121,7 @@ void FightingGameServer::enter(){
     ggpoInit();
   }
 }
-void FightingGameServer::_ready() { 
+void FightingGameServer::_ready() {
   if(godot::Engine::get_singleton()->is_editor_hint()){ return; }
   InputServer = godot::Input::get_singleton();
   godot::UtilityFunctions::print("in ready");
@@ -265,10 +265,6 @@ void FightingGameServer::_physics_process(double delta) {
       }
     }
   }
-
-  // auto stop = std::chrono::high_resolution_clock::now();
-  // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-  // godot::UtilityFunctions::print("time spent in server:", duration.count());
 }
 
 void FightingGameServer::_process(double delta) { 

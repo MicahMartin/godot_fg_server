@@ -1489,6 +1489,51 @@
       "sounds": [
         {"soundID": 2, "start": 4}
       ]
+    },
+    {
+      "state_num": 83,
+      "state_name": "DASH_STAND_P",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../GDExtensionTemplate/data/characters/alucard/scripts/attacks/stand_p_cancels.kai",
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/attacks/dash_stand_p.kai",
+      "animation_path": "stand_p",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":150, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":14, "block_stun":13, "hitstop": 11, "damage":3, "push": 8000, "push_time": 8, "start": 5, "end": 6, "width":100, "height":110, "offsetX":75, "offsetY": 200, "group": 1, "hitsound": 24, "guardsound": 16, "hitsparkID": 1, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 8000, "hit_push_time": 8, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 16, "width":300, "height":80, "offsetX":75, "offsetY": 215, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 8, "end": 16, "width":125, "height":50, "offsetX":75, "offsetY": 215}
+      ],
+      "sounds": [
+        {"soundID": 1, "start": 1}
+      ]
+    },
+    {
+      "state_num": 84,
+      "state_name": "DASH_STAND_K",
+      "flags": [
+        "NO_TURN"
+      ],
+      "cancel_script": "../GDExtensionTemplate/data/characters/alucard/scripts/attacks/stand_k_cancels.kai",
+      "update_script": "../GDExtensionTemplate/data/characters/alucard/scripts/attacks/dash_stand_k.kai",
+      "animation_path": "stand_k",
+      "collision_boxes": [
+        {"type": "POSITION", "start": 1, "end": -1, "width":100, "height":150, "offsetX":0, "offsetY": 0},
+        {"type": "HIT", "block_type": 1, "hitstun":30, "block_stun":21, "hitstop": 12, "damage":2, "push": 13000, "push_time": 10,  "start": 11, "end": 12, "width":250, "height":100, "offsetX":75, "offsetY": 240, "group": 1, "hitsound": 10, "guardsound": 17, "hitsparkID": 2, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 12000, "hit_push_time": 20, "meter": 10},
+        {"type": "HIT", "block_type": 1, "hitstun":30, "block_stun":21, "hitstop": 12, "damage":2, "push": 13000, "push_time": 10,  "start": 11, "end": 12, "width":100, "height":200, "offsetX":75, "offsetY": 75, "group": 1, "hitsound": 10, "guardsound": 17, "hitsparkID": 2, "guardsparkID": 1, "hit_type": 1, "hit_velX": 6000, "hit_velY": 12000, "hit_push_time": 20, "meter": 10},
+        {"type": "PROXIMITY", "start": 1, "end": 12, "width":350, "height":300, "offsetX":75, "offsetY": 190, "group": 1},
+        {"type": "HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 1, "end": -1, "width":100, "height":100, "offsetX":-50, "offsetY": 290},
+        {"type": "THROW_HURT", "start": 1, "end": -1, "width":150, "height":290, "offsetX":-75, "offsetY": 0},
+        {"type": "HURT", "start": 11, "end": 23, "width":200, "height":150, "offsetX":75, "offsetY": 160}
+      ],
+      "sounds": [
+        {"soundID": 9, "start": 1}
+      ]
     }
   ],
   "custom_states": [
