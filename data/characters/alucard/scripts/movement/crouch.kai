@@ -4,10 +4,10 @@
     var xvel = $get_xvel;
     if(xvel > 15000 or xvel < -15000){
       if(xvel > 15000){
-        $velset_x 8000; 
+        $velset_x 9500; 
       }
       if(xvel < -15000){
-        $velset_x 8000; 
+        $velset_x 9500; 
       }
     } else {
       $velset_x 0;

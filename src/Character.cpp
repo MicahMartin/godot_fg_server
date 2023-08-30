@@ -900,7 +900,11 @@ void Character::_setWhiffCancel(int val){
 }
 
 void Character::_setAirAction(int operand){
-  hasAirAction = operand;
+  if(operand < 0){
+    hasAirAction += operand;
+  } else {
+    hasAirAction = operand;
+  }
 }
 
 void Character::_setCounter(int operand){

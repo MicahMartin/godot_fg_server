@@ -1,7 +1,7 @@
 { 
   if($get_state_time == 0){ 
     $set_control 1; 
-    $set_air_action 0;
+    $set_air_action -1;
     $neg_velset_x 6000; 
     $velset_y 35000; 
   } 

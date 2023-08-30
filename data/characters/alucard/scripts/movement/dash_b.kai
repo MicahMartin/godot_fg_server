@@ -1,20 +1,17 @@
 { 
-  var downforward = $get_input 3; 
-  var forward = $get_input 6; 
-  var anyForward = (downforward or forward);
   var stateTime = $get_state_time;
 
   if(stateTime == 0){ 
-    $set_control 0; 
-    $neg_velset_x 20000; 
-  }
-
-  if($get_state_time == 6){ 
-    $neg_velset_x 10000;
     $set_whiff_cancel 1;
+    $set_control 0; 
+    $neg_velset_x 25000; 
   }
 
-  if($get_state_time == 20){ 
+  if(stateTime == 9){ 
+    $neg_velset_x 10000;
+  }
+
+  if(stateTime == 20){ 
     $cancel_state 69; 
   }
 } 

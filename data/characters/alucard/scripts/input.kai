@@ -146,7 +146,8 @@
 
   if (airborne) {
     var hasAirAction = $has_air_action;
-    var aboveMinHeight = ($get_y_pos > 100);
+    var airdash_f = $check_command 42 or $check_command 43;
+    var aboveMinHeight = ($get_y_pos > 100000);
     var can_dbl_jump = false;
     if($get_state_time > 15){ 
       can_dbl_jump = true;
@@ -161,7 +162,7 @@
     }
 
     if(aboveMinHeight and hasAirAction){
-      if(dash_f){
+      if(dash_f or airdash_f){
         $change_state 12; 
       }
       if(dash_b){

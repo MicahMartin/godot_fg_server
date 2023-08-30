@@ -12,7 +12,8 @@
   var back = $get_input 4; 
   var forward = $get_input 6; 
   var lp_and_lk = $check_command 32;
-  if($get_state_time < 2){
+  var hasAirAction = $has_air_action;
+  if($get_state_time < 3 and hasAirAction){
     if (lp_and_lk) {
       if(back){
         $change_state 13;

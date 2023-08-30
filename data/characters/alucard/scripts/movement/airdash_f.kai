@@ -1,13 +1,13 @@
 { 
   if($get_state_time == 0){ 
     $set_control 0; 
-    $set_air_action 0; 
-    $set_nograv_count 18; 
+    $set_air_action -1; 
+    $set_nograv_count 20; 
     $velset_x 14000; 
     $velset_y 0; 
   } 
 
-  if($get_state_time < 7){
+  if($get_state_time < 5){
     var down = $get_input 2; 
     var downback = $get_input 1; 
     var downforward = $get_input 3; 
@@ -23,7 +23,7 @@
       $velset_y -8000; 
     }
     if(anyUp and yvel == 0){
-      $velset_y 8000; 
+      $velset_y 11000; 
     }
   } 
 

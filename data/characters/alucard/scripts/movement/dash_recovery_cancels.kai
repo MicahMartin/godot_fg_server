@@ -57,7 +57,7 @@
       if (anyDown) {
         $cancel_state 22;
       } else {
-        $cancel_state 15;
+        $cancel_state 84;
       }
     }
 
