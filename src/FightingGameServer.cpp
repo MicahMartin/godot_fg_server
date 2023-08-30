@@ -411,7 +411,7 @@ void FightingGameServer::step(int inputs[]){
       screenFreeze = false;
     }
   }
-  // updateVisuals();
+  updateVisuals();
   if(netPlayState){
     ggpo_advance_frame(ggpo);
   }
@@ -926,7 +926,7 @@ HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Chara
             if (CollisionBox::checkAABB(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId))) {
               //TODO: SHAKING SCRIPT
               // shakeCamera(hitter->getCollisionBox(hId).hitstop, &camera);
-              // CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId));
+              CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId));
               hitter->inHitStop = true;
               hitter->hitStop = hitter->getCollisionBox(hId).hitstop;
 
@@ -1066,7 +1066,7 @@ HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Chara
                 // int xEdge = hurter->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
                 // int visualID = hitter->getCollisionBox(hId).guardsparkID;
                 // VisualEffect& visFX = hurter->guardSparks.at(visualID);
-                //d visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
+                // visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
                 // visFX.setActive(true);
                 // hurter->soundsEffects.at(hitter->getCollisionBox(hId).guardSoundID).active = true;
                 // hurter->soundsEffects.at(hitter->getCollisionBox(hId).guardSoundID).channel = hurter->soundChannel + 2;
@@ -1110,11 +1110,12 @@ HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Chara
                 if (hurter->comboCounter == 1) {
                   hurter->comboProration = hitter->getCollisionBox(hId).initialProration;
                 }
-                // int xEdge = hitter->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
+
+                int xEdge = hitter->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
                 // int visualID = hitter->getCollisionBox(hId).hitsparkID;
-                // VisualEffect& visFX = hitter->hitSparks.at(visualID);
-                // visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
-                // visFX.setActive(true);
+                VisualEffect& visFX = hitter->hitSpark;
+                visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
+                visFX.setActive(true);
 
                 hurter->control = 0;
                 int finalHitstun = wasACounter ? (hitter->getCollisionBox(hId).hitstun + 4) : (hitter->getCollisionBox(hId).hitstun);
@@ -1292,7 +1293,7 @@ HitResult FightingGameServer::checkEntityHitAgainst(Character* _p1, Character* _
                 // shakeCamera(entity.getCollisionBox(eId)->hitstop, &camera);
                 printf("found entity hit\n");
                 godot::UtilityFunctions::print("found entity hit");
-                CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(entity.getCollisionBox(eId), _p2->getCollisionBox(hId));
+                // CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(entity.getCollisionBox(eId), _p2->getCollisionBox(hId));
                 bool entityFaceRight = entity.faceRight;
                 entity.inHitStop = true;
                 if (entity.getCollisionBox(eId).selfHitstop > 0) {
@@ -1373,8 +1374,8 @@ HitResult FightingGameServer::checkEntityHitAgainst(Character* _p1, Character* _
                     }
                   }
                   printf("got to the entity visfx\n");
-                  int xEdge = _p2->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
-                  int visualID = entity.getCollisionBox(eId).guardsparkID;
+                  // int xEdge = _p2->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
+                  // int visualID = entity.getCollisionBox(eId).guardsparkID;
                   // VisualEffect& visFX = p2->guardSparks.at(visualID);
                   // visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
                   // visFX.setActive(true);
@@ -1408,8 +1409,8 @@ HitResult FightingGameServer::checkEntityHitAgainst(Character* _p1, Character* _
                     // Mix_PlayChannel(0, countah, 0);
                   }
 
-                  int xEdge = entity.faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
-                  int visualID = entity.getCollisionBox(eId).hitsparkID;
+                  // int xEdge = entity.faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
+                  // int visualID = entity.getCollisionBox(eId).hitsparkID;
 
                   printf("got to the entity hit visfx\n");
                   // VisualEffect& visFX = entity.hitSparks.at(visualID);
@@ -1576,6 +1577,8 @@ void FightingGameServer::restartRound(){
 }
 
 void FightingGameServer::updateVisuals(){
+  auto& i = player1.hitSpark; 
+  i.update();
 }
 
 

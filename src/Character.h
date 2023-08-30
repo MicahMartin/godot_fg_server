@@ -1,6 +1,7 @@
 #ifndef _CHARACTER_H
 #define _CHARACTER_H
 
+#include "VisualEffect.h"
 #include "json.hpp"
 #include "GameObject.h"
 #include "StateDef.h"
@@ -8,7 +9,7 @@
 #include "Script.h"
 #include "VirtualController.h"
 //#include "Animation.h"
-//#include "VisualEffect.h"
+#include "VisualEffect.h"
 #include "Entity.h"
 
 const int ENTITY_MAX = 3;
@@ -291,6 +292,7 @@ public:
 
   // std::unordered_map<int, VisualEffect> hitSparks;
   // std::unordered_map<int, VisualEffect> guardSparks;
+  VisualEffect hitSpark;
   // std::unordered_map<int, VisualEffect> visualEffects;
   // std::unordered_map<int, SoundObj> soundsEffects;
   // std::unordered_map<int, SoundObj> hurtSoundEffects;
