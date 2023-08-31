@@ -925,8 +925,13 @@ HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Chara
           if (!hurter->getCollisionBox(uId).disabled && !_groupDisabled) {
             if (CollisionBox::checkAABB(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId))) {
               //TODO: SHAKING SCRIPT
+              CollisionBox& cbRef = hitter->getCollisionBox(hId);
+              CollisionBox& hbRef = hurter->getCollisionBox(hId);
               // shakeCamera(hitter->getCollisionBox(hId).hitstop, &camera);
               CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId));
+              godot::UtilityFunctions::print("hitbox", cbRef.positionX, " ", cbRef.positionY, " ", cbRef.width, " ", cbRef.height);
+              godot::UtilityFunctions::print("hurtbox", hbRef.positionX, " ", hbRef.positionY, " ", hbRef.width, " ", hbRef.height);
+              godot::UtilityFunctions::print("hitspark", hitsparkIntersect.x, " ", hitsparkIntersect.y, " ", hitsparkIntersect.w, " ", hitsparkIntersect.h);
               hitter->inHitStop = true;
               hitter->hitStop = hitter->getCollisionBox(hId).hitstop;
 
@@ -1114,7 +1119,7 @@ HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Chara
                 int xEdge = hitter->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
                 // int visualID = hitter->getCollisionBox(hId).hitsparkID;
                 VisualEffect& visFX = hitter->hitSpark;
-                visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
+                visFX.reset(xEdge, (hitsparkIntersect.y + (hitsparkIntersect.h / 2)));
                 visFX.setActive(true);
 
                 hurter->control = 0;
@@ -1629,6 +1634,17 @@ godot::Dictionary FightingGameServer::getGameState() {
     p1FireballBoxes.append(cbDict);
   }
   state["p1FireballBoxes"] = p1FireballBoxes;
+
+
+  state["p1HitsparkActive"] = player1.hitSpark.getActive();
+  state["p1HitsparkStatetTime"] = player1.hitSpark.getStateTime();
+  state["p1HitsparkX"] = player1.hitSpark.getX();
+  state["p1HitsparkY"] = player1.hitSpark.getY();
+
+  // bool isActive = false;
+  // int stateTime = 0;
+  // int xPos = 0;
+  // int yPos = 0;
 
   state["char2FaceRight"] = player2.faceRight;
   state["char2StateNum"] = player2.currentState->stateNum;

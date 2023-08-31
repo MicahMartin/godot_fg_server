@@ -16,20 +16,19 @@ CollisionBox::CollisionBox(CollisionBox::CollisionType boxType, int width, int h
 CollisionBox::~CollisionBox(){ }
 
 CollisionRect CollisionBox::getAABBIntersect(CollisionBox box1, CollisionBox box2){
-  std::pair<int, int> b1Pos(box1.positionX, box1.positionY);
-  std::pair<int, int> b2Pos(box2.positionX, box2.positionY);
+  CollisionRect intersection;
+  intersection.x = std::max(box1.positionX, box2.positionX);
+  intersection.y = std::max(box1.positionY, box2.positionY);
+  
+  int right1 = box1.positionX + box1.width;
+  int right2 = box2.positionX + box2.width;
+  int bottom1 = box1.positionY + box1.height;
+  int bottom2 = box2.positionY + box2.height;
+  
+  intersection.w = std::min(right1, right2) - intersection.x;
+  intersection.h = std::min(bottom1, bottom2) - intersection.y;
 
-  int highestX = b1Pos.first < b2Pos.first? b2Pos.first: b1Pos.first;
-  int lowestEdge = (b1Pos.first + box1.width) < (b2Pos.first + box2.width) ? (b1Pos.first + box1.width) : (b2Pos.first + box2.width);
-  int highestY = b1Pos.second < b2Pos.second ? box1.positionY : box2.positionY;
-  int lowestTop = (b1Pos.second - box1.height) > (b2Pos.second - box2.height) ? (b1Pos.second - box1.height) : (b2Pos.second - box2.height);
-
-  int newX = highestX;
-  int newW = (lowestEdge) - newX;
-  int newY = highestY;
-  int newH = abs(lowestTop - newY);
-  // printf("newY:%d, newH:%d\n", newY, newH);
-  return CollisionRect{newX, newY, newW, newH};
+  return intersection;
 }
 
 bool CollisionBox::checkAABB(CollisionBox box1, CollisionBox box2){
