@@ -37,11 +37,6 @@ struct GameState {
   CameraStateObj cameraState;
 };
 
-struct ThrowResult {
-  bool thrown;
-  CollisionBox* throwCb;
-};
-
 struct TriggerResult {
   bool triggered;
   CollisionBox* triggerCb;
@@ -127,7 +122,6 @@ class FightingGameServer : public godot::Node{
     void checkPushCollisions();
     void checkThrowCollisions();
     void checkHitCollisions();
-    void checkProximityCollisions();
     void checkEntityHitCollisions();
     void checkBounds();
     void checkHealth();
@@ -148,7 +142,6 @@ class FightingGameServer : public godot::Node{
 
     HitResult checkEntityHitAgainst(Character* thrower, Character* throwee);
     ThrowResult checkThrowAgainst(Character* thrower, Character* throwee);
-    TriggerResult checkTriggerAgainst(Character* owner, Character* activator);
     void handleSameFrameThrowTech(SpecialState techState);
     int checkProjectileCollisions(Character* player1, Character* player2);
 

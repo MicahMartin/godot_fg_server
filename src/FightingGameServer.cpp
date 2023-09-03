@@ -244,19 +244,16 @@ void FightingGameServer::step(int inputs[]){
   // Handle Input
   if (!slowMode && !screenFreeze) {
     handleRoundStart();
+    physics.checkCorner(&player1, worldWidth);
+    physics.checkCorner(&player2, worldWidth);
+    updateFaceRight();
     checkHitstop(&player1);
     checkHitstop(&player2);
     checkEntityHitstop(&player1);
     checkEntityHitstop(&player2);
 
-    physics.checkCorner(&player1, worldWidth);
-    physics.checkCorner(&player2, worldWidth);
-
-    updateFaceRight();
-
     player1.handleInput();
     player2.handleInput();
-
     for (auto& i : player1.entityList) {
       if (i.active && !i.inHitStop) {
         i.handleInput();
@@ -272,7 +269,6 @@ void FightingGameServer::step(int inputs[]){
 
   player1.currentState->handleCancels();
   player2.currentState->handleCancels();
-
   for (auto& i : player1.entityList) {
     if (i.active) {
       i.currentState->handleCancels();
@@ -285,9 +281,9 @@ void FightingGameServer::step(int inputs[]){
   }
 
   checkThrowCollisions();
-  checkProximityAgainst(&player1, &player2);
-  checkProximityAgainst(&player2, &player1);
-  checkProjectileCollisions(&player1, &player2);
+  physics.checkProximityBox(&player1, &player2);
+  physics.checkProximityBox(&player2, &player1);
+  physics.checkProjectileBox(&player1, &player2);
   checkHitCollisions();
   // checkTriggerCollisions();
   physics.checkCorner(&player1, worldWidth);
@@ -330,13 +326,13 @@ void FightingGameServer::step(int inputs[]){
 
 
   //TODO: Fix redundancies
-  checkBounds();
+  physics.checkBounds(&player1, &player2, camera, worldWidth);
   updateFaceRight();
-  checkCorner(&player1);
-  checkCorner(&player2);
+  physics.checkCorner(&player1, worldWidth);
+  physics.checkCorner(&player2, worldWidth);
 
-  checkPushCollisions();
-  checkBounds();
+  physics.checkPushBox(&player1, &player2, worldWidth);
+  physics.checkBounds(&player1, &player2, camera, worldWidth);
 
   updateCamera();
   // checkHealth();
@@ -463,9 +459,6 @@ void FightingGameServer::updateFaceRight() {
   }
 }
 
-void FightingGameServer::checkCorner(Character* player) {
-}
-
 void FightingGameServer::updateCamera() {
   camera.update(player1.getPos(), player2.getPos());
 }
@@ -502,75 +495,6 @@ void FightingGameServer::checkThrowCollisions() {
     player1.changeState(p2ThrownState.throwCb->throwSuccess);
   }
 }
-
-void FightingGameServer::checkPushCollisions() {
-  // get the collision box(s) for the current state
-  std::pair<int, int> p1Pos = player1.getPos();
-  std::pair<int, int> p2Pos = player2.getPos();
-
-  for (auto& p1PbId : player1.currentState->pushBoxIds) {
-    if (!player1.getCollisionBox(p1PbId).disabled) {
-      for (auto p2PbId : player2.currentState->pushBoxIds) {
-        if (!player2.getCollisionBox(p2PbId).disabled) {
-          if (CollisionBox::checkAABB(player1.getCollisionBox(p1PbId), player2.getCollisionBox(p2PbId))) {
-            // find how deeply intersected they are
-            bool p1Lefter = p1Pos.first < p2Pos.first;
-            if (p1Pos.first == p2Pos.first) {
-              p1Lefter = player1.faceRight;
-            }
-
-            if (p1Lefter) {
-              int p1RightEdge = player1.getCollisionBox(p1PbId).positionX + player1.getCollisionBox(p1PbId).width;
-              int p2LeftEdge = player2.getCollisionBox(p2PbId).positionX;
-              int depth = p1RightEdge - p2LeftEdge;
-
-              // account for over bound 
-              if ((p2Pos.first + player2.width) + (depth / 2) > worldWidth) {
-                // int remainder = worldWidth - (p2Pos.first + (depth / 2));
-                player2.setXPos(worldWidth - player2.width);
-                player1.setX(-depth);
-              }
-              else if ((p1Pos.first - player1.width) - (depth / 2) < 0) {
-                player1.setXPos(0 + player1.width);
-                player2.setX(depth);
-              }
-              else {
-                player2.setX(depth / 2);
-                player1.setX(-depth / 2);
-              }
-            }
-            else {
-              int p2RightEdge = player2.getCollisionBox(p2PbId).positionX + player2.getCollisionBox(p2PbId).width;
-              int p1LeftEdge = player1.getCollisionBox(p1PbId).positionX;
-              int depth = p2RightEdge - p1LeftEdge;
-
-              // account for over bound 
-              if ((p1Pos.first + player1.width) + (depth / 2) > worldWidth) {
-                player1.setXPos(worldWidth + player1.width);
-                player2.setX(-depth);
-              }
-              else if ((p2Pos.first - player2.width) - (depth / 2) < 0) {
-                player2.setXPos(0 + player2.width);
-                player1.setX(depth);
-              }
-              else {
-                player2.setX(-depth / 2);
-                player1.setX(depth / 2);
-              }
-            }
-
-            player1.updateCollisionBoxPositions();
-            player2.updateCollisionBoxPositions();
-          }
-        }
-      }
-    }
-  }
-}
-
-void FightingGameServer::checkBounds() {
-}
-
 
 void FightingGameServer::checkThrowTechs() {
   if (player1.currentState->checkFlag(TECHABLE)) {
@@ -609,98 +533,7 @@ void FightingGameServer::checkHitstop(Character* player) {
   }
 }
 
-int FightingGameServer::checkProjectileCollisions(Character* _player1, Character* _player2) {
-  for (auto& entity : _player1->entityList) {
-    if (entity.active && !entity.currentState->hitboxesDisabled) {
-      for (auto eId : entity.currentState->projectileBoxIds) {
-        bool groupDisabled = entity.currentState->hitboxGroupDisabled[entity.getCollisionBox(eId).groupID];
-        if (!groupDisabled && !entity.inHitStop) {
-          for (auto& otherEntity : _player2->entityList) {
-            if (otherEntity.active && !otherEntity.currentState->hitboxesDisabled) {
-              for (auto oId : otherEntity.currentState->projectileBoxIds) {
-                bool otherGroupDisabled = otherEntity.currentState->hitboxGroupDisabled[otherEntity.getCollisionBox(oId).groupID];
-                if (!otherGroupDisabled && !otherEntity.inHitStop) {
-                  if (CollisionBox::checkAABB(entity.getCollisionBox(eId), otherEntity.getCollisionBox(oId))) {
-                    // CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(entity.getCollisionBox(eId], otherEntity.getCollisionBox(oId]);
-                    entity.inHitStop = true;
-                    entity.hitStop = 6;
-                    otherEntity.inHitStop = true;
-                    otherEntity.hitStop = 6;
-                    if (--entity.currentDurability <= 0) {
-
-                      entity.currentState->hitboxGroupDisabled[entity.getCollisionBox(eId).groupID] = true;
-                      entity.currentState->canHitCancel = true;
-
-                      entity.soundsEffects.at(entity.getCollisionBox(eId).hitSoundID).active = true;
-                      entity.soundsEffects.at(entity.getCollisionBox(eId).hitSoundID).channel = _player1->soundChannel + 2;
-                    };
-                    if (--otherEntity.currentDurability <= 0) {
-                      otherEntity.currentState->hitboxGroupDisabled[otherEntity.getCollisionBox(oId).groupID] = true;
-                      otherEntity.currentState->canHitCancel = true;
-
-                      otherEntity.soundsEffects.at(otherEntity.getCollisionBox(oId).hitSoundID).active = true;
-                      otherEntity.soundsEffects.at(otherEntity.getCollisionBox(oId).hitSoundID).channel = _player2->soundChannel + 2;
-                    };
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  return 0;
-}
-
-int FightingGameServer::checkProximityAgainst(Character* hitter, Character* hurter) {
-  if (hurter->getPos().second <= 0) {
-    if (!hitter->currentState->hitboxesDisabled) {
-      for (auto hitBoxId : hitter->currentState->proximityBoxIds) {
-        bool groupDisabled = hitter->currentState->hitboxGroupDisabled[hitter->getCollisionBox(hitBoxId).groupID];
-        if (!hitter->getCollisionBox(hitBoxId).disabled && !groupDisabled) {
-          for (auto hurtBoxId : hurter->currentState->hurtBoxIds) {
-            if (!hurter->getCollisionBox(hurtBoxId).disabled && !groupDisabled) {
-              if (CollisionBox::checkAABB(hitter->getCollisionBox(hitBoxId), hurter->getCollisionBox(hurtBoxId))) {
-                if (hurter->currentState->stateNum == hurter->specialStateMap[SS_WALK_B]) {
-                  hurter->changeState(hurter->specialStateMap[SS_BLOCK_STAND]);
-                }
-                if (hurter->currentState->stateNum == hurter->specialStateMap[SS_CROUCH] && hurter->_getInput(1)) {
-                  hurter->changeState(hurter->specialStateMap[SS_BLOCK_CROUCH]);
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    for (auto& entity : hitter->entityList) {
-      if (entity.active && !entity.currentState->hitboxesDisabled) {
-        for (auto eId : entity.currentState->proximityBoxIds) {
-          bool groupDisabled = entity.currentState->hitboxGroupDisabled[entity.getCollisionBox(eId).groupID];
-          if (!entity.getCollisionBox(eId).disabled && !groupDisabled) {
-            for (auto p2Id : hurter->currentState->hurtBoxIds) {
-              if (!hurter->getCollisionBox(p2Id).disabled && !entity.inHitStop) {
-                if (CollisionBox::checkAABB(entity.getCollisionBox(eId), hurter->getCollisionBox(p2Id))) {
-                  if (hurter->currentState->stateNum == hurter->specialStateMap[SS_WALK_B]) {
-                    hurter->changeState(hurter->specialStateMap[SS_BLOCK_STAND]);
-                  }
-                  if (hurter->currentState->stateNum == hurter->specialStateMap[SS_CROUCH] && hurter->_getInput(1)) {
-                    hurter->changeState(hurter->specialStateMap[SS_BLOCK_CROUCH]);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  return 0;
-}
-
 ThrowResult FightingGameServer::checkThrowAgainst(Character* thrower, Character* throwee) {
-  ThrowResult throwResult = ThrowResult{ false, NULL };
   bool canThrow = (thrower->canThrow
       &&thrower->control == true
       && !thrower->currentState->hitboxesDisabled
@@ -709,31 +542,9 @@ ThrowResult FightingGameServer::checkThrowAgainst(Character* thrower, Character*
       && throwee->throwInvul <= 0);
 
   if (canThrow) {
-    for (auto p1Id : thrower->currentState->throwHitBoxIds) {
-      if (!thrower->getCollisionBox(p1Id).disabled) {
-        for (auto p2Id : throwee->currentState->throwHurtBoxIds) {
-          if (!throwee->getCollisionBox(p2Id).disabled) {
-            if (CollisionBox::checkAABB(thrower->getCollisionBox(p1Id), throwee->getCollisionBox(p2Id))) {
-              if (thrower->getCollisionBox(p1Id).throwType == 1 && throwee->_getYPos() > 0) {
-                throwResult.thrown = true;
-                throwResult.throwCb = &thrower->getCollisionBox(p1Id);
-                thrower->frameLastAttackConnected = frameCount;
-                thrower->currentState->hitboxesDisabled = true;
-              }
-              else if (thrower->getCollisionBox(p1Id).throwType == 2 && throwee->_getYPos() == 0) {
-                godot::UtilityFunctions::print("frame: ", thrower->currentState->stateTime," throws, conrol:", thrower->control);
-                throwResult.thrown = true;
-                throwResult.throwCb = &thrower->getCollisionBox(p1Id);
-                thrower->frameLastAttackConnected = frameCount;
-                thrower->currentState->hitboxesDisabled = true;
-              }
-            }
-          }
-        }
-      }
-    }
+    return physics.checkThrowbox(thrower, throwee);
   }
-  return throwResult;
+  return ThrowResult{ false, NULL };
 }
 
 void FightingGameServer::handleSameFrameThrowTech(SpecialState techState) {
@@ -753,76 +564,31 @@ void FightingGameServer::checkHitCollisions() {
   HitResult p1HitState = { false, false, 0, NULL };
 
   if (!player1.currentState->hitboxesDisabled) {
-    p2HitState = physics.checkHitboxAgainstHurtbox(&player1, &player2);
+    p2HitState = physics.checkHitbox(&player1, &player2);
   }
 
   if (!player2.currentState->hitboxesDisabled) {
-    p1HitState = physics.checkHitboxAgainstHurtbox(&player2, &player1);
+    p1HitState = physics.checkHitbox(&player2, &player1);
   }
 
   if (p1HitState.hit) {
     player1.changeState(p1HitState.hitState);
     if (p1HitState.counter) {
-      // p1CounterHit.setStateTime(0);
-      // p1CounterHit.setActive(true);
     }
   }
   if (p2HitState.hit) {
     player2.changeState(p2HitState.hitState);
     if (p2HitState.counter) {
-      // p2CounterHit.setStateTime(0);
-      // p2CounterHit.setActive(true);
     }
   }
 
   checkEntityHitCollisions();
 }
 
-TriggerResult FightingGameServer::checkTriggerAgainst(Character* owner, Character* activator) {
-  if (!owner->currentState->hitboxesDisabled) {
-    for (auto oId : owner->currentState->triggerBoxIds) {
-      bool groupDisabled = owner->currentState->hitboxGroupDisabled[owner->getCollisionBox(oId).groupID];
-      if (!owner->getCollisionBox(oId).disabled && !groupDisabled) {
-        for (auto aId : activator->currentState->hitBoxIds) {
-          bool aGroupDisabled = activator->currentState->hitboxGroupDisabled[activator->getCollisionBox(aId).groupID];
-          if (!activator->getCollisionBox(aId).disabled && !aGroupDisabled) {
-            if (CollisionBox::checkAABB(owner->getCollisionBox(oId), activator->getCollisionBox(aId))) {
-              //TODO: SHAKING SCRIPT
-              // shakeCamera(16, &camera);
-              // CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(owner->getCollisionBox(oId], activator->getCollisionBox(aId]);
-              owner->inHitStop = true;
-              owner->hitStop = 16;
-
-              activator->inHitStop = true;
-              activator->hitStop = 16;
-              activator->frameLastAttackConnected = frameCount;
-              // TODO: Hitbox group IDs
-              activator->currentState->hitboxGroupDisabled[activator->getCollisionBox(aId).groupID] = true;
-              owner->currentState->canHitCancel = true;
-
-              // int xEdge = owner->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
-              // int visualID = activator->getCollisionBox(aId].guardsparkID;
-              // VisualEffect& visFX = owner->guardSparks.at(visualID);
-              // visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
-              // visFX.setActive(true);
-              // owner->soundsEffects.at(activator->getCollisionBox(aId].guardSoundID).active = true;
-              // owner->soundsEffects.at(activator->getCollisionBox(aId].guardSoundID).channel = owner->soundChannel + 2;
-
-              return { true, &owner->getCollisionBox(oId) };
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return { false, NULL };
-}
-
 void FightingGameServer::checkEntityHitCollisions() {
   // TODO: func
-  HitResult p2Hit = checkEntityHitAgainst(&player1, &player2);
-  HitResult p1Hit = checkEntityHitAgainst(&player2, &player1);
+  HitResult p2Hit = physics.checkEntityHitbox(&player1, &player2);
+  HitResult p1Hit = physics.checkEntityHitbox(&player2, &player1);
 
   if (p1Hit.hit) {
     player1.changeState(p1Hit.hitState);
@@ -832,192 +598,6 @@ void FightingGameServer::checkEntityHitCollisions() {
   }
 
 }
-
-void FightingGameServer::checkTriggerCollisions() {
-  TriggerResult p2State = checkTriggerAgainst(&player1, &player2);
-  TriggerResult p1State = checkTriggerAgainst(&player2, &player1);
-  if (p2State.triggered) {
-    player1.cancelState(p2State.triggerCb->selfState);
-    player2.changeState(p2State.triggerCb->activatorState);
-  }
-  if (p1State.triggered) {
-
-    player2.cancelState(p1State.triggerCb->selfState);
-    player1.changeState(p1State.triggerCb->activatorState);
-  }
-}
-
-HitResult FightingGameServer::checkEntityHitAgainst(Character* _p1, Character* _p2) {
-  bool p2Hit = false;
-  for (auto& entity : _p1->entityList) {
-    if (entity.active && !entity.currentState->hitboxesDisabled) {
-      for (auto eId : entity.currentState->projectileBoxIds) {
-        bool groupDisabled = entity.currentState->hitboxGroupDisabled[entity.getCollisionBox(eId).groupID];
-        if (!entity.getCollisionBox(eId).disabled && !groupDisabled) {
-          for (auto hId : _p2->currentState->hurtBoxIds) {
-            if (!_p2->getCollisionBox(hId).disabled && !entity.inHitStop) {
-              if (CollisionBox::checkAABB(entity.getCollisionBox(eId), _p2->getCollisionBox(hId))) {
-                // shakeCamera(entity.getCollisionBox(eId)->hitstop, &camera);
-                printf("found entity hit\n");
-                // godot::UtilityFunctions::print("found entity hit");
-                // CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(entity.getCollisionBox(eId), _p2->getCollisionBox(hId));
-                bool entityFaceRight = entity.faceRight;
-                entity.inHitStop = true;
-                if (entity.getCollisionBox(eId).selfHitstop > 0) {
-                  entity.hitStop = entity.getCollisionBox(eId).selfHitstop;
-                }
-                else {
-                  entity.hitStop = entity.getCollisionBox(eId).hitstop;
-                }
-
-                _p2->inHitStop = true;
-                _p2->hitStop = entity.getCollisionBox(eId).hitstop;
-
-                _p1->frameLastAttackConnected = frameCount;
-                printf("entity durability:%d \n", entity.currentDurability);
-                godot::UtilityFunctions::print("entity durability:", entity.currentDurability);
-                if (--entity.currentDurability <= 0) {
-                  entity.currentState->hitboxGroupDisabled[entity.getCollisionBox(eId).groupID] = true;
-                  entity.currentState->canHitCancel = true;
-                };
-
-                int p2StateNum = _p2->currentState->stateNum;
-
-                printf("got to the entity here\n");
-                if ((_p2->blockState(p2StateNum)) || (_p2->control && _p2->checkBlock(entity.getCollisionBox(eId).blockType))) {
-                  _p2->control = 0;
-                  bool instantBlocked = _p2->_checkCommand(11);
-                  if (instantBlocked) {
-                    _p2->isLight = true;
-                    // Mix_PlayChannel(0, instantBlock, 0);
-                    _p2->tensionGained += 100;
-                    int realBlockstun = entity.getCollisionBox(eId).blockstun - 4;
-                    realBlockstun = realBlockstun <= 0 ? 1 : realBlockstun;
-                    _p2->blockstun = realBlockstun;
-                  }
-                  else {
-                    _p2->blockstun = entity.getCollisionBox(eId).blockstun;
-                  }
-                  if (_p2->_getYPos() > 0) {
-                    // TODO: air blocking state
-                    _p2->changeState(_p2->specialStateMap[SS_AIR_BLOCK]);
-                  }
-                  else {
-                    switch (entity.getCollisionBox(eId).blockType) {
-                      case 1:
-                        if (_p2->_getInput(1)) {
-                          _p2->changeState(_p2->specialStateMap[SS_BLOCK_CROUCH]);
-                        }
-                        else {
-                          _p2->changeState(_p2->specialStateMap[SS_BLOCK_STAND]);
-                        }
-                        break;
-                      case 2:
-                        _p2->changeState(_p2->specialStateMap[SS_BLOCK_CROUCH]);
-                        break;
-                      case 3:
-                        _p2->changeState(_p2->specialStateMap[SS_BLOCK_STAND]);
-                        break;
-                        // should throw error here
-                      default: break;
-                    }
-                  }
-
-                  _p2->pushTime = entity.getCollisionBox(eId).pushTime;
-                  if (_p2->faceRight == entityFaceRight) {
-                    if (_p2->faceRight) {
-                      _p2->pushBackVelocity = -entity.getCollisionBox(eId).pushback;
-                    }
-                    else {
-                      _p2->pushBackVelocity = entity.getCollisionBox(eId).pushback;
-                    }
-                  }
-                  else {
-                    if (_p2->faceRight) {
-                      _p2->pushBackVelocity = entity.getCollisionBox(eId).pushback;
-                    }
-                    else {
-                      _p2->pushBackVelocity = -entity.getCollisionBox(eId).pushback;
-                    }
-                  }
-                  printf("got to the entity visfx\n");
-                  // int xEdge = _p2->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
-                  // int visualID = entity.getCollisionBox(eId).guardsparkID;
-                  // VisualEffect& visFX = p2->guardSparks.at(visualID);
-                  // visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
-                  // visFX.setActive(true);
-
-                  // p2->soundsEffects.at(entity.getCollisionBox(eId)->guardSoundID).active = true;
-                  // p2->soundsEffects.at(entity.getCollisionBox(eId)->guardSoundID).channel = p2->soundChannel + 2;
-                }
-                else {
-
-                  printf("bug to the entity here\n");
-                  _p2->hitPushTime = entity.getCollisionBox(eId).hitPushTime;
-                  if (_p2->faceRight == entityFaceRight) {
-                    if (_p2->faceRight) {
-                      _p2->hitPushVelX = -entity.getCollisionBox(eId).hitVelocityX;
-                    }
-                    else {
-                      _p2->hitPushVelX = entity.getCollisionBox(eId).hitVelocityX;
-                    }
-                  }
-                  else {
-                    if (_p2->faceRight) {
-                      _p2->hitPushVelX = entity.getCollisionBox(eId).hitVelocityX;
-                    }
-                    else {
-                      _p2->hitPushVelX = -entity.getCollisionBox(eId).hitVelocityX;
-                    }
-                  }
-                  bool wasACounter = _p2->currentState->counterHitFlag;
-                  _p2->currentState->counterHitFlag = false;
-                  if (wasACounter) {
-                    // Mix_PlayChannel(0, countah, 0);
-                  }
-
-                  // int xEdge = entity.faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
-                  // int visualID = entity.getCollisionBox(eId).hitsparkID;
-
-                  printf("got to the entity hit visfx\n");
-                  // VisualEffect& visFX = entity.hitSparks.at(visualID);
-                  // visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
-                  // visFX.setActive(true);
-
-                  printf("got to the entity hurt sound\n");
-
-                  _p2->control = 0;
-                  _p2->health -= entity.getCollisionBox(eId).damage;
-                  _p2->hitstun = entity.getCollisionBox(eId).hitstun;
-                  _p2->comboCounter++;
-                  // _p2->hurtSoundEffects.at(_p2->currentHurtSoundID).active = true;
-                  // entity.soundsEffects.at(entity.getCollisionBox(eId)->hitSoundID).active = true;
-                  // entity.soundsEffects.at(entity.getCollisionBox(eId)->hitSoundID).channel = p1->soundChannel + 2;
-
-                  if (entity.getCollisionBox(eId).hitType == LAUNCHER
-                      || _p2->_getYPos() > 0
-                      || _p2->currentState->stateNum == _p2->specialStateMap[SS_AIR_HURT]) {
-                    _p2->velocityY = entity.getCollisionBox(eId).hitVelocityY;
-                    printf("got to the launcher return");
-                    return { true, false, _p2->specialStateMap[SS_AIR_HURT], NULL };
-                  }
-                  else {
-
-                    printf("got to the normal return\n");
-                    return { true, false, _p2->specialStateMap[SS_HURT], NULL };
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return { false, false, 0, NULL };
-}
-
 void FightingGameServer::checkHealth() {
   player1.meterArray[2] += (player1.tensionGained - player2.tensionGained);
   player2.meterArray[2] += (player2.tensionGained - player1.tensionGained);
