@@ -154,7 +154,10 @@ public:
   int getSoundChannel();
   int getAnimScale();
   bool hurtState(int state);
+  bool airHurtState(int state);
   bool blockState(int state);
+  bool pushBlockState(int state);
+  bool checkBlock(int blockType);
   StateDef* getCurrentState();
   CollisionBox& getCollisionBox(int cbId);
   // Mix_Chunk* getSoundWithId(int id);

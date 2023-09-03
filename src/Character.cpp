@@ -742,16 +742,6 @@ void Character::setY(int y){
   position.second += y;
 };
 
-bool Character::blockState(int state){
-return ( state == specialStateMap[SS_BLOCK_STAND]
-          || state == specialStateMap[SS_BLOCK_CROUCH]
-          || state == specialStateMap[SS_AIR_BLOCK]
-          || state == specialStateMap[SS_PUSH_BLOCK]
-          || state == specialStateMap[SS_CROUCH_PUSH_BLOCK]
-          || state == specialStateMap[SS_AIR_PUSH_BLOCK]
-      );
-}  
-
 bool Character::hurtState(int state){
   return (
       state == specialStateMap[SS_HURT]
@@ -764,6 +754,72 @@ bool Character::hurtState(int state){
       || state == specialStateMap[SS_GROUNDBOUNCE_FLING]
       || state == specialStateMap[SS_GROUNDBOUNCE_IMPACT]);
 }
+
+bool Character::airHurtState(int state){
+  return (
+    state == specialStateMap[SS_AIR_HURT]
+    || state == specialStateMap[SS_AIR_HURT_RECOVERY]
+    || state == specialStateMap[SS_BLOWBACK_FALLING]
+    || state == specialStateMap[SS_DEAD_STANDING]
+    || state == specialStateMap[SS_DEAD_KNOCKDOWN]
+    || state == specialStateMap[SS_GROUNDBOUNCE_FLING]
+    || state == specialStateMap[SS_GROUNDBOUNCE_IMPACT]
+    || state == specialStateMap[SS_FLOAT_HURT]
+    || state == specialStateMap[SS_FLOAT_HURT_RECOVERY]
+  );
+}
+
+bool Character::blockState(int state){
+  return ( 
+    state == specialStateMap[SS_BLOCK_STAND]
+    || state == specialStateMap[SS_BLOCK_CROUCH]
+    || state == specialStateMap[SS_AIR_BLOCK]
+    || state == specialStateMap[SS_PUSH_BLOCK]
+    || state == specialStateMap[SS_CROUCH_PUSH_BLOCK]
+    || state == specialStateMap[SS_AIR_PUSH_BLOCK]
+  );
+}  
+
+bool Character::pushBlockState(int state){
+  return (
+    state == specialStateMap[SS_PUSH_BLOCK]
+    || state == specialStateMap[SS_CROUCH_PUSH_BLOCK]
+    || state == specialStateMap[SS_AIR_PUSH_BLOCK]
+  );
+}
+
+bool Character::checkBlock(int blockType){
+  bool isHoldingDownBack = _getInput(1);
+  bool isHoldingBack = _getInput(4);
+  bool upBackinScrub = _getInput(7);
+  // I know, enum
+  if (_getYPos() > 0) {
+    if (isHoldingBack || isHoldingDownBack || upBackinScrub) {
+      return true;
+    }
+  }
+  switch (blockType) {
+    // mid
+    case 1:
+      if (isHoldingDownBack || isHoldingBack)
+        return true;
+      break;
+      // low
+    case 2:
+      if (isHoldingDownBack)
+        return true;
+      break;
+    case 3:
+      // high
+      if (isHoldingBack)
+        return true;
+      break;
+    default:
+      return true;
+  }
+
+  return false;
+}  
 
 void Character::setFlag(ObjFlag flag){
 

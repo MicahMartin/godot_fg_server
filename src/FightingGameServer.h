@@ -10,6 +10,7 @@
 #include "CollisionBox.h"
 #include "Util.h"
 #include "Camera.h"
+#include "Physics.h"
 
 struct GameState {
   int roundStartCounter;
@@ -39,13 +40,6 @@ struct GameState {
 struct ThrowResult {
   bool thrown;
   CollisionBox* throwCb;
-};
-
-struct HitResult {
-  bool hit;
-  bool counter;
-  int hitState;
-  CollisionBox* hitCb;
 };
 
 struct TriggerResult {
@@ -116,6 +110,7 @@ class FightingGameServer : public godot::Node{
 
     unsigned char* localBuffer = 0;
     Camera camera;
+    Physics physics;
     VirtualController p1Vc;
     VirtualController p2Vc;
     Character player1 = Character(std::make_pair(p1StartPos, 0), 1);
@@ -136,7 +131,7 @@ class FightingGameServer : public godot::Node{
     void checkEntityHitCollisions();
     void checkBounds();
     void checkHealth();
-    bool checkBlock(int blockType, Character* player);
+    // bool checkBlock(int blockType, Character* player);
     void updateFaceRight();
     void handleRoundStart();
     void restartRound();

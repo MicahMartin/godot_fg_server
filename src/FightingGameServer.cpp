@@ -3,7 +3,6 @@
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
-#include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/Input.hpp>
 #include <bitset>
@@ -11,6 +10,7 @@
 #include <godot_cpp/variant/vector2.hpp>
 #include "FightingGameServer.h"
 #include "ggponet.h"
+#include "Util.h"
 
 #ifdef _WIN32
   #include <Windows.h>
@@ -30,49 +30,6 @@ GameState stateObj;
 FightingGameServer* fgServer;
 Character* characters[2];
 godot::Input* InputServer;
-
-int fletcher32_checksum(short *data, size_t len) {
-   int sum1 = 0xffff, sum2 = 0xffff;
-
-   while (len) {
-      size_t tlen = len > 360 ? 360 : len;
-      len -= tlen;
-      do {
-         sum1 += *data++;
-         sum2 += sum1;
-      } while (--tlen);
-      sum1 = (sum1 & 0xffff) + (sum1 >> 16);
-      sum2 = (sum2 & 0xffff) + (sum2 >> 16);
-   }
-
-   /* Second reduction step to reduce sums to 16 bits */
-   sum1 = (sum1 & 0xffff) + (sum1 >> 16);
-   sum2 = (sum2 & 0xffff) + (sum2 >> 16);
-   return sum2 << 16 | sum1;
-}
-
-bool blockState(int playerNum, int state) {
-  return (state == characters[playerNum]->specialStateMap[SS_BLOCK_STAND]
-      || state == characters[playerNum]->specialStateMap[SS_BLOCK_CROUCH]
-      || state == characters[playerNum]->specialStateMap[SS_AIR_BLOCK]
-      || state == characters[playerNum]->specialStateMap[SS_PUSH_BLOCK]
-      || state == characters[playerNum]->specialStateMap[SS_CROUCH_PUSH_BLOCK]
-      || state == characters[playerNum]->specialStateMap[SS_AIR_PUSH_BLOCK]
-      );
-}
-
-bool airHurtState(int playerNum, int state) {
-  return (
-      state == characters[playerNum]->specialStateMap[SS_AIR_HURT]
-      || state == characters[playerNum]->specialStateMap[SS_AIR_HURT_RECOVERY]
-      || state == characters[playerNum]->specialStateMap[SS_BLOWBACK_FALLING]
-      || state == characters[playerNum]->specialStateMap[SS_DEAD_STANDING]
-      || state == characters[playerNum]->specialStateMap[SS_DEAD_KNOCKDOWN]
-      || state == characters[playerNum]->specialStateMap[SS_GROUNDBOUNCE_FLING]
-      || state == characters[playerNum]->specialStateMap[SS_GROUNDBOUNCE_IMPACT]
-      || state == characters[playerNum]->specialStateMap[SS_FLOAT_HURT]
-      || state == characters[playerNum]->specialStateMap[SS_FLOAT_HURT_RECOVERY]);
-}
 
 FightingGameServer::FightingGameServer() { 
   godot::UtilityFunctions::print("engine constructor");
@@ -231,9 +188,12 @@ void FightingGameServer::readGodotTrainingInput(){
 }
 
 void FightingGameServer::_physics_process(double delta) {
+  // I hate this
   if(godot::Engine::get_singleton()->is_editor_hint()){ return; }
+
   int inputs[2] = {0};
   int input = 0;
+
   if(netPlayState){
     ggpo_idle(ggpo, 1);
     input = readGodotInputs(1);
@@ -284,16 +244,19 @@ void FightingGameServer::step(int inputs[]){
   // Handle Input
   if (!slowMode && !screenFreeze) {
     handleRoundStart();
-    checkCorner(&player1);
-    checkCorner(&player2);
-    updateFaceRight();
     checkHitstop(&player1);
     checkHitstop(&player2);
     checkEntityHitstop(&player1);
     checkEntityHitstop(&player2);
 
+    physics.checkCorner(&player1, worldWidth);
+    physics.checkCorner(&player2, worldWidth);
+
+    updateFaceRight();
+
     player1.handleInput();
     player2.handleInput();
+
     for (auto& i : player1.entityList) {
       if (i.active && !i.inHitStop) {
         i.handleInput();
@@ -309,6 +272,7 @@ void FightingGameServer::step(int inputs[]){
 
   player1.currentState->handleCancels();
   player2.currentState->handleCancels();
+
   for (auto& i : player1.entityList) {
     if (i.active) {
       i.currentState->handleCancels();
@@ -326,9 +290,9 @@ void FightingGameServer::step(int inputs[]){
   checkProjectileCollisions(&player1, &player2);
   checkHitCollisions();
   // checkTriggerCollisions();
-  checkCorner(&player1);
-  checkCorner(&player2);
-  checkBounds();
+  physics.checkCorner(&player1, worldWidth);
+  physics.checkCorner(&player2, worldWidth);
+  physics.checkBounds(&player1, &player2, camera, worldWidth);
   updateFaceRight();
 
   if (!slowMode && !screenFreeze) {
@@ -500,13 +464,6 @@ void FightingGameServer::updateFaceRight() {
 }
 
 void FightingGameServer::checkCorner(Character* player) {
-  if (player->getPos().first - player->width <= 0 || player->getPos().first + player->width >= worldWidth) {
-    player->inCorner = true;
-    // godot::UtilityFunctions::print(player->playerNum, " in corner");
-  }
-  else {
-    player->inCorner = false;
-  }
 }
 
 void FightingGameServer::updateCamera() {
@@ -612,66 +569,6 @@ void FightingGameServer::checkPushCollisions() {
 }
 
 void FightingGameServer::checkBounds() {
-  if (player1.getPos().first - player1.width < 0) {
-    player1.setXPos(0 + player1.width);
-    player1.updateCollisionBoxPositions();
-  }
-  if (player1.getPos().first - player1.width < camera.lowerBound) {
-    player1.setXPos(camera.lowerBound + player1.width);
-    player1.updateCollisionBoxPositions();
-  }
-
-  if (player1.getPos().first + player1.width > worldWidth) {
-    player1.setXPos(worldWidth - player1.width);
-    player1.updateCollisionBoxPositions();
-  }
-  if (player1.getPos().first + player1.width > camera.upperBound) {
-    player1.setXPos(camera.upperBound - player1.width);
-    player1.updateCollisionBoxPositions();
-  }
-
-  for (auto& entity : player1.entityList) {
-    if (entity.active && entity.isFireball) {
-      int entityX = entity.getPos().first;
-      bool lowerBound = (entityX) < 0;
-      bool upperBound = (entityX) > worldWidth;
-
-      if (lowerBound || upperBound) {
-        entity.deactivateEntity();
-      }
-    }
-  }
-
-  if (player2.getPos().first - player2.width < 0) {
-    player2.setXPos(0 + player2.width);
-    player2.updateCollisionBoxPositions();
-  }
-  if (player2.getPos().first - player2.width < camera.lowerBound) {
-    player2.setXPos(camera.lowerBound + player2.width);
-    player2.updateCollisionBoxPositions();
-  }
-
-  if (player2.getPos().first + player2.width > worldWidth) {
-    player2.setXPos(worldWidth - player2.width);
-    player2.updateCollisionBoxPositions();
-  }
-  if (player2.getPos().first + player2.width > camera.upperBound) {
-    player2.setXPos(camera.upperBound - player2.width);
-    player2.updateCollisionBoxPositions();
-  }
-  for (auto& entity : player2.entityList) {
-    if (entity.active && entity.isFireball) {
-      int entityX = entity.getPos().first;
-      bool lowerBound = (entityX) < 0;
-      bool lowerCamBound = (entityX) < camera.lowerBound;
-      bool upperBound = (entityX) > worldWidth;
-      bool upperCamBound = (entityX) > camera.upperBound;
-
-      if (lowerBound || lowerCamBound || upperBound || upperCamBound) {
-        entity.deactivateEntity();
-      }
-    }
-  }
 }
 
 
@@ -852,8 +749,16 @@ void FightingGameServer::handleSameFrameThrowTech(SpecialState techState) {
 }
 
 void FightingGameServer::checkHitCollisions() {
-  HitResult p2HitState = checkHitboxAgainstHurtbox(&player1, &player2);
-  HitResult p1HitState = checkHitboxAgainstHurtbox(&player2, &player1);
+  HitResult p2HitState = { false, false, 0, NULL };
+  HitResult p1HitState = { false, false, 0, NULL };
+
+  if (!player1.currentState->hitboxesDisabled) {
+    p2HitState = physics.checkHitboxAgainstHurtbox(&player1, &player2);
+  }
+
+  if (!player2.currentState->hitboxesDisabled) {
+    p1HitState = physics.checkHitboxAgainstHurtbox(&player2, &player1);
+  }
 
   if (p1HitState.hit) {
     player1.changeState(p1HitState.hitState);
@@ -912,349 +817,6 @@ TriggerResult FightingGameServer::checkTriggerAgainst(Character* owner, Characte
   }
 
   return { false, NULL };
-}
-
-HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Character* hurter) {
-  if (!hitter->currentState->hitboxesDisabled) {
-    for (auto hId : hitter->currentState->hitBoxIds) {
-      bool groupDisabled = hitter->currentState->hitboxGroupDisabled[hitter->getCollisionBox(hId).groupID];
-      int blocktype = hitter->getCollisionBox(hId).blockType;
-      if (!hitter->getCollisionBox(hId).disabled && !groupDisabled) {
-        for (auto uId : hurter->currentState->hurtBoxIds) {
-      bool _groupDisabled = hurter->currentState->hitboxGroupDisabled[hurter->getCollisionBox(uId).groupID];
-          if (!hurter->getCollisionBox(uId).disabled && !_groupDisabled) {
-            if (CollisionBox::checkAABB(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId))) {
-              //TODO: SHAKING SCRIPT
-              CollisionBox& cbRef = hitter->getCollisionBox(hId);
-              CollisionBox& hbRef = hurter->getCollisionBox(hId);
-              // shakeCamera(hitter->getCollisionBox(hId).hitstop, &camera);
-              CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId));
-              // godot::UtilityFunctions::print("hitbox", cbRef.positionX, " ", cbRef.positionY, " ", cbRef.width, " ", cbRef.height);
-              // godot::UtilityFunctions::print("hurtbox", hbRef.positionX, " ", hbRef.positionY, " ", hbRef.width, " ", hbRef.height);
-              // godot::UtilityFunctions::print("hitspark", hitsparkIntersect.x, " ", hitsparkIntersect.y, " ", hitsparkIntersect.w, " ", hitsparkIntersect.h);
-              hitter->inHitStop = true;
-              hitter->hitStop = hitter->getCollisionBox(hId).hitstop;
-
-              hurter->hitStop = hitter->getCollisionBox(hId).hitstop;
-              hurter->inHitStop = true;
-              hitter->frameLastAttackConnected = frameCount;
-              // TODO: Hitbox group IDs
-              hitter->currentState->hitboxGroupDisabled[hitter->getCollisionBox(hId).groupID] = true;
-              hitter->currentState->canHitCancel = true;
-              // hitter->_addMeter(hitter->getCollisionBox(hId).hitMeterGain);
-              // if (hurter->blockstun <= 0 && hurter->hitstun <= 0) {
-              //   hitter->tensionGained += 100;
-              // }
-              // hurter->_addMeter(hitter->getCollisionBox(hId).hitstun);
-              int hurterCurrentState = hurter->currentState->stateNum;
-              bool blocking = blockState(hurter->playerNum - 1, hurterCurrentState);
-              if ((blocking && blocktype == 1)
-                  || (blocking && checkBlock(blocktype, hurter))
-                  || (hurter->control && checkBlock(blocktype, hurter))) {
-                bool instantBlocked = hurter->_checkCommand(11);
-                int realBlockstun = hitter->getCollisionBox(hId).blockstun;
-                // if ((hurter->_getYPos() > 0) && (hitter->_getYPos() > 0)) {
-                //   realBlockstun = hitter->getCollisionBox(hId).blockstun - 4;
-                // }
-                if (instantBlocked) {
-                  // hurter->isLight = true;
-                  // hurter->tensionGained += 50;
-                  // Mix_PlayChannel(0, instantBlock, 0);
-                  realBlockstun -= 4;
-                  realBlockstun = realBlockstun <= 0 ? 1 : realBlockstun;
-                  hurter->blockstun = realBlockstun;
-                }
-                else {
-                  hurter->blockstun = realBlockstun;
-                }
-                if (hurterCurrentState == hurter->specialStateMap[SS_PUSH_BLOCK]
-                    || hurterCurrentState == hurter->specialStateMap[SS_CROUCH_PUSH_BLOCK]
-                    || hurterCurrentState == hurter->specialStateMap[SS_AIR_PUSH_BLOCK]) {
-                  // hurter->isGreen = true;
-                  hurter->blockstun = realBlockstun + 4;
-                }
-                hurter->control = 0;
-                bool holdingButtons = hurter->_getInput(11) && hurter->_getInput(12);
-                bool downBack = hurter->_getInput(1);
-                bool backOrUpback = (hurter->_getInput(4) || hurter->_getInput(7)) && !downBack;
-                bool anyBack = (hurter->_getInput(1) || hurter->_getInput(4) || hurter->_getInput(7));
-
-                bool crouchPB = holdingButtons && downBack;
-                bool standPB = holdingButtons && backOrUpback;
-                if (hurter->_getYPos() > 0) {
-                  if (anyBack && holdingButtons) {
-                    // Mix_PlayChannel(0, pushBlock, 0);
-                    hurter->changeState(hurter->specialStateMap[SS_AIR_PUSH_BLOCK]);
-                    // hurter->_subtractMeter(1020);
-                  }
-                  else {
-                    hurter->changeState(hurter->specialStateMap[SS_AIR_BLOCK]);
-                  }
-                }
-                else {
-                  switch (hitter->getCollisionBox(hId).blockType) {
-                    case 1:
-                      if (hurter->_getInput(1)) {
-                        if (crouchPB) {
-                          // Mix_PlayChannel(0, pushBlock, 0);
-                          hurter->changeState(hurter->specialStateMap[SS_CROUCH_PUSH_BLOCK]);
-                          // hurter->_subtractMeter(1020);
-                        }
-                        else {
-                          hurter->changeState(hurter->specialStateMap[SS_BLOCK_CROUCH]);
-                        }
-                      }
-                      else {
-                        if (standPB) {
-                          // hurter->_subtractMeter(1020);
-                          // Mix_PlayChannel(0, pushBlock, 0);
-                          hurter->changeState(hurter->specialStateMap[SS_PUSH_BLOCK]);
-                        }
-                        else {
-                          hurter->changeState(hurter->specialStateMap[SS_BLOCK_STAND]);
-                        }
-                      }
-                      break;
-                    case 2:
-                      if (crouchPB) {
-                        // Mix_PlayChannel(0, pushBlock, 0);
-                        // hurter->_subtractMeter(1020);
-                        hurter->changeState(hurter->specialStateMap[SS_CROUCH_PUSH_BLOCK]);
-                      }
-                      else {
-                        hurter->changeState(hurter->specialStateMap[SS_BLOCK_CROUCH]);
-                      }
-                      break;
-                    case 3:
-                      if (standPB) {
-                        // Mix_PlayChannel(0, pushBlock, 0);
-                        // hurter->_subtractMeter(1020);
-                        hurter->changeState(hurter->specialStateMap[SS_PUSH_BLOCK]);
-                      }
-                      hurter->changeState(hurter->specialStateMap[SS_BLOCK_STAND]);
-                      break;
-                      // should throw error here?
-                    default: break;
-                  }
-                }
-                int realPushback = hitter->getCollisionBox(hId).pushback;
-                if (hurter->currentState->stateNum == hurter->specialStateMap[SS_PUSH_BLOCK]
-                    || hurter->currentState->stateNum == hurter->specialStateMap[SS_CROUCH_PUSH_BLOCK]
-                    || hurter->currentState->stateNum == hurter->specialStateMap[SS_AIR_PUSH_BLOCK]) {
-                  realPushback *= 2;
-                } else {
-                  // hurter->meterArray[3] += hitter->getCollisionBox(hId).riskRaise;
-                  // if (hurter->meterArray[3] > hurter->riskMax) {
-                  //   hurter->meterArray[3] = hurter->riskMax;
-                  // }
-                  // printf("hurter risk:%d", hurter->meterArray[3]);
-                }
-
-                if (hurter->inCorner && (hitter->getCollisionBox(hId).pushback > 0)) {
-                  hitter->pushTime = hitter->getCollisionBox(hId).blockstun;
-                  if (hitter->faceRight) {
-                    hitter->pushBackVelocity = realPushback;
-                  }
-                  else {
-                    hitter->pushBackVelocity = -(realPushback);
-                  }
-                } else {
-                  hurter->pushTime = hitter->getCollisionBox(hId).pushTime;
-                  if (hitter->faceRight) {
-                    hurter->pushBackVelocity = -realPushback;
-                  }
-                  else {
-                    hurter->pushBackVelocity = realPushback;
-                  }
-                }
-
-                // int xEdge = hurter->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
-                // int visualID = hitter->getCollisionBox(hId).guardsparkID;
-                // VisualEffect& visFX = hurter->guardSparks.at(visualID);
-                // visFX.reset(xEdge, (hitsparkIntersect.y - (hitsparkIntersect.h / 2)));
-                // visFX.setActive(true);
-                // hurter->soundsEffects.at(hitter->getCollisionBox(hId).guardSoundID).active = true;
-                // hurter->soundsEffects.at(hitter->getCollisionBox(hId).guardSoundID).channel = hurter->soundChannel + 2;
-              }
-              else {
-                int finalHitPush = 1;
-                if (hurter->timeInHitstun > 600) {
-                  finalHitPush = 3;
-                  hurter->hurtGravity = hurter->gravityVal * 3;
-                }
-                else if (hurter->timeInHitstun > 300) {
-                  finalHitPush = 2;
-                  hurter->hurtGravity = hurter->gravityVal * 2;
-                }
-                if (hurter->inCorner) {
-                  hitter->pushTime = hitter->getCollisionBox(hId).hitPushTime;
-                  if (hitter->faceRight) {
-                    hitter->pushBackVelocity = hitter->getCollisionBox(hId).hitVelocityX * finalHitPush;
-                  }
-                  else {
-                    hitter->pushBackVelocity = -(hitter->getCollisionBox(hId).hitVelocityX * finalHitPush);
-                  }
-                }
-                else {
-                  hurter->hitPushTime = hitter->getCollisionBox(hId).hitPushTime;
-                  if (hitter->faceRight) {
-                    hurter->hitPushVelX = -(hitter->getCollisionBox(hId).hitVelocityX * finalHitPush);
-                  }
-                  else {
-                    hurter->hitPushVelX = hitter->getCollisionBox(hId).hitVelocityX * finalHitPush;
-                  }
-                }
-                hurter->comboCounter++;
-                // bool wasACounter = hurter->currentState->counterHitFlag || hurter->meterArray[3] >= 50;
-                bool wasACounter = hurter->currentState->counterHitFlag;
-                hurter->currentState->counterHitFlag = false;
-                if (wasACounter) {
-                  hurter->isRed = true;
-                  // Mix_PlayChannel(0, countah, 0);
-                }
-                if (hurter->comboCounter == 1) {
-                  hurter->comboProration = hitter->getCollisionBox(hId).initialProration;
-                }
-
-                int xEdge = hitter->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
-                // int visualID = hitter->getCollisionBox(hId).hitsparkID;
-                hitter->hitSpark.reset(xEdge, (hitsparkIntersect.y + (hitsparkIntersect.h / 2)));
-                hitter->hitSpark.setActive(true);
-                godot::UtilityFunctions::print("setting visFX to active");
-
-                hurter->control = 0;
-                int finalHitstun = wasACounter ? (hitter->getCollisionBox(hId).hitstun + 4) : (hitter->getCollisionBox(hId).hitstun);
-                finalHitstun += (hurter->_getYPos() > 0) ? 4 : 0;
-                // if (hurter->timeInHitstun > 600) {
-                //   finalHitstun *= .3;
-                // }
-                // else if (hurter->timeInHitstun > 300) {
-                //   finalHitstun *= .6;
-                // }
-                // else if (hurter->timeInHitstun > 180) {
-                //   finalHitstun *= .9;
-                // }
-                if (finalHitstun < 1) {
-                  finalHitstun = 1;
-                }
-                // int finalDamage = wasACounter ? (hitter->getCollisionBox(hId).damage + (hitter->getCollisionBox(hId).damage * 2)) : (hitter->getCollisionBox(hId).damage);
-                int finalDamage = hitter->getCollisionBox(hId).damage;
-                // apply character defense modifier
-                // (((100*95)/100) * (95/100) * (80/100) * (95/100))
-                finalDamage = ((finalDamage * hurter->defenseValue) / 100);
-                // hurter->meterArray[3] -= hitter->getCollisionBox(hId).riskLower;
-                // if (hurter->meterArray[3] <= 25) {
-                //   hurter->meterArray[3] = 0;
-                //   finalDamage = ((finalDamage * hurter->riskScaling) / 100);
-                // }
-                // if (hurter->comboCounter > 1) {
-                //   finalDamage = ((finalDamage * hurter->comboProration) / 100);
-
-                // }
-                // if (hurter->comboScale < 100) {
-                //   finalDamage = ((finalDamage * hurter->comboScale) / 100);
-                // }
-                // hurter->comboScale -= hitter->getCollisionBox(hId).scaleLower;
-                hurter->comboDamage += finalDamage;
-                // hurter->health -= finalDamage;
-                hurter->hitstun = finalHitstun;
-
-                // hurter->hurtSoundEffects.at(hurter->currentHurtSoundID).active = true;
-                // hitter->soundsEffects.at(hitter->getCollisionBox(hId).hitSoundID).active = true;
-                // hitter->soundsEffects.at(hitter->getCollisionBox(hId).hitSoundID).channel = hitter->soundChannel + 2;
-
-                int hurterCurrentState = hurter->currentState->stateNum;
-                if ((hitter->getCollisionBox(hId).hitType == LAUNCHER)
-                    || hitter->getCollisionBox(hId).hitType == FLOATER
-                    || hitter->getCollisionBox(hId).hitType == GROUND_BOUNCE
-                    || hurter->_getYPos() > 0
-                    || airHurtState(hurter->playerNum - 1, hurterCurrentState)) {
-                  if (hitter->getCollisionBox(hId).airHitstun > 0) {
-                    hurter->hitstun = hitter->getCollisionBox(hId).airHitstun;
-                  }
-                  if (hitter->getCollisionBox(hId).airHitVelocityX > 0) {
-                    if (hurter->inCorner && (hitter->getCollisionBox(hId).pushback > 0)) {
-                      hitter->pushTime = hitter->getCollisionBox(hId).hitPushTime;
-                      if (hitter->faceRight) {
-                        hitter->pushBackVelocity = hitter->getCollisionBox(hId).airHitVelocityX / 2;
-                      }
-                      else {
-                        hitter->pushBackVelocity = -(hitter->getCollisionBox(hId).airHitVelocityX / 2);
-                      }
-                    }
-                    else {
-                      hurter->hitPushTime = hitter->getCollisionBox(hId).airHitPushTime > 0 ? hitter->getCollisionBox(hId).airHitPushTime : hitter->getCollisionBox(hId).hitPushTime;
-                      if (hitter->faceRight) {
-                        hurter->hitPushVelX = -hitter->getCollisionBox(hId).airHitVelocityX;
-                      }
-                      else {
-                        hurter->hitPushVelX = hitter->getCollisionBox(hId).airHitVelocityX;
-                      }
-                    }
-                  }
-
-                  hurter->velocityY = hitter->getCollisionBox(hId).hitVelocityY;
-                  SpecialState hurtState;
-                  switch (hitter->getCollisionBox(hId).hitType) {
-                    case LAUNCHER:
-                      hurtState = SS_AIR_HURT;
-                      break;
-                    case FLOATER:
-                      hurtState = SS_FLOAT_HURT;
-                      break;
-                    case GROUND_BOUNCE:
-                      hurtState = SS_GROUNDBOUNCE_FLING;
-                      break;
-                    default:
-                      hurtState = SS_AIR_HURT;
-                      break;
-                  }
-                  return { true, wasACounter, hurter->specialStateMap[hurtState], NULL };
-                }
-                else {
-                  return { true, wasACounter, hurter->specialStateMap[SS_HURT], NULL };
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  return { false, false, 0, NULL };
-}
-
-bool FightingGameServer::checkBlock(int blockType, Character* player) {
-  bool isHoldingDownBack = player->_getInput(1);
-  bool isHoldingBack = player->_getInput(4);
-  bool upBackinScrub = player->_getInput(7);
-  // I know, enum
-  if (player->_getYPos() > 0) {
-    if (isHoldingBack || isHoldingDownBack || upBackinScrub) {
-      return true;
-    }
-  }
-  switch (blockType) {
-    // mid
-    case 1:
-      if (isHoldingDownBack || isHoldingBack)
-        return true;
-      break;
-      // low
-    case 2:
-      if (isHoldingDownBack)
-        return true;
-      break;
-    case 3:
-      // high
-      if (isHoldingBack)
-        return true;
-      break;
-    default:
-      return true;
-  }
-
-  return false;
 }
 
 void FightingGameServer::checkEntityHitCollisions() {
@@ -1322,7 +884,7 @@ HitResult FightingGameServer::checkEntityHitAgainst(Character* _p1, Character* _
                 int p2StateNum = _p2->currentState->stateNum;
 
                 printf("got to the entity here\n");
-                if ((blockState(1, p2StateNum)) || (_p2->control && checkBlock(entity.getCollisionBox(eId).blockType, _p2))) {
+                if ((_p2->blockState(p2StateNum)) || (_p2->control && _p2->checkBlock(entity.getCollisionBox(eId).blockType))) {
                   _p2->control = 0;
                   bool instantBlocked = _p2->_checkCommand(11);
                   if (instantBlocked) {
@@ -1759,7 +1321,7 @@ bool save_state_callback(unsigned char** buffer, int* len, int* checksum, int fr
     return false;
   }
   memcpy(*buffer, &stateObj, *len);
-  *checksum = fletcher32_checksum((short *)*buffer, *len / 2);
+  *checksum = Util::fletcher32_checksum((short *)*buffer, *len / 2);
   // godot::UtilityFunctions::print("frameCount:", stateObj.frameCount, " checksum:", *checksum);
   return true;
 }
