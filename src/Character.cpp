@@ -42,6 +42,7 @@ void Character::init(const char* path){
   //   godot::UtilityFunctions::print("SPECIAL STATE MAP: ", i.first, "|" , i.second);
   // }
   changeState(specialStateMap[SS_PRE_MATCH]);
+  hitSpark.setPlayLength(45);
 }
 
 CharStateObj Character::saveState(){

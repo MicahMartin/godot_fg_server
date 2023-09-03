@@ -929,9 +929,9 @@ HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Chara
               CollisionBox& hbRef = hurter->getCollisionBox(hId);
               // shakeCamera(hitter->getCollisionBox(hId).hitstop, &camera);
               CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(hitter->getCollisionBox(hId), hurter->getCollisionBox(uId));
-              godot::UtilityFunctions::print("hitbox", cbRef.positionX, " ", cbRef.positionY, " ", cbRef.width, " ", cbRef.height);
-              godot::UtilityFunctions::print("hurtbox", hbRef.positionX, " ", hbRef.positionY, " ", hbRef.width, " ", hbRef.height);
-              godot::UtilityFunctions::print("hitspark", hitsparkIntersect.x, " ", hitsparkIntersect.y, " ", hitsparkIntersect.w, " ", hitsparkIntersect.h);
+              // godot::UtilityFunctions::print("hitbox", cbRef.positionX, " ", cbRef.positionY, " ", cbRef.width, " ", cbRef.height);
+              // godot::UtilityFunctions::print("hurtbox", hbRef.positionX, " ", hbRef.positionY, " ", hbRef.width, " ", hbRef.height);
+              // godot::UtilityFunctions::print("hitspark", hitsparkIntersect.x, " ", hitsparkIntersect.y, " ", hitsparkIntersect.w, " ", hitsparkIntersect.h);
               hitter->inHitStop = true;
               hitter->hitStop = hitter->getCollisionBox(hId).hitstop;
 
@@ -1118,9 +1118,9 @@ HitResult FightingGameServer::checkHitboxAgainstHurtbox(Character* hitter, Chara
 
                 int xEdge = hitter->faceRight ? hitsparkIntersect.x + hitsparkIntersect.w : hitsparkIntersect.x;
                 // int visualID = hitter->getCollisionBox(hId).hitsparkID;
-                VisualEffect& visFX = hitter->hitSpark;
-                visFX.reset(xEdge, (hitsparkIntersect.y + (hitsparkIntersect.h / 2)));
-                visFX.setActive(true);
+                hitter->hitSpark.reset(xEdge, (hitsparkIntersect.y + (hitsparkIntersect.h / 2)));
+                hitter->hitSpark.setActive(true);
+                godot::UtilityFunctions::print("setting visFX to active");
 
                 hurter->control = 0;
                 int finalHitstun = wasACounter ? (hitter->getCollisionBox(hId).hitstun + 4) : (hitter->getCollisionBox(hId).hitstun);
@@ -1297,7 +1297,7 @@ HitResult FightingGameServer::checkEntityHitAgainst(Character* _p1, Character* _
               if (CollisionBox::checkAABB(entity.getCollisionBox(eId), _p2->getCollisionBox(hId))) {
                 // shakeCamera(entity.getCollisionBox(eId)->hitstop, &camera);
                 printf("found entity hit\n");
-                godot::UtilityFunctions::print("found entity hit");
+                // godot::UtilityFunctions::print("found entity hit");
                 // CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(entity.getCollisionBox(eId), _p2->getCollisionBox(hId));
                 bool entityFaceRight = entity.faceRight;
                 entity.inHitStop = true;
@@ -1582,8 +1582,8 @@ void FightingGameServer::restartRound(){
 }
 
 void FightingGameServer::updateVisuals(){
-  auto& i = player1.hitSpark; 
-  i.update();
+  player1.hitSpark.update();
+  player2.hitSpark.update();
 }
 
 
@@ -1665,6 +1665,12 @@ godot::Dictionary FightingGameServer::getGameState() {
     p2Boxes.append(cbDict);
   }
   state["p2CollisionBoxes"] = p2Boxes;
+
+  state["p2HitsparkActive"] = player2.hitSpark.getActive();
+  state["p2HitsparkStatetTime"] = player2.hitSpark.getStateTime();
+  state["p2HitsparkX"] = player2.hitSpark.getX();
+  state["p2HitsparkY"] = player2.hitSpark.getY();
+
   return state;
 }
 
