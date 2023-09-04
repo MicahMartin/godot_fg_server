@@ -55,8 +55,10 @@ void FightingGameServer::enter(){
 
   std::string p1DefPath = "/Users/martin/dev/godot_projects/template_test/GDExtensionTemplate/data/characters/alucard/def.json";
   std::string p2DefPath = "/Users/martin/dev/godot_projects/template_test/GDExtensionTemplate/data/characters/alucard/def.json";
+
   player1.init(p1DefPath.c_str());
   player2.init(p2DefPath.c_str());
+
   player1.loadCustomStates(p2DefPath.c_str());
   player2.loadCustomStates(p1DefPath.c_str());
 
@@ -100,13 +102,15 @@ void FightingGameServer::_ready() {
   std::string _remoteIp(this->get_parent()->get_meta("remoteIp").stringify().utf8().get_data());
   remoteIp = _remoteIp;
 
-  godot::UtilityFunctions::print("p1:", _p1Name.c_str(), 
+  godot::UtilityFunctions::print(
+      "p1:", _p1Name.c_str(), 
       " p2:", _p2Name.c_str(), 
       " netPnum :", _netPnum,
       " isNetPlay:", _isNetPlay,
       " localPort:", _localPort,
       " remotePort:",_remotePort,
-      " remoteIp:", _remoteIp.c_str());
+      " remoteIp:", _remoteIp.c_str()
+      );
   enter();
 }
 
@@ -239,32 +243,39 @@ void FightingGameServer::_bind_methods() {
 
 void FightingGameServer::step(int inputs[]){
   frameCount++;
+
   p1Vc.update(inputs[0]);
   p2Vc.update(inputs[1]);
+
   // Handle Input
   if (!slowMode && !screenFreeze) {
     handleRoundStart();
+
     physics.checkCorner(&player1, worldWidth);
     physics.checkCorner(&player2, worldWidth);
+
     updateFaceRight();
+
     checkHitstop(&player1);
     checkHitstop(&player2);
+
     checkEntityHitstop(&player1);
     checkEntityHitstop(&player2);
 
     player1.handleInput();
     player2.handleInput();
+
     for (auto& i : player1.entityList) {
       if (i.active && !i.inHitStop) {
         i.handleInput();
       }
     }
+
     for (auto& i : player2.entityList) {
       if (i.active && !i.inHitStop) {
         i.handleInput();
       }
     }
-    // checkThrowTechs();
   }
 
   player1.currentState->handleCancels();
@@ -283,9 +294,9 @@ void FightingGameServer::step(int inputs[]){
   checkThrowCollisions();
   physics.checkProximityBox(&player1, &player2);
   physics.checkProximityBox(&player2, &player1);
+
   physics.checkProjectileBox(&player1, &player2);
   checkHitCollisions();
-  // checkTriggerCollisions();
   physics.checkCorner(&player1, worldWidth);
   physics.checkCorner(&player2, worldWidth);
   physics.checkBounds(&player1, &player2, camera, worldWidth);
@@ -347,18 +358,8 @@ void FightingGameServer::step(int inputs[]){
       roundEnd = true;
 
       if (roundWinner == 1) {
-        // p1WinPopup.setX(camera.middle);
-        // p1WinPopup.setY(camera.cameraRect.y);
-        // p1WinPopup.setStateTime(0);
-        // p1WinPopup.setActive(true);
-        // Mix_PlayChannel(0, p1WinSound, 0);
       }
       else if (roundWinner == 2) {
-        // p2WinPopup.setX(camera.middle);
-        // p2WinPopup.setY(camera.cameraRect.y);
-        // p2WinPopup.setStateTime(0);
-        // p2WinPopup.setActive(true);
-        // Mix_PlayChannel(0, p2WinSound, 0);
       }
       roundWinner = 0;
     }

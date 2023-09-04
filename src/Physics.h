@@ -31,7 +31,5 @@ public:
   void checkCorner(Character* p1, int worldWidth);
   void checkBounds(Character* p1, Character* p2, Camera camera, int worldWidth);
 
-
-
 private:
 };
