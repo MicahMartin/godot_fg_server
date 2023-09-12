@@ -71,8 +71,6 @@ void FightingGameServer::enter(){
   camera.init(camWidth, camHeight, worldWidth);
   updateCamera();
 
-  // stateObj.roundStartCounter = 210;
-  // stateObj.roundStart = true;
   roundStartCounter = 60;
   roundStart = true;
   slowMode = false;
@@ -80,6 +78,7 @@ void FightingGameServer::enter(){
     ggpoInit();
   }
 }
+
 void FightingGameServer::_ready() {
   if(godot::Engine::get_singleton()->is_editor_hint()){ return; }
   InputServer = godot::Input::get_singleton();
@@ -648,11 +647,6 @@ void FightingGameServer::checkHealth() {
 
 
   if ((player1.health <= 0 || player2.health <= 0) && (!player1.isDead && !player2.isDead)) {
-    // knockoutPopup.setX(camera.middle);
-    // knockoutPopup.setY(camera.cameraRect.y);
-    // knockoutPopup.setStateTime(0);
-    // knockoutPopup.setActive(true);
-    // Mix_PlayChannel(0, koSound, 0);
     if (player1.health <= 0 && player1.hitstun >= 1) {
       player1.isDead = true;
       p2RoundsWon++;
