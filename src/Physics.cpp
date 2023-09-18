@@ -251,13 +251,13 @@ HitResult handleHit(Character* hitter, Character* hurter, CollisionBox& hitBox) 
 }
 
 
-void handleHitSpark(Character* hitter, CollisionRect hitsparkIntersect) {
+void handleHitSpark(Character* hitter, CollisionRect hitsparkIntersect, VisualEffect* hitSpark) {
   int xEdge = hitter->faceRight ? 
     hitsparkIntersect.x + hitsparkIntersect.w 
     : hitsparkIntersect.x;
   // int visualID = hitBox.hitsparkID;
-  hitter->hitSpark.reset(xEdge, (hitsparkIntersect.y + (hitsparkIntersect.h / 2)));
-  hitter->hitSpark.setActive(true);
+  hitSpark->reset(xEdge, (hitsparkIntersect.y + (hitsparkIntersect.h / 2)));
+  hitSpark->setActive(true);
 }
 
 
@@ -282,7 +282,6 @@ HitResult Physics::checkHitbox(Character* hitter, Character* hurter) {
             //TODO: SHAKING SCRIPT
             // shakeCamera(hitBox.hitstop, &camera);
             CollisionRect hitsparkIntersect = CollisionBox::getAABBIntersect(hitBox, hurtBox);
-            handleHitSpark(hitter, hitsparkIntersect);
 
             int hurterStateNum = hurterState->stateNum;
             int hitterStateNum = hitterState->stateNum;
@@ -292,9 +291,11 @@ HitResult Physics::checkHitbox(Character* hitter, Character* hurter) {
 
             if (isBlocking(blockState, blockType, hurter)) {
               handleBlock(hurter, hitter, hitBox);
+              handleHitSpark(hitter, hitsparkIntersect, &hitter->hitSpark);
             }
             else {
               HitResult result = handleHit(hitter, hurter, hitBox);
+              handleHitSpark(hitter, hitsparkIntersect, &hitter->hitSpark);
               return result;
             }
           }

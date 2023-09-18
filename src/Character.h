@@ -296,6 +296,7 @@ public:
   // std::unordered_map<int, VisualEffect> hitSparks;
   // std::unordered_map<int, VisualEffect> guardSparks;
   VisualEffect hitSpark;
+  VisualEffect guardSpark;
   // std::unordered_map<int, VisualEffect> visualEffects;
   // std::unordered_map<int, SoundObj> soundsEffects;
   // std::unordered_map<int, SoundObj> hurtSoundEffects;

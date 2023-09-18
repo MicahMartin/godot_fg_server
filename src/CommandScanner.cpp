@@ -147,7 +147,7 @@ char CommandScanner::advance(){
 
 bool CommandScanner::match(char expected){
   if (isAtEnd()) return false;
-  if (*scannerCurrent!= expected) return false;
+  if (*scannerCurrent != expected) return false;
 
   scannerCurrent++;
   return true;

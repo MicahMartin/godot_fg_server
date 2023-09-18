@@ -68,11 +68,10 @@ void CommandCompiler::init(const char* path) {
   }
 
   for (int i = 0; i < commandStrings.size(); ++i) {
-    godot::UtilityFunctions::print("compiling command string: ", 
-        commandStrings[i].command.c_str());
-
+    godot::UtilityFunctions::print("compiling command string: ", commandStrings[i].command.c_str());
     compile(commandStrings[i].command.c_str(), commandStrings[i].clears);
   }
+
   godot::UtilityFunctions::print("done compiling commands\n");
   printf("done compiling commands\n");
 }
@@ -89,16 +88,12 @@ void CommandCompiler::compile(const char* inputString, bool clears) {
   // bind strict param to function pointer
   // set command func's return to the evaluation of function @ function pointer
   // push command func onto commandFuncStack
-  std::vector<CommandToken> tokens = commandScanner.scan(inputString);
   CommandObj commandObj;
-  //im lazy
   commandObj.clears = clears;
+
+  std::vector<CommandToken> tokens = commandScanner.scan(inputString);
   currentToken = &tokens[0];
 
-  godot::UtilityFunctions::print("tokens\n");
-  for(auto& token : tokens) {
-    godot::UtilityFunctions::print(commandScanner.tokenToString[token.type]," ");
-  }
   while(currentToken->type != CTOKEN_END){
     godot::UtilityFunctions::print("new node start\n");
     commandObj.command.push_back(compileNode());
