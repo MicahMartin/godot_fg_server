@@ -236,6 +236,11 @@ CommandNode CommandCompiler::compileNode(){
   if(currentToken->type != CTOKEN_END){
     currentToken++;
   }
+  godot::UtilityFunctions::print(
+      "The token pointer is at:", currentToken->start,
+      "The length: ", currentToken->length,
+      "The type: ", commandScanner.tokenToString[currentToken->type]
+      );
   return finalNode;
 }
 
