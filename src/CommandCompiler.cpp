@@ -241,6 +241,11 @@ CommandNode CommandCompiler::compileNode(){
       "The length: ", currentToken->length,
       "The type: ", commandScanner.tokenToString[currentToken->type]
       );
+
+  // CommandTokenType type;
+  // const char* start;
+  // uint8_t length;
+
   return finalNode;
 }
 
