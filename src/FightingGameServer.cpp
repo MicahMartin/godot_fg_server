@@ -736,6 +736,7 @@ double FightingGameServer::getModelScale(int p_charNum) {
 godot::Dictionary FightingGameServer::getGameState() { 
   godot::Dictionary state;
 
+  state["char1Health"] = player1.health;
   state["char1FaceRight"] = player1.faceRight;
   state["char1StateNum"] = player1.currentState->stateNum;
   state["char1StateTime"] = player1.currentState->stateTime;
@@ -783,6 +784,7 @@ godot::Dictionary FightingGameServer::getGameState() {
   // int xPos = 0;
   // int yPos = 0;
 
+  state["char2Health"] = player2.health;
   state["char2FaceRight"] = player2.faceRight;
   state["char2StateNum"] = player2.currentState->stateNum;
   state["char2StateTime"] = player2.currentState->stateTime;
@@ -965,6 +967,7 @@ void FightingGameServer::saveState(){
 
 void FightingGameServer::loadState(){
   memcpy(&stateObj, localBuffer, localBufferSize);
+
   roundStartCounter = stateObj.roundStartCounter;
   roundStart = stateObj.roundStart;
   roundWinner = stateObj.roundWinner;

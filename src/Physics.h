@@ -17,6 +17,7 @@ struct ThrowResult {
 
 class Physics {
 public:
+  // TODO: Vectorize this
   Physics();
   ~Physics();
 

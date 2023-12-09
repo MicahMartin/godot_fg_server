@@ -879,6 +879,9 @@ void Character::_setControl(int val){
 
 void Character::_setCombo(int val){
   comboCounter = val;
+  // if(val == 0){
+  //   comboDamage = 0;
+  // }
 }
 
 void Character::_setGravity(int on){

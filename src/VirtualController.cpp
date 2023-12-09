@@ -166,9 +166,9 @@ bool VirtualController::wasPressed(Input input, bool strict, int index, bool pre
 }
 
 bool VirtualController::wasPressedBuffer(Input input, bool strict, bool pressed) {
-  int buffLen = 4;
+  int buffLen = 2;
+  // int historySize = inputHistory.size();
   bool found = false;
-  int historySize = inputHistory.size();
 
   for (int i = 0; i < buffLen && !found; i++) {
     std::list<InputEvent> eventList = inputHistory[119 - i];

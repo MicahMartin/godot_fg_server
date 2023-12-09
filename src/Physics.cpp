@@ -192,6 +192,7 @@ HitResult handleHit(Character* hitter, Character* hurter, CollisionBox& hitBox) 
   int finalDamage = hitBox.damage;
   finalDamage = ((finalDamage * hurter->defenseValue) / 100);
   hurter->comboDamage += finalDamage;
+  hurter->health -= hitBox.damage;
   hurter->hitstun = finalHitstun;
 
   if ((hitBox.hitType == LAUNCHER)
