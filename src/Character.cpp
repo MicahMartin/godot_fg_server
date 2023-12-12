@@ -52,7 +52,6 @@ CharStateObj Character::saveState(){
   stateObj.blockstun = blockstun;
   stateObj.hitStop = hitStop;
   stateObj.pushTime = pushTime;
-  stateObj.defenseValue = 1;
   stateObj.riskScaling = 1;
   stateObj.comboScale = 1;
   stateObj.pushBackVelocity = pushBackVelocity;

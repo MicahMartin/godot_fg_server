@@ -19,7 +19,6 @@ struct CharStateObj {
   blockstun,
   hitStop,
   pushTime,
-  defenseValue,
   riskScaling,
   comboScale,
   comboDamage,
@@ -178,7 +177,7 @@ public:
   int blockstun = 0;
   int hitStop = 0;
   int pushTime = 0;
-  int defenseValue = 1;
+  int defenseValue = 100;
   int riskScaling = 1;
   int comboScale = 1;
   int pushBackVelocity = 0;
