@@ -18,7 +18,7 @@ typedef enum {
   CTOKEN_DELIM,
   CTOKEN_END,
 
-}CommandTokenType;
+} CommandTokenType;
 
 struct CommandToken {
   CommandTokenType type;
@@ -69,6 +69,7 @@ public:
     {CTOKEN_DELIM, "DELIM"},
     {CTOKEN_END, "END"},
   };
+
 private:
   const char* scannerStart;
   const char* scannerCurrent;
